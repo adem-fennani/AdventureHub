@@ -1,5 +1,5 @@
 
-const user_id = document.getElementById('user_id');
+
 const content = document.getElementById('content');
 const image = document.getElementById('image');
 const loc = document.getElementById('location');
@@ -9,10 +9,6 @@ const errorElement = document.getElementById('errorinput');
 
 form.addEventListener('submit', (e) => {
   let messages = [];
-
-  if (user_id.value.trim() === '') {
-    messages.push('User ID is required.');
-  }
 
   if (content.value.trim() === '') {
     messages.push('Content cannot be empty.');
