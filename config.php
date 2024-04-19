@@ -1,15 +1,15 @@
 <?php
 
-class config
+class config 
 {
     private static $pdo = null;
 
-    public static function getConnexion()
+    public static function getConnexion() 
     {
         if (!isset(self::$pdo)) {
             try {
                 self::$pdo = new PDO(
-                    'mysql:host=localhost;dbname=?',
+                    'mysql:host=localhost;dbname=adventurehub',
                     'root',
                     '',
                     [
