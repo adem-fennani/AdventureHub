@@ -4,7 +4,6 @@ include '../Controller/CommandeC.php';
 
 $error = "";
 
-// Create an instance of the controller
 $commandeC = new CommandeC();
 
 if (isset($_POST)) {

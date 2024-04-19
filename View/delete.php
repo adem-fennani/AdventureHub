@@ -1,8 +1,6 @@
 <?php
-// Include the correct controller class
 include '../Controller/CommandeC.php';
 
-// Create an instance of CommandeC
 $commandeC = new CommandeC();
 
 // Check if a POST request with "id" is set (assuming deletion form submission)

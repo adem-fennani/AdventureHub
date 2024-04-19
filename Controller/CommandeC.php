@@ -1,8 +1,7 @@
 <?php
 
 include '../config.php';
-include '../Model/Commande.php'; // Assuming your model class is named Commande.php
-
+include '../Model/Commande.php';
 class CommandeC
 {
 
@@ -16,9 +15,9 @@ class CommandeC
             foreach ($liste as $row) {
                 $commande = [
                     'id' => $row['id'],
-                    'date' => DateTime::createFromFormat('Y-m-d', $row['date']), // Assuming 'Y-m-d' format (adjust as needed)
-                    'prix_total' => $row['prix_total'], // No conversion for prix_total (assuming numerical)
-                    'adresse_livraison' => $row['adresse_livraison'], // No conversion for adresse_livraison (assuming string)
+                    'date' => DateTime::createFromFormat('Y-m-d', $row['date']),
+                    'prix_total' => $row['prix_total'],
+                    'adresse_livraison' => $row['adresse_livraison'],
                 ];
                 $commandes[] = $commande;
             }
@@ -42,14 +41,14 @@ class CommandeC
 
             // Remove unnecessary bindings
             $query->execute([
-                ':id' => $commande->getId(), // Assuming you have an 'id' getter in Commande.php
-                ':date' => $commande->getDate()->format('Y-m-d'), // Assuming 'date' getter
-                ':prix_total' => $commande->getPrixTotal(), // Assuming 'prix_total' getter
-                ':adresse_livraison' => $commande->getAdresseLivraison(), // Assuming 'adresseLivraison' getter (adjusted casing)
+                ':id' => $commande->getId(),
+                ':date' => $commande->getDate()->format('Y-m-d'),
+                ':prix_total' => $commande->getPrixTotal(),
+                ':adresse_livraison' => $commande->getAdresseLivraison(),
             ]);
 
-            // Redirect to success page or display confirmation message (optional)
-            header('Location: add.php'); // Assuming success page
+
+            header('Location: add.php');
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
@@ -66,6 +65,48 @@ class CommandeC
             $req->execute();
         } catch (Exception $e) {
             die('Error:' . $e->getMessage());
+        }
+    }
+
+    public function updateCommande($commande, $id)
+    {
+        // Database connection (replace with your connection details)
+        $conn = new PDO("mysql:host=localhost;dbname=adventurehub", "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        try {
+            // Prepare SQL statement with placeholders for security
+            $sql = "UPDATE commande SET prix_total = ?, adresse_livraison = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+
+            // Bind values to placeholders
+            $stmt->bindValue(1, $commande['prix_total'], PDO::PARAM_INT);
+            $stmt->bindValue(2, $commande['adresse_livraison'], PDO::PARAM_STR);
+            $stmt->bindValue(3, $id, PDO::PARAM_INT);
+
+            // Execute the update query
+            $stmt->execute();
+
+            echo "Commande updated successfully!";
+        } catch (PDOException $e) {
+            echo "Error updating commande: " . $e->getMessage();
+        }
+
+        $conn = null; // Close connection
+    }
+
+
+    public function getCommandeById($id)
+    {
+        try {
+            $db = config::getConnexion();
+            $query = $db->prepare('SELECT * FROM commande WHERE id = :id');
+            $query->execute(['id' => $id]);
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return null;  
         }
     }
 }

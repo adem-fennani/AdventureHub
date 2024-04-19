@@ -1,11 +1,9 @@
 <?php
 
-include '../Controller/CommandeC.php'; // Assuming your controller class is named CommandeC.php
+include '../Controller/CommandeC.php';
 
-// Create an instance of the controller
 $commandeC = new CommandeC();
 
-// Call the listCommandes function from CommandeC to retrieve all commandes
 $commandes = $commandeC->listCommandes();
 
 ?>
