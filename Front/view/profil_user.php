@@ -303,8 +303,9 @@ session_start();
                 readonly>
             <br>
             <label for="newPassword" style="font-weight: bold; font-size: 1.5em;"> Nouveau Password : </label>
-            <center><input type="password" name="newPassword" id="newPassword" placeholder="Nouveau Password"
-                    style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+            <center><input type="password" name="newPassword" id="newPassword" placeholder="Nouveau Password" 
+                      style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+
                 <br><span id="error_newPassword" style="color: red; font-size: 0.75em;"></span>
             </center>
             <br>

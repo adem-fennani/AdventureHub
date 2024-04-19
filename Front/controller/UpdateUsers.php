@@ -97,7 +97,7 @@ if (isset($_SESSION["type"])) {
 
         else if(isset($_POST['oldPassword']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword']) ){
             $oldPassword = $_POST['oldPassword'];
-            $newPassword = $_POST['confirmPassword'];
+            $newPassword = $_POST['newPassword'];
             $userId = $_SESSION['userId'];
         
             
@@ -152,14 +152,34 @@ if (isset($_SESSION["type"])) {
                 $control->updateAgenceNumero($newNumero,$userId);
                 header("location:../view/profil_agence.php");
             }  
-            else if(isset($_POST['newImage'])){
-                $newImage = $_POST['newImage'];
+            else if(isset($_FILES['newImage'])) {
+                $newImage = $_FILES['newImage'];
                 $userId = $_SESSION['userId'];
+                
+                // Assurez-vous que le fichier a été téléchargé avec succès
+                if ($newImage['error'] === UPLOAD_ERR_OK) {
+                    // Obtenez le chemin temporaire du fichier téléchargé
+                    $tempFilePath = $newImage['tmp_name'];
             
-                $control = new AgenceC();
-                $control->updateAgenceImage($newImage,$userId);
-                header("location:../view/profil_agence.php");
-            }  
+                    // Maintenant, vous pouvez déplacer ce fichier téléchargé vers l'emplacement souhaité
+                    // Par exemple, si vous voulez le déplacer vers un répertoire d'images spécifique, vous pouvez faire quelque chose comme ça
+                    $destination = "../image/" . $newImage['name'];
+                    move_uploaded_file($tempFilePath, $destination);
+            
+                    // Assurez-vous de traiter correctement le fichier téléchargé
+                    // Vous pouvez également ajouter des vérifications supplémentaires, telles que la taille ou le type de fichier
+                    // Ensuite, vous pouvez effectuer d'autres actions, comme mettre à jour la base de données, etc.
+                    
+                    $control = new AgenceC();
+                    $control->updateAgenceImage($destination, $userId);
+                    
+                    header("location:../view/profil_agence.php");
+                } else {
+                    // Gérer les erreurs de téléchargement
+                    echo "Une erreur s'est produite lors du téléchargement du fichier.";
+                }
+            }
+            
             else if(isset($_POST['oldPassword']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword']) ){
                 $oldPassword = $_POST['oldPassword'];
                 $newPassword = $_POST['newPassword']; 

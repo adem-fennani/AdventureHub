@@ -235,6 +235,8 @@
             // Validation de l'adresse
             if (userAdresse.value.length === 0)
                 errorMessageAdresse.innerHTML = 'Address is required';
+                else if (!/^[a-zA-Z]+$/.test(adresse.value))
+                errorMessageAdresse.innerHTML = 'adresse should only contain alphabetic characters';
             else
                 errorMessageAdresse.innerHTML = "";
 
