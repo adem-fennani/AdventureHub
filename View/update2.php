@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_commande"])) {
             'adresse_livraison' => $adresseLivraison,
         ];
         $commandeC->updateCommande($commande, $id);
-        header('Location: list.php');  // Redirect to list page on successful update
+        header('Location: boutique.php');  // Redirect to list page on successful update
     } else {
         $error = "Missing information";
     }

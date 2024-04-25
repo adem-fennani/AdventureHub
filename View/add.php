@@ -38,22 +38,7 @@ if (isset($_POST)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Commande</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            /* Remove borders between table cells */
-        }
-
-        td {
-            padding: 5px;
-            /* Add some padding for better spacing */
-        }
-
-        label {
-            display: block;
-            /* Make labels appear on separate lines */
-        }
-    </style>
+    <link rel="stylesheet" href="style/add.css">
 </head>
 
 <body>
@@ -80,7 +65,7 @@ if (isset($_POST)) {
         </table>
         <button type="submit">Save Commande</button>
     </form>
-
+    <script src="controleSaisie.js"></script>
 </body>
 
 </html>

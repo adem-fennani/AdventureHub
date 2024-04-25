@@ -8,7 +8,7 @@ if (isset($_POST["id"])) {
   // Call deleteCommande function (assuming it exists)
   $commandeC->deleteCommande($_POST["id"]);
   // Optional: Redirect after deletion (adjust URL as needed)
-  header('Location: list.php');
+  header('Location: delete.php');
   exit();
 }
 
@@ -24,23 +24,7 @@ $commandes = $commandeC->listCommandes();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>List Commandes</title>
-  <style>
-    table {
-      border-collapse: collapse;
-      width: 100%; /* Optional: Set a width for the table */
-    }
-
-    th,
-    td {
-      padding: 5px;
-      border: 1px solid #ddd; /* Add borders to table cells */
-      text-align: left; /* Optional: Align content to the left */
-    }
-
-    th {
-      background-color: #f2f2f2; /* Optional: Set background color for table headers */
-    }
-  </style>
+  <link rel="stylesheet" href="style/delete.css">
 </head>
 
 <body>

@@ -1,0 +1,14 @@
+table {
+    border-collapse: collapse;
+    /* Remove borders between table cells */
+}
+
+td {
+    padding: 5px;
+    /* Add some padding for better spacing */
+}
+
+label {
+    display: block;
+    /* Make labels appear on separate lines */
+}

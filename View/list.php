@@ -15,31 +15,11 @@ $commandes = $commandeC->listCommandes();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Commandes</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            /* Optional: Set a width for the table */
-        }
-
-        th,
-        td {
-            padding: 5px;
-            border: 1px solid #ddd;
-            /* Add borders to table cells */
-            text-align: left;
-            /* Optional: Align content to the left */
-        }
-
-        th {
-            background-color: #f2f2f2;
-            /* Optional: Set background color for table headers */
-        }
-    </style>
+    <link rel="stylesheet" href="style/list.css">
 </head>
 
 <body>
-    <h1>Liste des Commandes</h1>
+    <h2>Liste des Commandes</h2>
 
     <?php if (isset($commandes) && !empty($commandes)) : ?>
         <table>

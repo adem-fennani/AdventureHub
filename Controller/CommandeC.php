@@ -48,7 +48,7 @@ class CommandeC
             ]);
 
 
-            header('Location: add.php');
+            header('Location: boutique.php');
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
