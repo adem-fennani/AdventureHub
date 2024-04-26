@@ -95,28 +95,29 @@ if (isset($_SESSION["type"])) {
             }
         }
 
-        else if(isset($_POST['oldPassword']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword']) ){
-            $oldPassword = $_POST['oldPassword'];
+        else if( isset($_POST['newPassword']) && isset($_POST['confirmPassword']) ){
+            
             $newPassword = $_POST['newPassword'];
+            $confirm_password = $_POST['confirmPassword'];
+            
             $userId = $_SESSION['userId'];
         
             
-            $user = checkUser($userId);
+            /*$user = checkUser($userId);
             if($user!=NULL){
                 
                 $cryptedPassword = $user['password'];
             if(password_verify($oldPassword,$cryptedPassword)==false)
                 header("Location:../view/profil_user.php?error=3");
-            else {
+            else {*/
                 $control = new UserC();
                 $crytedNewPassword = password_hash($newPassword,PASSWORD_DEFAULT);
                 $control->updateUserPassword($crytedNewPassword,$userId);
                 //$_SESSION['loggedIn'] = true;
                 header("location:../view/profil_user.php");
             }
-            }
+            
         }
-    }
 
     //else if (preg_match("/{$searchAgence}/i", $userId)) {
         else if ($_SESSION["type"]===$searchAgence) {

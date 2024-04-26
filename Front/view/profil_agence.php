@@ -192,7 +192,7 @@ session_start();
     <div class="col-md-6">
         <div class="singel-form form-group">
             <label for="oldPassword" style="font-weight: bold; font-size: 1.5em;">Ancien Password :</label>
-            <input type="password" name="oldPassword" id="oldPassword" placeholder="Ancien Password"
+            <input type="text" name="oldPassword" id="oldPassword" placeholder="Ancien Password"
                 style="height: 3.25rem; width: 33vw; border-radius: 5px;" value="<?php echo $_SESSION['password']; ?>"
                 readonly>
             <br>

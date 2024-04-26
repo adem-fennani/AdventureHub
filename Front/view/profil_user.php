@@ -1,6 +1,7 @@
 <?php
 session_start();
 ?>
+
 <div class="pt-105 pb-110 bg_cover" class="row">
 
     <center>
