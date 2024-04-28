@@ -1,0 +1,12 @@
+.w3-container.w3-white.w3-margin-bottom {
+  width: 300px; /* Added container width */
+}
+
+.w3-display-container img {
+  width: 100%; /* Set image width to 100% of its container */
+  height: auto; /* Maintain aspect ratio */
+}
+
+h2 {
+    color: orangered;
+}
