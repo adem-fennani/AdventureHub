@@ -5,33 +5,16 @@
     <meta charset="UTF-8" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="script/back-office.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="style/back-office.css"/>
     <link rel="icon" href="images/logo.png" type="image/png" />
-    <style>
-      html,
-      body,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5 {
-        font-family: "Raleway", sans-serif;
-      }
-    </style>
   </head>
   <body class="w3-light-grey">
-    <style>
-      body {
-        font-family: "Montserrat", sans-serif;
-        font-optical-sizing: auto;
-        font-style: normal;
-      }
-    </style>
     <!-- Top container -->
     <div class="w3-bar w3-top w3-black w3-large" style="z-index: 4">
       <button
@@ -284,7 +267,7 @@
         </table>
         <br />
         <button class="w3-button w3-dark-grey">
-          plus de pays  <i class="fa fa-arrow-right"></i>
+          Plus de pays  <i class="fa fa-arrow-right"></i>
         </button>
       </div>
       <hr />
@@ -328,30 +311,5 @@
 
       <!-- End page content -->
     </div>
-
-    <script>
-      // Get the Sidebar
-      var mySidebar = document.getElementById("mySidebar");
-
-      // Get the DIV with overlay effect
-      var overlayBg = document.getElementById("myOverlay");
-
-      // Toggle between showing and hiding the sidebar, and add overlay effect
-      function w3_open() {
-        if (mySidebar.style.display === "block") {
-          mySidebar.style.display = "none";
-          overlayBg.style.display = "none";
-        } else {
-          mySidebar.style.display = "block";
-          overlayBg.style.display = "block";
-        }
-      }
-
-      // Close the sidebar with the close button
-      function w3_close() {
-        mySidebar.style.display = "none";
-        overlayBg.style.display = "none";
-      }
-    </script>
   </body>
 </html>
