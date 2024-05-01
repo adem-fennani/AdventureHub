@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>News and Tips - Backoffice</title>
+    <title>Boutique Back-office</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
@@ -9,8 +9,9 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style/boutique-user.css"/>
+    <link rel="stylesheet" href="style/boutique-user.css" />
     <link rel="icon" href="images/logo.png" type="image/png" />
+    <script src="script/boutique-user.js"></script>
   </head>
   <body>
     <!-- Navbar (sit on top) -->
@@ -18,16 +19,12 @@
       <div class="w3-bar w3-white w3-wide w3-padding w3-card">
         <a href="#home" class="w3-bar-item w3-button"
           ><img src="images/logo.png" alt="AdventureHub logo" width="40px" />
-          Conseils & actualités</a
+          AdventureHub</a
         >
         <!-- Float links to the right. Hide them on small screens -->
 
         <div class="w3-right w3-hide-small">
-          <a href="#home" class="w3-bar-item w3-button">Acceuil</a>
-          <a href="boutique-user.html" class="w3-bar-item w3-button"
-            >Boutique</a
-          >
-          <a href="#Agency" class="w3-bar-item w3-button">Agences</a>
+          <a href="#Cart" class="w3-bar-item w3-button">Panier</a>
         </div>
       </div>
     </div>
@@ -50,8 +47,34 @@
           <img src="images/Backpack.png" alt="John" style="width: 100%" />
           <h3>Sac à dos</h3>
           <p>49.000 DT</p>
+          <div class="w3-section">
+            <div class="w3-bar">
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="decrementQuantity(this)"
+                >
+                  -
+                </button>
+              </div>
+              <div class="w3-bar-item w3-center w3-black">
+                <span id="quantity-backpack">1</span>
+              </div>
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="incrementQuantity(this)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
           <p>
-            <button class="w3-button w3-light-grey w3-block">
+            <button
+              class="w3-button w3-light-grey w3-block"
+              onclick="addToCart('Backpack', document.getElementById('quantity-backpack').textContent)"
+            >
               Ajouter au panier
             </button>
           </p>
@@ -60,8 +83,34 @@
           <img src="images/fedora.png" alt="Jane" style="width: 100%" />
           <h3>Chapeau</h3>
           <p>19.000 DT</p>
+          <div class="w3-section">
+            <div class="w3-bar">
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="decrementQuantity(this)"
+                >
+                  -
+                </button>
+              </div>
+              <div class="w3-bar-item w3-center w3-black">
+                <span id="quantity-fedora">1</span>
+              </div>
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="incrementQuantity(this)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
           <p>
-            <button class="w3-button w3-light-grey w3-block">
+            <button
+              class="w3-button w3-light-grey w3-block"
+              onclick="addToCart('Fedora', document.getElementById('quantity-fedora').textContent)"
+            >
               Ajouter au panier
             </button>
           </p>
@@ -70,8 +119,34 @@
           <img src="images/umbrella.png" alt="Mike" style="width: 100%" />
           <h3>Parapluie</h3>
           <p>15.000 DT</p>
+          <div class="w3-section">
+            <div class="w3-bar">
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="decrementQuantity(this)"
+                >
+                  -
+                </button>
+              </div>
+              <div class="w3-bar-item w3-center w3-black">
+                <span id="quantity-umbrella">1</span>
+              </div>
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="incrementQuantity(this)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
           <p>
-            <button class="w3-button w3-light-grey w3-block">
+            <button
+              class="w3-button w3-light-grey w3-block"
+              onclick="addToCart('Umbrella', document.getElementById('quantity-umbrella').textContent)"
+            >
               Ajouter au panier
             </button>
           </p>
@@ -80,8 +155,34 @@
           <img src="images/firstAid.png" alt="Dan" style="width: 100%" />
           <h3>Trousse de secours</h3>
           <p>7.000 DT</p>
+          <div class="w3-section">
+            <div class="w3-bar">
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="decrementQuantity(this)"
+                >
+                  -
+                </button>
+              </div>
+              <div class="w3-bar-item w3-center w3-black">
+                <span id="quantity-firstAid">1</span>
+              </div>
+              <div class="w3-bar-item">
+                <button
+                  class="w3-button w3-white w3-border w3-border-grey"
+                  onclick="incrementQuantity(this)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
           <p>
-            <button class="w3-button w3-light-grey w3-block">
+            <button
+              class="w3-button w3-light-grey w3-block"
+              onclick="addToCart('firstAid', document.getElementById('quantity-firstAid').textContent)"
+            >
               Ajouter au panier
             </button>
           </p>
