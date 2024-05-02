@@ -8,107 +8,109 @@ include '../Model/Comment.php';
 
 
 
-class CommentC {
-    //read post
-    public function readComment() {
-        $sql = "SELECT * FROM comments";
-        $db = config::getConnexion();
-        try {
-            $liste = $db->query($sql);
-            return $liste;
-        } catch (Exception $e) {
-            die('Error:' . $e->getMessage());
-        }
+class CommentC
+{
+  //read post
+  public function readComment()
+  {
+    $sql = "SELECT * FROM comments";
+    $db = config::getConnexion();
+    try {
+      $liste = $db->query($sql);
+      return $liste;
+    } catch (Exception $e) {
+      die('Error:' . $e->getMessage());
     }
-
-  
-    
-
-    
+  }
 
 
 
 
 
-    //delete post
-    function deleteComment($id)
-    {
-        $sql = "DELETE FROM comments WHERE id = :id";
-        $db = config::getConnexion();
-        $req = $db->prepare($sql);
-        $req->bindValue(':id', $id);
 
-        try {
-            $req->execute();
-        } catch (Exception $e) {
-            die('Error:' . $e->getMessage());
-        }
+
+
+
+
+  //delete post
+  function deleteComment($id)
+  {
+    $sql = "DELETE FROM comments WHERE id = :id";
+    $db = config::getConnexion();
+    $req = $db->prepare($sql);
+    $req->bindValue(':id', $id);
+
+    try {
+      $req->execute();
+    } catch (Exception $e) {
+      die('Error:' . $e->getMessage());
     }
+  }
 
 
 
-    function addComment($comment)
-    {
-        $sql = "INSERT INTO comments 
+  function addComment($comment)
+  {
+    $sql = "INSERT INTO comments 
         VALUES (NULL, :p_id ,:u_id, :c,:c_at)";
-        $db = config::getConnexion();
-        try {
-            $query = $db->prepare($sql);
-            $query->execute([
-                'p_id' => $comment->getPost_id(),
-                'u_id' => $comment->getUser_id(),
-                'c' => $comment->getComment(),
-                'c_at' => $comment->getCreated_at()->format('Y-m-d H:i:s') // Updated date format
-            ]);
-        } catch (Exception $e) {
-            echo 'Error: ' . $e->getMessage();
-        }
+    $db = config::getConnexion();
+    try {
+      $query = $db->prepare($sql);
+      $query->execute([
+        'p_id' => $comment->getPost_id(),
+        'u_id' => $comment->getUser_id(),
+        'c' => $comment->getComment(),
+        'c_at' => $comment->getCreated_at()->format('Y-m-d H:i:s') // Updated date format
+      ]);
+    } catch (Exception $e) {
+      echo 'Error: ' . $e->getMessage();
     }
+  }
 
-    function updateComment($comment, $id)
-    {
-        try {
-            $db = config::getConnexion();
-            $query = $db->prepare(
-                'UPDATE comments SET 
+  function updateComment($comment, $id)
+  {
+    try {
+      $db = config::getConnexion();
+      $query = $db->prepare(
+        'UPDATE comments SET 
                     post_id = :post_id, 
                     user_id = :user_id, 
                     comment = :comment,  
                     created_at = :created_at
                 WHERE id= :id'
-            );
-            $query->execute([
-                'id' => $id,
-                'post_id' => $comment->getPost_id(),
-                'user_id' => $comment->getUser_id(),
-                'comment' => $comment->getComment(),
-                'created_at' => $comment->getCreated_at()->format('Y-m-d H:i:s') // Updated date format
-            ]);
-            echo $query->rowCount() . " records UPDATED successfully <br>";
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
+      );
+      $query->execute([
+        'id' => $id,
+        'post_id' => $comment->getPost_id(),
+        'user_id' => $comment->getUser_id(),
+        'comment' => $comment->getComment(),
+        'created_at' => $comment->getCreated_at()->format('Y-m-d H:i:s') // Updated date format
+      ]);
+      echo $query->rowCount() . " records UPDATED successfully <br>";
+    } catch (PDOException $e) {
+      $e->getMessage();
     }
+  }
 
 
 
-    function showOneComment($id)
-    {
-        $sql = "SELECT * from comments where id = $id";
-        $db = config::getConnexion();
-        try {
-            $query = $db->prepare($sql);
-            $query->execute();
+  function showOneComment($id)
+  {
+    $sql = "SELECT * from comments where id = $id";
+    $db = config::getConnexion();
+    try {
+      $query = $db->prepare($sql);
+      $query->execute();
 
-            $post = $query->fetch();
-            return $post;
-        } catch (Exception $e) {
-            die('Error: ' . $e->getMessage());
-        }
+      $post = $query->fetch();
+      return $post;
+    } catch (Exception $e) {
+      die('Error: ' . $e->getMessage());
     }
+  }
 
 
-   /* 
+  /* 
     public function readCommentPerPost($post_id) {
         $sql = "SELECT * FROM comments WHERE post_id = :post_id";
         $db = config::getConnexion();
@@ -120,20 +122,20 @@ class CommentC {
         }
     }*/
 
-    
-public function readCommentPerPost($post_id) {
+
+  public function readCommentPerPost($post_id)
+  {
     $sql = "SELECT * FROM comments WHERE post_id = ?";
     $db = config::getConnexion();
     try {
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$post_id]); // Pass $post_id as an argument here
-        $liste = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $liste;
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$post_id]); // Pass $post_id as an argument here
+      $liste = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      return $liste;
     } catch (Exception $e) {
-        die('Error:' . $e->getMessage());
+      die('Error:' . $e->getMessage());
     }
-}
-
+  }
 }
 
 
@@ -322,7 +324,16 @@ $list_comment = $commentC->readComment();
     <hr>
 
 
-
+    <div class="w3-container">
+      <h5>Filter Posts</h5>
+      <form method="GET" action="">
+        <input type="radio" name="filter" value="today"> Today
+        <input type="radio" name="filter" value="this_week"> This Week
+        <input type="radio" name="filter" value="this_month"> This Month
+        <input type="radio" name="filter" value="this_year"> This Year
+        <input type="submit" value="Apply Filter">
+      </form>
+    </div>
 
     <div class="w3-container">
       <h5>Liste des posts</h5>
@@ -337,21 +348,130 @@ $list_comment = $commentC->readComment();
           <th>Delete</th>
         </tr>
         <?php
-        foreach ($list as $post) {
-        ?>
-          <tr>
-            <td><?= $post['id']; ?></td>
-            <td><?= $post['user_id']; ?></td>
-            <td><?= $post['content']; ?></td>
-            <td><img src=<?= $post['image']; ?> alt="" width="100px"></td>
-            <td><?= $post['created_at']; ?></td>
-            <td><?= $post['location']; ?></td>
+        // Initialize filter to default value
+        $filter = "all";
 
-            <td>
-              <a href="dPc.php?id=<?php echo $post['id']; ?>" class="w3-button w3-dark-grey">Delete</a>
-            </td>
-          </tr>
+        // Check if filter is set in the URL
+        if (isset($_GET['filter'])) {
+          $filter = $_GET['filter'];
+        }
+
+        // Fetch posts based on the filter
+        foreach ($list as $post) {
+          // Filter posts for today
+          if ($filter == "today") {
+            // Get current date
+            $currentDate = date('Y-m-d');
+
+            // Get post creation date
+            $postCreationDate = date('Y-m-d', strtotime($post['created_at']));
+
+            // Check if the post creation date is equal to the current date
+            if ($postCreationDate == $currentDate) {
+              // Display the post if it was created today
+        ?>
+              <tr>
+                <td><?= $post['id']; ?></td>
+                <td><?= $post['user_id']; ?></td>
+                <td><?= $post['content']; ?></td>
+                <td><img src=<?= $post['image']; ?> alt="" width="100px"></td>
+                <td><?= $post['created_at']; ?></td>
+                <td><?= $post['location']; ?></td>
+                <td>
+                  <a href="dPc.php?id=<?= $post['id']; ?>" class="w3-button w3-dark-grey">Delete</a>
+                </td>
+              </tr>
+            <?php
+            }
+          } elseif ($filter == "this_week") {
+
+
+            $startOfWeek = date('Y-m-d', strtotime('monday this week'));
+            $endOfWeek = date('Y-m-d', strtotime('sunday this week'));
+
+
+            $postCreationDate = date('Y-m-d', strtotime($post['created_at']));
+
+            if ($postCreationDate >= $startOfWeek && $postCreationDate <= $endOfWeek) {
+              // Display the post if it was created this week
+            ?>
+              <tr>
+                <td><?= $post['id']; ?></td>
+                <td><?= $post['user_id']; ?></td>
+                <td><?= $post['content']; ?></td>
+                <td><img src=<?= $post['image']; ?> alt="" width="100px"></td>
+                <td><?= $post['created_at']; ?></td>
+                <td><?= $post['location']; ?></td>
+                <td>
+                  <a href="dPc.php?id=<?= $post['id']; ?>" class="w3-button w3-dark-grey">Delete</a>
+                </td>
+              </tr>
+            <?php
+            }
+          } elseif ($filter == "this_month") {
+            // Get the date 30 days ago from the current date
+            $last30DaysDate = date('Y-m-d', strtotime('-30 days'));
+
+            // Get post creation date
+            $postCreationDate = date('Y-m-d', strtotime($post['created_at']));
+
+            // Check if the post creation date is within the last 30 days
+            if ($postCreationDate >= $last30DaysDate) {
+              // Display the post if it was created within the last 30 days
+            ?>
+              <tr>
+                <td><?= $post['id']; ?></td>
+                <td><?= $post['user_id']; ?></td>
+                <td><?= $post['content']; ?></td>
+                <td><img src=<?= $post['image']; ?> alt="" width="100px"></td>
+                <td><?= $post['created_at']; ?></td>
+                <td><?= $post['location']; ?></td>
+                <td>
+                  <a href="dPc.php?id=<?= $post['id']; ?>" class="w3-button w3-dark-grey">Delete</a>
+                </td>
+              </tr>
+            <?php
+            }
+          } elseif ($filter == "this_year") {
+            // Get the current year
+            $currentYear = date('Y');
+
+            // Get the year of post creation
+            $postYear = date('Y', strtotime($post['created_at']));
+
+            // Check if the post was created this year
+            if ($postYear == $currentYear) {
+              // Display the post if it was created this year
+            ?>
+              <tr>
+                <td><?= $post['id']; ?></td>
+                <td><?= $post['user_id']; ?></td>
+                <td><?= $post['content']; ?></td>
+                <td><img src=<?= $post['image']; ?> alt="" width="100px"></td>
+                <td><?= $post['created_at']; ?></td>
+                <td><?= $post['location']; ?></td>
+                <td>
+                  <a href="dPc.php?id=<?= $post['id']; ?>" class="w3-button w3-dark-grey">Delete</a>
+                </td>
+              </tr>
+            <?php
+            }
+          } else {
+            // Default: Display all posts
+            ?>
+            <tr>
+              <td><?= $post['id']; ?></td>
+              <td><?= $post['user_id']; ?></td>
+              <td><?= $post['content']; ?></td>
+              <td><img src=<?= $post['image']; ?> alt="" width="100px"></td>
+              <td><?= $post['created_at']; ?></td>
+              <td><?= $post['location']; ?></td>
+              <td>
+                <a href="dPc.php?id=<?= $post['id']; ?>" class="w3-button w3-dark-grey">Delete</a>
+              </td>
+            </tr>
         <?php
+          }
         }
         ?>
 
@@ -365,37 +485,37 @@ $list_comment = $commentC->readComment();
 
 
   <div class="w3-container">
-  <h5>Liste des commentaires</h5>
+    <h5>Liste des commentaires</h5>
     <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-    <tr>
-            <th>Id </th>
-            <th>Post id</th>
-            <th>User id</th>
-            <th>Comment</th>
-            <th>created_at</th>
-            <th>Delete</th>
+      <tr>
+        <th>Id </th>
+        <th>Post id</th>
+        <th>User id</th>
+        <th>Comment</th>
+        <th>created_at</th>
+        <th>Delete</th>
+      </tr>
+      <?php
+      foreach ($list_comment as $post) {
+      ?>
+        <tr>
+          <td><?= $post['id']; ?></td>
+          <td><?= $post['post_id']; ?></td>
+          <td><?= $post['user_id']; ?></td>
+          <td><?= $post['comment']; ?></td>
+          <td><?= $post['created_at']; ?></td>
+
+          <td>
+            <a href="dCc.php?id=<?php echo $post['id']; ?>" class="w3-button w3-dark-grey">Delete</a>
+          </td>
         </tr>
-        <?php
-        foreach ($list_comment as $post) {
-        ?>
-            <tr>
-                <td><?= $post['id']; ?></td>
-                <td><?= $post['post_id']; ?></td>
-                <td><?= $post['user_id']; ?></td>
-                <td><?= $post['comment']; ?></td>
-                <td><?= $post['created_at']; ?></td>
-                
-                <td>
-                    <a href="dCc.php?id=<?php echo $post['id']; ?>"   class="w3-button w3-dark-grey">Delete</a>
-                </td>
-            </tr>
-        <?php
-        }
-        ?>
-        
+      <?php
+      }
+      ?>
+
   </div>
 
-    </table><br>
+  </table><br>
   </div>
 
 
