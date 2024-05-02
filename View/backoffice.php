@@ -483,6 +483,20 @@ $list_comment = $commentC->readComment();
 
 
 
+  <div class="w3-container">
+    <h5>Liste des commentaires</h5>
+    <!-- Combo box for sorting -->
+    <form method="GET" action="">
+      <label for="sort_by">Trier par:</label>
+      <select name="sort_by" id="sort_by">
+        <option value="id_asc">ID Ascendant</option>
+        <option value="date_desc">Date Création Descendante</option>
+      </select>
+      <input type="submit" value="Trier">
+    </form>
+  </div>
+
+
 
   <div class="w3-container">
     <h5>Liste des commentaires</h5>
@@ -496,6 +510,27 @@ $list_comment = $commentC->readComment();
         <th>Delete</th>
       </tr>
       <?php
+
+
+      // Fetch comments based on the sort_by option
+      if (isset($_GET['sort_by'])) {
+        $sort_by = $_GET['sort_by'];
+        if ($sort_by === "id_asc") {
+        } elseif ($sort_by === "date_desc") {
+
+          $sql = "SELECT * FROM comments ORDER BY created_at DESC";
+          $db = config::getConnexion();
+          try {
+              $list_comment = $db->query($sql);
+             
+          } catch (Exception $e) {
+              die('Error:' . $e->getMessage());
+          }
+
+        }
+      } else {
+        // Default sort
+      }
       foreach ($list_comment as $post) {
       ?>
         <tr>
@@ -517,6 +552,7 @@ $list_comment = $commentC->readComment();
 
   </table><br>
   </div>
+
 
 
 
