@@ -3,10 +3,13 @@
 include '../config.php';
 include '../Model/Comment.php';
 
+
+
+
+
+
 class CommentC {
-
     //read post
-
     public function readComment() {
         $sql = "SELECT * FROM comments";
         $db = config::getConnexion();
@@ -18,7 +21,13 @@ class CommentC {
         }
     }
 
+  
     
+
+    
+
+
+
 
 
     //delete post
@@ -99,7 +108,7 @@ class CommentC {
     }
 
 
-    
+   /* 
     public function readCommentPerPost($post_id) {
         $sql = "SELECT * FROM comments WHERE post_id = :post_id";
         $db = config::getConnexion();
@@ -109,7 +118,21 @@ class CommentC {
         } catch (Exception $e) {
             die('Error:' . $e->getMessage());
         }
+    }*/
+
+    
+public function readCommentPerPost($post_id) {
+    $sql = "SELECT * FROM comments WHERE post_id = ?";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$post_id]); // Pass $post_id as an argument here
+        $liste = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $liste;
+    } catch (Exception $e) {
+        die('Error:' . $e->getMessage());
     }
+}
 
 }
 

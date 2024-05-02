@@ -1,36 +1,32 @@
 <?php
-include '../Controller/PostController.php';
+include '../Controller/CommentController.php';
 
-$error = "";
 
-$post = null;
+$comment = null;
 
-$postC = new PostC();
+$commentC = new CommentC();
 if (
     isset($_POST["id"]) &&
+    isset($_POST["post_id"]) &&
     isset($_POST["user_id"]) &&
-    isset($_POST["content"]) &&
-    isset($_POST["image"]) &&
-    isset($_POST["created_at"]) &&
-    isset($_POST["location"])
+    isset($_POST["comment"]) &&
+    isset($_POST["created_at"]) 
 ) {
     if (
         !empty($_POST["id"]) &&
-        !empty($_POST['user_id']) &&
-        !empty($_POST["content"]) &&
-        !empty($_POST["image"]) &&
-        !empty($_POST["created_at"]) &&
-        !empty($_POST["location"])
+        !empty($_POST['post_id']) &&
+        !empty($_POST["user_id"]) &&
+        !empty($_POST["comment"]) &&
+        !empty($_POST["created_at"]) 
     ) {
-        $post = new Post(
+        $comment = new Comment(
             $_POST['id'],
+            $_POST['post_id'],
             $_POST['user_id'],
-            $_POST['content'],
-            $_POST['image'],
-            new DateTime($_POST['dob']),
-            $_POST['location']
+            $_POST['comment'],
+            new DateTime($_POST['dob'])
         );
-        $postC->updatePost($post, $_POST["id"]);
+        $commentC->updateComment($comment, $_POST["id"]);
         header('Location:showPost.php');
     } else
         $error = "Missing information";
@@ -41,7 +37,7 @@ if (
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show post</title>
+    <title>modify Comment</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
@@ -127,7 +123,7 @@ if (
 
 
     <center style="padding-top: 4rem;">
-        <h1 class="w3-border-bottom w3-border-light-grey w3-padding-16">Modify the post</h1>
+        <h1 class="w3-border-bottom w3-border-light-grey w3-padding-16">Modify the Comment</h1>
         <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">
             <button class="w3-button w3-black w3-section" type="submit">
 
@@ -138,13 +134,9 @@ if (
 
     <hr>
 
-    <div id="error">
-        <?php echo $error; ?>
-    </div>
-
     <?php
     if (isset($_POST['id'])) {
-        $post = $postC->showOnePost($_POST['id']);
+        $comment = $commentC->showOneComment($_POST['id']);
 
     ?>
 
@@ -154,44 +146,37 @@ if (
             <td>
                 <label for="id">Id:</label>
             </td>
-            <td><input type="text" name="id" id="id" value="<?php echo $post['id']; ?>" maxlength="20" readonly></td>
+            <td><input type="text" name="id" id="id" value="<?php echo $comment['id']; ?>" maxlength="20" readonly></td>
+            <td> <span id="error3" style='color:red' ></span></td>
+
         </tr>
         <tr style="display: none;">
             <td>
                 <label for="user_id">User ID:</label>
             </td>
-            <td><input type="text" name="user_id" id="user_id" value="<?php echo $post['user_id']; ?>" maxlength="20"></td>
+            <td><input type="text" name="user_id" id="user_id" value="<?php echo $comment['user_id']; ?>" maxlength="20"></td>
+        </tr>
+        <tr style="display: none;">
+            <td>
+                <label for="post_id">User ID:</label>
+            </td>
+            <td><input type="text" name="post_id" id="post_id" value="<?php echo $comment['post_id']; ?>" maxlength="20"></td>
         </tr>
         <tr>
             <td>
-                <label for="content">Content:</label>
+                <label for="comment">Content:</label>
             </td>
-            <td><textarea name="content" id="content" rows="5" cols="50"><?php echo $post['content']; ?></textarea></td>
+            <td><textarea name="comment" id="comment" rows="5" cols="50"><?php echo $comment['comment']; ?></textarea></td>
             <td> <span id="error1" style='color:red'></span></td>
-
-        </tr>
-        <tr>
-            <td>
-                <label for="image">Image:</label>
-            </td>
-            <td><input type="text" name="image" id="image" value="<?php echo $post['image']; ?>"></td>
-            <td> <span id="error2" style='color:red'></span></td>
 
         </tr>
         <tr style="display: none;">
             <td>
                 <label for="created_at" >Created At:</label>
             </td>
-            <td><input type="text" name="created_at" id="created_at" value="<?php echo $post['created_at']; ?>" readonly></td>
+            <td><input type="text" name="created_at" id="created_at" value="<?php echo $comment['created_at']; ?>" readonly></td>
         </tr>
-        <tr>
-            <td>
-                <label for="location">Location:</label>
-            </td>
-            <td><input type="text" name="location" id="location" value="<?php echo $post['location']; ?>"></td>
-            <td> <span id="error3" style='color:red'></span></td>
-
-        </tr>
+       
         <tr>
             <td></td>
             <td>
@@ -214,69 +199,38 @@ if (
 <script >
 
 const form = document.getElementById("frm");
-const content = document.getElementById("content");
-const image = document.getElementById("image");
-const loc = document.getElementById("location");
+const comment = document.getElementById("comment");
+
 console.log("found everything");
 
 form.addEventListener("submit", function (event) {
   console.log("enter form input control");
   event.preventDefault();
-  checkContent();
-  checkImage();
-  checkLocation();
+  checkComment();
   //checkPassword()
-  console.log("the actual value is ");
-  console.log(document.getElementById("error1").innerHTML);
 
   if (
-    document.getElementById("error1").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
-    document.getElementById("error2").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
-    document.getElementById("error3").innerHTML === "<span style=\"color:green\"> Correct </span>"
+    document.getElementById("error1").innerHTML === "<span style=\"color:green\"> Correct </span>" 
   ) {
     // Submit the form if all inputs are correct
     form.submit();
   }
 });
 
-function checkContent() {
+function checkComment() {
   console.log("enter content_input ");
-  const content_input = content.value;
-  const possible_content = /^[A-Za-z0-9\s.,!?'"()]+$/;
+  const comment_input = comment.value;
+  const possible_comment = /^[A-Za-z0-9\s.,!?'"()]+$/;
   const error1 = document.getElementById("error1");
 
-  if (!content_input.match(possible_content)) {
-    error1.innerHTML = "enter a content";
+  if (!comment_input.match(possible_comment)) {
+    error1.innerHTML = "enter a comment";
   } else {
     error1.innerHTML = "<span style='color:green'> Correct </span>";
   }
 }
 
-function checkImage() {
-  console.log("enter image_input ");
-  const image_input = image.value;
-  const possible_image_name = /^[A-Za-z0-9\s.,!?'"()]+(?:\.png|\.jpeg|\.jpg|\.gif)$/;
-  const error2 = document.getElementById("error2");
 
-  if (!image_input.match(possible_image_name)) {
-    error2.innerHTML = "invalid image";
-  } else {
-    error2.innerHTML = "<span style='color:green'> Correct </span>";
-  }
-}
-
-function checkLocation() {
-  console.log("enter location_input ");
-  const location_input = loc.value;
-  const possible_content_location = /^[A-Za-z0-9\s.,!?'"()]+$/;
-  const error3 = document.getElementById("error3");
-
-  if (!location_input.match(possible_content_location)) {
-    error3.innerHTML = "enter a location";
-  } else {
-    error3.innerHTML = "<span style='color:green'> Correct </span>";
-  }
-}
 </script>
 
 
