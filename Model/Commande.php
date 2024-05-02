@@ -59,4 +59,17 @@ class Commande
     {
         $this->statut_commande = $statut_commande;
     }
+
+    // Method to add a commande to the database
+    public function addCommande($idLigne, $prixCommande, $statutCommande, $adresseLivraison)
+    {
+        $query = "INSERT INTO commande (id_ligne, prix_commande, statut_commande, adresse_livraison) 
+                  VALUES (:id_ligne, :prix_commande, :statut_commande, :adresse_livraison)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_ligne", $idLigne);
+        $stmt->bindParam(":prix_commande", $prixCommande);
+        $stmt->bindParam(":statut_commande", $statutCommande);
+        $stmt->bindParam(":adresse_livraison", $adresseLivraison);
+        $stmt->execute();
+    }
 }

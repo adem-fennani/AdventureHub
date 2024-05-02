@@ -67,5 +67,12 @@ class LigneDeCommande
         $stmt->bindParam(":quantite", $quantite);
         $stmt->bindParam(":prix_ligne", $prix_ligne);
         $stmt->execute();
+
+        return $this->db->lastInsertId();
+    }
+
+    public function getLastInsertId()
+    {
+        return $this->db->lastInsertId();
     }
 }
