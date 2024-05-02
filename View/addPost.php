@@ -150,19 +150,23 @@ if (
                     </label>
                 </td>
                 <td><input type="text" name="user_id" id="user_id" maxlength="20"></td>
+                <td> <span id="error1" style='color:red'></span></td>
+
             </tr>
             <tr>
                 <td>
                     <label for="Content">content:
                     </label>
                 </td>
-                <td><textarea id="content" name="content" rows="10" cols="50" required style="     width: 100%; /* Adjusts to the length of the page */
+                <td><textarea id="content" name="content" rows="10" cols="50"  style="     width: 100%; /* Adjusts to the length of the page */
       padding: 10px;
       border: 1px solid #ccc; /* Light grey border */
       border-radius: 5px; /* Rounded corners */
       font-size: 16px; /* Placeholder text size */
       color: #888; /* Placeholder text color */
       background-color: #fff; /* White background */"></textarea> </td>
+                      <td> <span id="error2" style='color:red' ></span></td>
+
             </tr>
             <tr>
                 <td>
@@ -172,6 +176,8 @@ if (
                 <td>
                     <input type="text" name="image" id="image">
                 </td>
+                <td> <span id="error3" style='color:red' ></span></td>
+
             </tr>
             <tr>
                 <td>
@@ -181,6 +187,8 @@ if (
                 <td>
                     <input type="text" name="location" id="location">
                 </td>
+                <td> <span id="error4" style='color:red' ></span></td>
+
             </tr>
             <tr align="center">
                 <td>
@@ -192,9 +200,9 @@ if (
             </tr>
         </table>
     </form>
+    <div id="errorElement"></div>
 
-
-   <script src="new.js"></script>
+    <script src="new.js"></script>
 
 
 

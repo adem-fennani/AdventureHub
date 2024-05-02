@@ -67,10 +67,28 @@ if (isset($_POST['update_employees'])){
 
 
    <form action="updatePage.php?id_new=<?php echo $id; ?>" method="post">
-           
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" required value="<?php echo $row['firstName']; ?>"><br><br>
-            <label for="lastName">Last Name:</label>
+   <table align="center">
+    <tr>
+        <td>
+        <label for="firstName">First Name:</label>
+        </td>
+        <td>
+        <input type="text" id="firstName" name="firstName" required value="<?php echo $row['firstName']; ?>"><br><br>
+        </td>
+        <td> <span id="error1" style='color:red'></span></td>
+
+    </tr>
+    <tr>
+        <td>
+        <label for="firstName">First Name:</label>
+        </td>
+        <td>
+        <input type="text" id="firstName" name="firstName" required value="<?php echo $row['firstName']; ?>"><br><br>
+        </td>
+        <td> <span id="error1" style='color:red'></span></td>
+
+    </tr>
+   </table>   
             <input type="text" id="lastName" name="lastName" required value="<?php echo $row['lastName']; ?>"><br><br>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required value="<?php echo $row['email']; ?>"><br><br>

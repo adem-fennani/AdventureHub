@@ -148,7 +148,7 @@ if (
 
     ?>
 
-<form action="" method="POST">
+<form action="" method="POST" id="frm" name="frm">
     <table  align="center">
         <tr style="display: none;">
             <td>
@@ -167,12 +167,16 @@ if (
                 <label for="content">Content:</label>
             </td>
             <td><textarea name="content" id="content" rows="5" cols="50"><?php echo $post['content']; ?></textarea></td>
+            <td> <span id="error1" style='color:red'></span></td>
+
         </tr>
         <tr>
             <td>
                 <label for="image">Image:</label>
             </td>
             <td><input type="text" name="image" id="image" value="<?php echo $post['image']; ?>"></td>
+            <td> <span id="error2" style='color:red'></span></td>
+
         </tr>
         <tr style="display: none;">
             <td>
@@ -185,6 +189,8 @@ if (
                 <label for="location">Location:</label>
             </td>
             <td><input type="text" name="location" id="location" value="<?php echo $post['location']; ?>"></td>
+            <td> <span id="error3" style='color:red'></span></td>
+
         </tr>
         <tr>
             <td></td>
@@ -205,7 +211,74 @@ if (
 
 
 
-<script src="modify.js"></script>
+<script >
+
+alert("Working");
+const form = document.getElementById("frm");
+const content = document.getElementById("content");
+const image = document.getElementById("image");
+const loc = document.getElementById("location");
+console.log("found everything");
+
+form.addEventListener("submit", function (event) {
+  console.log("enter form input control");
+  event.preventDefault();
+  checkContent();
+  checkImage();
+  checkLocation();
+  //checkPassword()
+  console.log("the actual value is ");
+  console.log(document.getElementById("error1").innerHTML);
+
+  if (
+    document.getElementById("error1").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
+    document.getElementById("error2").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
+    document.getElementById("error3").innerHTML === "<span style=\"color:green\"> Correct </span>"
+  ) {
+    // Submit the form if all inputs are correct
+    form.submit();
+  }
+});
+
+function checkContent() {
+  console.log("enter content_input ");
+  const content_input = content.value;
+  const possible_content = /^[A-Za-z0-9\s.,!?'"()]+$/;
+  const error1 = document.getElementById("error1");
+
+  if (!content_input.match(possible_content)) {
+    error1.innerHTML = "enter a content";
+  } else {
+    error1.innerHTML = "<span style='color:green'> Correct </span>";
+  }
+}
+
+function checkImage() {
+  console.log("enter image_input ");
+  const image_input = image.value;
+  const possible_image_name = /^[A-Za-z0-9\s.,!?'"()]+(?:\.png|\.jpeg|\.jpg|\.gif)$/;
+  const error2 = document.getElementById("error2");
+
+  if (!image_input.match(possible_image_name)) {
+    error2.innerHTML = "invalid image";
+  } else {
+    error2.innerHTML = "<span style='color:green'> Correct </span>";
+  }
+}
+
+function checkLocation() {
+  console.log("enter location_input ");
+  const location_input = loc.value;
+  const possible_content_location = /^[A-Za-z0-9\s.,!?'"()]+$/;
+  const error3 = document.getElementById("error3");
+
+  if (!location_input.match(possible_content_location)) {
+    error3.innerHTML = "enter a location";
+  } else {
+    error3.innerHTML = "<span style='color:green'> Correct </span>";
+  }
+}
+</script>
 
 
 
