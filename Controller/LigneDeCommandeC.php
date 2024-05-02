@@ -1,75 +1,43 @@
 <?php
+require_once('../config.php');
+require_once('../Model/LigneDeCommande.php');
+require_once('../Model/Produit.php');
 
-class LigneDeCommandeController
-{
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve product ID from the form
+    $idProduit = $_POST["idProduit"];
 
-    private $pdo;
+    // Retrieve the quantity from the form (considering the form field name)
+    $quantity = $_POST["quantity"];  // This will retrieve the value from the specific hidden input field based on the form it belongs to (e.g., quantity-backpack or quantity-fedora)
+    echo "Received quantity: " . $quantity;
 
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
+    // Ensure quantity is a valid number
+    if (!is_numeric($quantity) || $quantity <= 0) {
+        die("Invalid quantity value.");
     }
 
-    // Replace existing implementation (ensure it returns an array of line items)
-    public function getAllLigneDeCommandes(): array
-    {
-        $lignes = [];  // Initialize an empty array to store line items
+    try {
+        // Get PDO connection
+        $pdo = config::getConnexion();
 
-        try {
-            $sql = "SELECT * FROM ligne_de_commande";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute();
+        // Instantiate Produit model
+        $produit = new Produit($pdo);
 
-            $lignes = $stmt->fetchAll(PDO::FETCH_ASSOC);  // Fetch all results as associative arrays
-        } catch (PDOException $e) {
-            error_log("Error fetching ligne_de_commandes: " . $e->getMessage());
-            // Handle error (e.g., return an empty array or throw an exception)
-        }
+        // Retrieve product details
+        $product = $produit->getProduitById($idProduit);
 
-        return $lignes;
-    }
+        // Calculate line price
+        $prixLigne = $product['prix_unitaire'] * $quantity;
 
-    public function getLigneDeCommandeById(int $id): array
-    {
-        try {
-            $sql = "SELECT * FROM ligne_de_commande WHERE id_ligne = :id";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
+        // Instantiate LigneDeCommande model
+        $ligneDeCommande = new LigneDeCommande($pdo);
 
-            $ligne = $stmt->fetch(PDO::FETCH_ASSOC);  // Fetch single result as associative array
+        // Add the line to the database
+        $ligneDeCommande->addLine($idProduit, $quantity, $prixLigne);
 
-            if ($ligne === false) {
-                return [];  // Return empty array if no line item found
-            }
-
-            return $ligne;
-        } catch (PDOException $e) {
-            error_log("Error fetching ligne_de_commande by ID: " . $e->getMessage());
-            // Handle error (e.g., return an empty array or throw an exception)
-        }
-
-        return [];  // Default return an empty array for clarity
-    }
-
-    // ... other methods (create, update, delete) ...
-
-    public function createLigneDeCommande(int $idProduit, int $quantite, float $prixLigne): bool
-    {
-        $ligne = new LigneDeCommande(null, $idProduit, $quantite, $prixLigne, $this->pdo);
-        return $ligne->save();
-    }
-
-    public function updateLigneDeCommande(int $idLigne, int $idProduit, int $quantite, float $prixLigne): bool
-    {
-        $ligne = new LigneDeCommande($idLigne, $idProduit, $quantite, $prixLigne, $this->pdo);
-        return $ligne->save();  // Can be used for both update and create (if ID is null)
-    }
-
-    public function deleteLigneDeCommande(int $idLigne, int $idProduit, int $quantite, float $prixLigne): bool
-    {
-        $ligne = new LigneDeCommande($idLigne, $idProduit, $quantite, $prixLigne);
-        $ligne->setPDO($this->pdo);
-        return $ligne->delete();
+        echo " Line added successfully.";
+    } catch (Exception $e) {
+        die("Error: " . $e->getMessage());
     }
 }
