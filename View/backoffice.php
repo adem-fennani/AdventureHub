@@ -331,6 +331,7 @@ $list_comment = $commentC->readComment();
           <th>Id </th>
           <th>user id</th>
           <th>content</th>
+          <th>image</th>
           <th>created_at</th>
           <th>location</th>
           <th>Delete</th>
@@ -364,13 +365,12 @@ $list_comment = $commentC->readComment();
 
 
   <div class="w3-container">
-  <h5>Liste des posts</h5>
+  <h5>Liste des commentaires</h5>
     <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
     <tr>
             <th>Id </th>
             <th>Post id</th>
             <th>User id</th>
-            <th>image</th>
             <th>Comment</th>
             <th>created_at</th>
             <th>Delete</th>

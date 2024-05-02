@@ -130,7 +130,7 @@ $list = $postC->readPost();
                         <?php endif; ?>
                     </div>
                     <div class="" style="display:flex; height: 71px; gap: 20px ;">
-                        <form method="POST" action="updateComment.php">
+                        <form method="POST" action="updatePost.php">
                             <input type="submit" name="update" value="Update" class="w3-button w3-black w3-section">
                             <input type="hidden" value=<?PHP echo $post['id']; ?> name="id">
                         </form>
