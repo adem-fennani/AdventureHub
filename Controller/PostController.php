@@ -84,6 +84,12 @@ class PostC {
 
 
 
+
+   
+
+
+
+
     function showOnePost($id)
     {
         $sql = "SELECT * from post where id = $id";
@@ -98,6 +104,8 @@ class PostC {
             die('Error: ' . $e->getMessage());
         }
     }
+
+
 
 }
 

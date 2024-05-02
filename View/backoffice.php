@@ -173,6 +173,9 @@ $list_comment = $commentC->readComment();
     }
   </style>
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body class="w3-light-grey">
@@ -554,6 +557,108 @@ $list_comment = $commentC->readComment();
   </div>
 
 
+  <?php
+
+$postCounts = array();
+$db = config::getConnexion();
+try {
+  // Loop through the last 7 days
+  for ($i = 6; $i >= 0; $i--) {
+      // Get the date 7 days ago from today
+      $date = date('Y-m-d', strtotime("-$i days"));
+      
+      // Construct the SQL query to count posts for the current date
+      $sql = "SELECT COUNT(*) AS count FROM post WHERE DATE(created_at) = '$date'";
+      
+      // Execute the SQL query
+      $result = $db->query($sql);
+      $count = $result->fetchColumn();
+      
+      // Add the count to the postCounts array
+      $postCounts[] = $count;
+  }
+  
+} catch (Exception $e) {
+  die('Error:' . $e->getMessage());
+}
+
+
+$postCountsJS = "[" . implode(", ", $postCounts) . "]";
+?>
+
+
+
+
+<?php
+// Initialize an array to hold the specific dates
+$specificDates = [];
+
+// Get the current date
+$currentDate = strtotime(date('Y-m-d'));
+
+// Loop through the seven days preceding the current date
+for ($i = 0; $i < 7; $i++) {
+    // Calculate the date by subtracting $i days from the current date
+    $specificDate = date('d / m', strtotime("-$i day", $currentDate));
+    // Add the formatted date to the array
+    $specificDates[] = $specificDate;
+}
+
+// Reverse the array to have the dates in ascending order
+$specificDates = array_reverse($specificDates);
+
+
+// Convert the specific dates array to a JavaScript array format
+$specificDatesJS = "['" . implode("', '", $specificDates) . "']";
+?>
+
+
+
+
+
+
+
+
+
+
+
+<h5 style="padding-left:20px ;">Insight : 7 derniers jours</h5>
+
+  <canvas id="postChart" width="40" height="20"></canvas>
+
+    <script>
+        // Fetch data from your database
+        // Assume $postCounts is an array with the number of posts for each day in the last 7 days
+
+        // Prepare data for charting
+        var days = <?= $specificDatesJS ?>;
+        var postCounts = <?= $postCountsJS ?>;
+
+        // Create a chart
+        var ctx = document.getElementById('postChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: days,
+                datasets: [{
+                    label: 'Number of Posts',
+                    data: postCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 
 
 
