@@ -1,7 +1,24 @@
 <?php
 include '../Controller/PostController.php';
+
+
+
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+
 $postC = new PostC();
 $list = $postC->readPost();
+
+
+
+if (!empty($searchTerm)) {
+    $filteredPosts = [];
+    foreach ($list as $post) {
+        if (stripos($post['content'], $searchTerm) !== false) {
+            $filteredPosts[] = $post;
+        }
+    }
+    $list = $filteredPosts;
+}
 ?>
 <html>
 
@@ -90,18 +107,18 @@ $list = $postC->readPost();
     </div>
 
 
-    scr
-    <!-- Search bar -->
-    <div style="padding-top: 7rem;">
-        <form action="search.php" method="GET" style="text-align: center;">
-            <input type="text" name="search" placeholder="Search posts..." value="" style="padding: 8px; width: 50%; border: 1px solid #ccc; border-radius: 5px;">
-            <button type="submit" class="w3-button w3-black">Search</button>
-        </form>
-    </div>
 
-
-    
-
+      <!-- Search bar -->
+      <div style="padding-top: 7rem;">
+    <form action="search.php" method="GET" style="text-align: center;">
+        <?php
+        // Check if the search term is set
+        $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+        ?>
+        <input type="text" name="search" placeholder="Search posts..." style="padding: 8px; width: 50%; border: 1px solid #ccc; border-radius: 5px;" value="<?php echo htmlspecialchars($searchTerm); ?>">
+        <button type="submit" class="w3-button w3-black">Search</button>
+    </form>
+</div>
 
 
 
