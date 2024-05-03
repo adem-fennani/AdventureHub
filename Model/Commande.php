@@ -132,6 +132,47 @@ class Commande
         }
     }
 
+    public function displayUser()
+    {
+        // Adjust the SQL query to fetch only commandes with "statut_commande" equals to "Non traité"
+        $query = "SELECT * FROM commande WHERE statut_commande = 'Non traité'";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $commandes = $stmt->fetchAll();
+
+        // Display commandes for the user
+        foreach ($commandes as $commande) {
+            echo "<div class='w3-panel'>";
+            echo "<div class='w3-row-padding' style='margin: 0 -16px'>";
+            echo "<div class='w3-twothird'>";
+            echo "<table class='w3-table w3-striped w3-white'>";
+            echo "<thead>";
+            echo "<tr class='w3-blue'>";
+            echo "<th>ID</th>";
+            echo "<th>Ligne</th>";
+            echo "<th>Prix</th>";
+            echo "<th>Statut</th>";
+            echo "<th>Adresse de livraison</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            echo "<tr>";
+            echo "<td>" . $commande['id_commande'] . "</td>";
+            echo "<td>" . $commande['id_ligne'] . "</td>";
+            echo "<td>" . $commande['prix_commande'] . "</td>";
+            echo "<td>" . $commande['statut_commande'] . "</td>";
+            echo "<td>" . $commande['adresse_livraison'] . "</td>";
+            echo "</tr>";
+            echo "</tbody>";
+            echo "</table>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+        }
+    }
+
+
+
     public function deleteCommande($id_commande)
     {
         $query = "DELETE FROM commande WHERE id_commande = :id_commande";
