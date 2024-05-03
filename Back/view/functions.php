@@ -15,7 +15,7 @@ function is_connect()
     }
     if (!isset($_SESSION['auth'])) {
         $_SESSION['flash']['danger'] = "Vous ne pouvez pas accéder à cette page";
-        header("Location: login.php");
+        header("Location: login.html");
         exit();
     }
 }

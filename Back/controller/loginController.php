@@ -34,10 +34,11 @@ echo "Chemin de l'image actuelle : " . $_SESSION['image'];
             $_SESSION["password"] = $user["password"];
 
 
-            header("Location: ../view/index.html");
+            header("Location: ../view/index.php");
             exit();
         } else {
             $_SESSION['flash']['danger'] = "Identifiant ou Mot de passe incorrect";
+            header("Location: ../view/login.html");
         }
     }
 ?>

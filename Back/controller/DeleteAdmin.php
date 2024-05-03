@@ -23,6 +23,6 @@ session_start();
         $_SESSION["password"] = "";
         $_SESSION = null;
         session_destroy();
-        header("location:../View/index.html");
+        header("location:../View/index.php");
 
 ?>

@@ -1,3 +1,9 @@
+<?php
+
+include_once "../config.php";
+$userId=$_POST["userId"];
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,7 +82,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <br>
   
     <label for="recipient_id">ID du destinataire :</label>
-    <input type="text" name="recipient_id" id="recipient_id">
+    <input type="text" name="recipient_id" id="recipient_id" value=<?php echo $userId  ?> >
     <br>
   
     <label for="message">Message :</label><br>

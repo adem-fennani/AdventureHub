@@ -15,6 +15,7 @@ require_once '../view/phpmailer/src/SMTP.php';
 
 $pdo = config::getConnexion();
 var_dump($_FILES['image']['name']);
+var_dump($_POST['email']);
 if(isset($_POST['userType'])) {
     // Récupérer la valeur de "userType"
     $userType = $_POST['userType'];
@@ -111,7 +112,7 @@ if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL
         $req = $pdo->prepare($query);
         $req->execute([$_POST['email']]);
         if ($req->fetch()) {
-            $errors['email'] = "Cette adresse est déjà prise";
+            $errors['email'] = "Cette adresse mail est déjà prise";
         }
     }
 }
@@ -158,7 +159,7 @@ if (empty($_POST['adresse']) || !preg_match("/^[a-zA-Z0-9]+$/", $_POST['adresse'
         $req = $pdo->prepare($query);
         $req->execute([$_POST['adresse']]);
         if ($req->fetch()) {
-            $errors['adresse'] = "Cette adresse n'est plus disponible";
+            $errors['adresse'] = "Cette adresse est déjà utilisée";
         }
     }
 }
@@ -243,7 +244,7 @@ if (empty(($errors))) {
         if (!$controlUser->addUser($newUser)) {
             $_SESSION['flash']['error'] = "Une erreur s'est produite lors de la création de l'utilisateur.";
             //header('Location:../View/login.html');
-            header('Location:../View/login.html?userType=' . $_POST['userType']);
+            header('Location:../view/login.php?userType=' . $_POST['userType']);
             var_dump($_POST['userType']);
         }
     } else if ($_POST['userType'] === 'agence') {
@@ -251,7 +252,7 @@ if (empty(($errors))) {
         $newAgence = new Agence($_POST['username'], $_POST['email'], $_POST['adresse'], $_POST['numero'], $_FILES['image']['name'], $password, $_POST['userType']);
         if (!$controlAgence->addAgence($newAgence)) {
             $_SESSION['flash']['error'] = "Une erreur s'est produite lors de la création de l'agence.";
-            header('Location:../View/login.html?userType=' . $_POST['userType']);
+            header('Location:../view/login.php?userType=' . $_POST['userType']);
             var_dump($_POST['userType']);
         }
     }

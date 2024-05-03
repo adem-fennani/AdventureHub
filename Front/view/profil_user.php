@@ -1,8 +1,123 @@
 <?php
 session_start();
+require_once '../view/functions.php';
+is_connect();
+include_once "../config.php";
+
+require_once '../controller/UsersC.php';
+
+$notificationController = new NotificationC();
+
+$notification = $notificationController->getMessage($_SESSION['userId']);
+
+
+$notif = end($notification);
+/*var_dump($notif["message"]);
+die;*/
+
+
+
 ?>
 
-<div class="pt-105 pb-110 bg_cover" class="row">
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AdventureHub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: "Montserrat", sans-serif;
+            font-optical-sizing: auto;
+            font-style: normal;
+        }
+
+        .right-element {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        /* Style pour la fenêtre modale */
+        .modal {
+            display: none;
+            /* Par défaut, la fenêtre modale est cachée */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Fond semi-transparent */
+        }
+
+        /* Style pour le contenu de la fenêtre modale */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style pour le bouton de fermeture */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="icon" href="image/logo.png" type="image/png">
+</head>
+
+<body>
+    <a href="http://localhost/gestion_users/Front/view/index.php" class="w3-bar-item w3-button"><img
+            src="image/logo.png" alt="AdventureHub logo" width="40px"> AdventureHub</a>
+    <div class="pt-105 pb-110 bg_cover d-flex justify-content-end">
+        <!-- Conteneur vide pour l'espacement -->
+        <div class="flex-grow-1"></div>
+        <!-- Bouton de notification avec une icône -->
+        <button id="notificationButton" class="right-element" onclick="openModal()">
+            <i class="fas fa-bell fa-3x"></i> <!-- Icône de notification -->
+        </button>
+
+        <!-- Fenêtre modale -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="notifications">
+                    <?php foreach ($notification as $notif): ?>
+                        <div>
+                            <?php echo $notif["message"]; ?>
+                            <!-- Ajoutez un lien ou un bouton pour marquer la notification comme lue -->
+                            <form action="http://localhost/gestion_users/Front/view/notif_read.php" method="post">
+                                <input type="hidden" name="notification_id" value="<?php echo $notif['userId']; ?>">
+                                <button type="submit">Marquer comme lu</button>
+                            </form>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
 
     <center>
         <h2>My Profile</h2>
@@ -31,7 +146,7 @@ session_start();
                         <br>
                         <!-- <br> -->
                         <label for="newPrenom" style="font-weight: bold; font-size: 1.5em;"> Nouveau Prénom : </label>
-                        <center><input type="text" name="newPrenom" id="newPrenom" placeholder="Actuel Prenom"
+                        <center><input type="text" name="newPrenom" id="newPrenom" placeholder="Nouveau Prenom"
                                 style="height: 3.25rem; width: 33vw; border-radius: 5px;">
                             <br><span id="error_newPrenom" style="color: red; font-size: 0.75em;"></span>
                         </center>
@@ -114,229 +229,242 @@ session_start();
             </div>
         </div>
     </form>
-</div>
-<br>
-<!-- <br> -->
-
-<!-- <br> -->
-<form id="emailForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
-    style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
-
-
-    <center>
-        <h3>Votre Email</h3>
-    </center>
-    <br>
-    <div class="col-md-6">
-        <div class="singel-form form-group">
-            <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
-            <label for="actualEmail" style="font-weight: bold; font-size: 1.5em;">Actuel Email:</label>
-            <center><input type="email" name="actualEmail" id="actualEmail"
-                    placeholder="<?php echo $_SESSION['email']; ?>"
-                    style="height: 3.25rem; width: 33vw; border-radius: 5px;" readonly></center>
-            <br>
-            <!-- <br> -->
-            <label for="newEmail" style="font-weight: bold; font-size: 1.5em;"> Nouveau Email : </label>
-            <center><input type="email" name="newEmail" id="newEmail" placeholder="Nouveau Email"
-                    style="height: 3.25rem; width: 33vw; border-radius: 5px;">
-                <br><span id="error_newEmail" style="color: red; font-size: 0.75em;"></span>
-            </center>
-            <br>
-            <!-- <br> -->
-            <center><input type="submit" value="Change My Email" id="submitButtonEmail" class="main-btn">
-            </center>
-
-        </div>
     </div>
-
-</form>
-</div>
-<br>
-<!-- <br> -->
-
-<form id="dobForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
-    style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
-
-    <center>
-        <h3>Votre Date de Naissance</h3>
-    </center>
     <br>
-    <div class="col-md-6">
-        <div class="singel-form form-group">
-            <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
+    <!-- <br> -->
 
-            <label for="actualDob" style="font-weight: bold; font-size: 1.5em;">Ancien Dob:</label>
-            <input type="text" name="actualDob" id="actualDob" placeholder="<?php echo $_SESSION['dob']; ?>"
-                style="height: 3.25rem; width: 33vw; border-radius: 5px; display: block; margin: 0 auto;" readonly>
+    <!-- <br> -->
+    <form id="emailForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
+        style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
 
-            <br>
-            <!-- <br> -->
-            <label for="newDob" style="font-weight: bold; font-size: 1.5em;"> Nouvelle Dob : </label>
-            <center><input type="text" name="newDob" id="newDob" placeholder="Nouvelle Dob"
-                    style="height: 3.25rem; width: 33vw; border-radius: 5px;">
-                <br><span id="error_newDob" style="color: red; font-size: 0.75em;"></span>
-            </center>
-            <br>
-            <!-- <br> -->
 
-            <center><input type="submit" value="Change Ma Date de Naissance" id="submitButtonDob" class="main-btn">
-            </center>
-
-        </div>
-    </div>
-</form>
-</div>
-<br>
-<!-- <br> -->
-<form id="adresseForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
-    style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
-
-    <center>
-        <h3>Votre Adresse</h3>
-    </center>
-    <br>
-    <div class="col-md-6">
-        <div class="singel-form form-group">
-            <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
-
-            <label for="actualAdresse" style="font-weight: bold; font-size: 1.5em;">Ancienne Adresse:</label>
-            <input type="text" name="actualAdresse" id="actualAdresse" placeholder="<?php echo $_SESSION['adresse']; ?>"
-                style="height: 3.25rem; width: 33vw; border-radius: 5px; display: block; margin: 0 auto;" readonly>
-
-            <br>
-            <!-- <br> -->
-            <label for="newAdresse" style="font-weight: bold; font-size: 1.5em;"> Nouvelle Adresse : </label>
-            <center><input type="text" name="newAdresse" id="newAdresse" placeholder="Nouvelle Adresse "
-                    style="height: 3.25rem; width: 33vw; border-radius: 5px;">
-                <br><span id="error_newAdresse" style="color: red; font-size: 0.75em;"></span>
-            </center>
-            <br>
-            <!-- <br> -->
-
-            <center><input type="submit" value="Change Mon adresse" id="submitButtonAdresse" class="main-btn">
-            </center>
-
-        </div>
-    </div>
-</form>
-</div>
-<br>
-<!-- <br> -->
-<form id="numeroForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
-    style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
-
-    <center>
-        <h3>Votre Numéro</h3>
-    </center>
-    <br>
-    <div class="col-md-6">
-        <div class="singel-form form-group">
-            <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
-
-            <label for="actualNumero" style="font-weight: bold; font-size: 1.5em;">Actuel Numero:</label>
-            <input type="text" name="actualNumero" id="actualNumero" placeholder="<?php echo $_SESSION['numero']; ?>"
-                style="height: 3.25rem; width: 33vw; border-radius: 5px; display: block; margin: 0 auto;" readonly>
-
-            <br>
-            <!-- <br> -->
-            <label for="newNumero" style="font-weight: bold; font-size: 1.5em;"> Nouveau Numero : </label>
-            <center><input type="text" name="newNumero" id="newNumero" placeholder="Nouveau Numero"
-                    style="height: 3.25rem; width: 33vw; border-radius: 5px;">
-                <br><span id="error_newNumero" style="color: red; font-size: 0.75em;"></span>
-            </center>
-            <br>
-            <!-- <br> -->
-
-            <center><input type="submit" value="Change Mon Numero" id="submitButtonNumero" class="main-btn">
-            </center>
-
-        </div>
-    </div>
-</form>
-</div>
-<br>
-
-<form id="imageForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post" enctype="multipart/form-data" style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
-
-<center>
-    <h3>Votre Image</h3>
-</center>
-<br>
-<div class="col-md-6">
-    <div class="singel-form form-group">
-        <label for="actualImage" style="font-weight: bold; font-size: 1.5em;">Actuelle Image:</label>
-        <?php echo $_SESSION['image'];
-         if (isset($_SESSION['image'])): ?>
-            <img src="<?php echo $_SESSION['image']; ?>" style="max-width: 300px; height: auto; display: block; margin: 0 auto;" alt="Image actuelle">
-        <?php endif; ?>
-        <br>
-        <!-- <br> -->
-        <label for="newImage" style="font-weight: bold; font-size: 1.5em;"> Nouvelle Image : </label>
-        <center><input type="file" name="newImage" id="newImage" accept="image/*" style="height: 3.25rem; width: 33vw; border-radius: 5px;">
-            <br><span id="error_newImage" style="color: red; font-size: 0.75em;"></span>
+        <center>
+            <h3>Votre Email</h3>
         </center>
         <br>
-        <!-- <br> -->
+        <div class="col-md-6">
+            <div class="singel-form form-group">
+                <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
+                <label for="actualEmail" style="font-weight: bold; font-size: 1.5em;">Actuel Email:</label>
+                <center><input type="email" name="actualEmail" id="actualEmail"
+                        placeholder="<?php echo $_SESSION['email']; ?>"
+                        style="height: 3.25rem; width: 33vw; border-radius: 5px;" readonly></center>
+                <br>
+                <!-- <br> -->
+                <label for="newEmail" style="font-weight: bold; font-size: 1.5em;"> Nouveau Email : </label>
+                <center><input type="email" name="newEmail" id="newEmail" placeholder="Nouveau Email"
+                        style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+                    <br><span id="error_newEmail" style="color: red; font-size: 0.75em;"></span>
+                </center>
+                <br>
+                <!-- <br> -->
+                <center><input type="submit" value="Change My Email" id="submitButtonEmail" class="main-btn">
+                </center>
 
-        <center><input type="submit" value="Changer Mon Image" id="submitButtonImage" class="main-btn">
-        </center>
-
-        <input type="hidden" name="userType" id="userType" value="<?php echo $_SESSION['type']; ?>" />
-    </div>
-</div>
-</form>
-
-
-
-
-<form id="passwordForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
-    style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
-
-    <center>
-        <h3>Votre Mot de passe</h3>
-    </center>
-    <br>
-    <div class="col-md-6">
-        <div class="singel-form form-group">
-            <label for="oldPassword" style="font-weight: bold; font-size: 1.5em;">Ancien Password :</label>
-            <input type="password" name="oldPassword" id="oldPassword" placeholder="Ancien Password"
-                style="height: 3.25rem; width: 33vw; border-radius: 5px;" value="<?php echo $_SESSION['password']; ?>"
-                readonly>
-            <br>
-            <label for="newPassword" style="font-weight: bold; font-size: 1.5em;"> Nouveau Password : </label>
-            <center><input type="password" name="newPassword" id="newPassword" placeholder="Nouveau Password" 
-                      style="height: 3.25rem; width: 33vw; border-radius: 5px;">
-
-                <br><span id="error_newPassword" style="color: red; font-size: 0.75em;"></span>
-            </center>
-            <br>
-            <!-- <br> -->
-            <label for="confirmPassword" style="font-weight: bold; font-size: 1.5em;"> Confirmer Password : </label>
-            <center><input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirmer Password"
-                    style="height: 3.25rem; width: 33vw; border-radius: 5px;">
-                <br><span id="error_confirmPassword" style="color: red; font-size: 0.75em;"></span>
-            </center>
-            <br>
-            <!-- <br> -->
-            <center><input type="submit" value="Change mon Password" id="submitButtonPassword" class="main-btn">
-            </center>
-
+            </div>
         </div>
+
+    </form>
     </div>
+    <br>
+    <!-- <br> -->
 
-</form>
-<br>
+    <form id="dobForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
+        style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
+
+        <center>
+            <h3>Votre Date de Naissance</h3>
+        </center>
+        <br>
+        <div class="col-md-6">
+            <div class="singel-form form-group">
+                <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
+
+                <label for="actualDob" style="font-weight: bold; font-size: 1.5em;">Ancien Dob:</label>
+                <input type="text" name="actualDob" id="actualDob" placeholder="<?php echo $_SESSION['dob']; ?>"
+                    style="height: 3.25rem; width: 33vw; border-radius: 5px; display: block; margin: 0 auto;" readonly>
+
+                <br>
+                <!-- <br> -->
+                <label for="newDob" style="font-weight: bold; font-size: 1.5em;"> Nouvelle Dob : </label>
+                <center><input type="text" name="newDob" id="newDob" placeholder="Nouvelle Dob"
+                        style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+                    <br><span id="error_newDob" style="color: red; font-size: 0.75em;"></span>
+                </center>
+                <br>
+                <!-- <br> -->
+
+                <center><input type="submit" value="Change Ma Date de Naissance" id="submitButtonDob" class="main-btn">
+                </center>
+
+            </div>
+        </div>
+    </form>
+    </div>
+    <br>
+    <!-- <br> -->
+    <form id="adresseForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
+        style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
+
+        <center>
+            <h3>Votre Adresse</h3>
+        </center>
+        <br>
+        <div class="col-md-6">
+            <div class="singel-form form-group">
+                <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
+
+                <label for="actualAdresse" style="font-weight: bold; font-size: 1.5em;">Ancienne Adresse:</label>
+                <input type="text" name="actualAdresse" id="actualAdresse"
+                    placeholder="<?php echo $_SESSION['adresse']; ?>"
+                    style="height: 3.25rem; width: 33vw; border-radius: 5px; display: block; margin: 0 auto;" readonly>
+
+                <br>
+                <!-- <br> -->
+                <label for="newAdresse" style="font-weight: bold; font-size: 1.5em;"> Nouvelle Adresse : </label>
+                <center><input type="text" name="newAdresse" id="newAdresse" placeholder="Nouvelle Adresse "
+                        style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+                    <br><span id="error_newAdresse" style="color: red; font-size: 0.75em;"></span>
+                </center>
+                <br>
+                <!-- <br> -->
+
+                <center><input type="submit" value="Change Mon adresse" id="submitButtonAdresse" class="main-btn">
+                </center>
+
+            </div>
+        </div>
+    </form>
+    </div>
+    <br>
+    <!-- <br> -->
+    <form id="numeroForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
+        style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
+
+        <center>
+            <h3>Votre Numéro</h3>
+        </center>
+        <br>
+        <div class="col-md-6">
+            <div class="singel-form form-group">
+                <!-- <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i> -->
+
+                <label for="actualNumero" style="font-weight: bold; font-size: 1.5em;">Actuel Numero:</label>
+                <input type="text" name="actualNumero" id="actualNumero"
+                    placeholder="<?php echo $_SESSION['numero']; ?>"
+                    style="height: 3.25rem; width: 33vw; border-radius: 5px; display: block; margin: 0 auto;" readonly>
+
+                <br>
+                <!-- <br> -->
+                <label for="newNumero" style="font-weight: bold; font-size: 1.5em;"> Nouveau Numero : </label>
+                <center><input type="text" name="newNumero" id="newNumero" placeholder="Nouveau Numero"
+                        style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+                    <br><span id="error_newNumero" style="color: red; font-size: 0.75em;"></span>
+                </center>
+                <br>
+                <!-- <br> -->
+
+                <center><input type="submit" value="Change Mon Numero" id="submitButtonNumero" class="main-btn">
+                </center>
+
+            </div>
+        </div>
+    </form>
+    </div>
+    <br>
+
+    <form id="imageForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
+        enctype="multipart/form-data"
+        style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
+
+        <center>
+            <h3>Votre Image</h3>
+        </center>
+        <br>
+        <div class="col-md-6">
+            <div class="singel-form form-group">
+                <label for="actualImage" style="font-weight: bold; font-size: 1.5em;">Actuelle Image:</label>
+                <?php echo $_SESSION['image'];
+                if (isset($_SESSION['image'])): ?>
+                    <img src="<?php echo $_SESSION['image']; ?>"
+                        style="max-width: 300px; height: auto; display: block; margin: 0 auto;" alt="Image actuelle">
+                <?php endif; ?>
+                <br>
+                <!-- <br> -->
+                <label for="newImage" style="font-weight: bold; font-size: 1.5em;"> Nouvelle Image : </label>
+                <center><input type="file" name="newImage" id="newImage" accept="image/*"
+                        style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+                    <br><span id="error_newImage" style="color: red; font-size: 0.75em;"></span>
+                </center>
+                <br>
+                <!-- <br> -->
+
+                <center><input type="submit" value="Changer Mon Image" id="submitButtonImage" class="main-btn">
+                </center>
+
+                <input type="hidden" name="userType" id="userType" value="<?php echo $_SESSION['type']; ?>" />
+            </div>
+        </div>
+    </form>
 
 
-<div style="margin-left: 20vw;">
-    <a href="http://localhost/gestion_users/Front/controller/DeleteUsers.php"><input type="button" class="main-btn"
-            name="delateAccount" value="Delete My Account"></a>
-</div>
-<br>
-<br>
-<a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
 
 
+    <form id="passwordForm" action="http://localhost/gestion_users/Front/controller/UpdateUsers.php" method="post"
+        style="border: solid black; border-radius: 9em; padding-bottom: 2rem; padding-top: 2rem; margin-right: 20vw; margin-left: 5vw; background-color: whitesmoke">
+
+        <center>
+            <h3>Votre Mot de passe</h3>
+        </center>
+        <br>
+        <div class="col-md-6">
+            <div class="singel-form form-group">
+                <label for="oldPassword" style="font-weight: bold; font-size: 1.5em;">Ancien Password :</label>
+                <input type="password" name="oldPassword" id="oldPassword" placeholder="Ancien Password"
+                    style="height: 3.25rem; width: 33vw; border-radius: 5px;"
+                    value="<?php echo $_SESSION['password']; ?>" readonly>
+                <br>
+                <label for="newPassword" style="font-weight: bold; font-size: 1.5em;"> Nouveau Password : </label>
+                <center><input type="password" name="newPassword" id="newPassword" placeholder="Nouveau Password"
+                        style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+
+                    <br><span id="error_newPassword" style="color: red; font-size: 0.75em;"></span>
+                </center>
+                <br>
+                <!-- <br> -->
+                <label for="confirmPassword" style="font-weight: bold; font-size: 1.5em;"> Confirmer Password : </label>
+                <center><input type="password" name="confirmPassword" id="confirmPassword"
+                        placeholder="Confirmer Password" style="height: 3.25rem; width: 33vw; border-radius: 5px;">
+                    <br><span id="error_confirmPassword" style="color: red; font-size: 0.75em;"></span>
+                </center>
+                <br>
+                <!-- <br> -->
+                <center><input type="submit" value="Change mon Password" id="submitButtonPassword" class="main-btn">
+                </center>
+
+            </div>
+        </div>
+
+
+    </form>
+    <br>
+
+
+    <div style="margin-left: 20vw;">
+        <a href="http://localhost/gestion_users/Front/controller/DeleteUsers.php"><input type="button" class="main-btn"
+                name="delateAccount" value="Delete My Account"></a>
+    </div>
+    <br>
+    <br>
+    <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+    <footer class="w3-center w3-black w3-padding-16">
+        <p>AdventureHub - conseils et actualités </p>
+    </footer>
+
+</body>
+
+</html>
 
 
 
@@ -492,5 +620,17 @@ session_start();
             error_oldPassword.innerHTML = "Wrong password";
         } else
             loginError.innerHTML = "";
+    }
+
+    // Fonction pour ouvrir la fenêtre modale
+    function openModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "block";
+    }
+
+    // Fonction pour fermer la fenêtre modale
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
     }
 </script>

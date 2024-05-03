@@ -12,13 +12,14 @@ class User{
     private $numero;
     private $image;
     private $password;
+    private $confirmation_at;
     /*private $confirmation_token;
     private $confirmation_at;
     private $reset_token;
     private $reset_at;
     private $remember_at;*/
 
-    public function __construct($prenom, $nom, $username, $email, $dob, $adresse, $numero, $image, $password, $id=null) {
+    public function __construct($prenom, $nom, $username, $email, $dob, $adresse, $numero, $image, $password, $confirmation_at, $id=null) {
         $this->id = $id;
         $this->prenom = $prenom;
         $this->nom = $nom;
@@ -29,6 +30,7 @@ class User{
         $this->numero = $numero;
         $this->image = $image;
         $this->password = $password;
+        $this->confirmation_at = $confirmation_at;
         /*$this->confirmation_token = $confirmation_token;
         $this->confirmation_at = $confirmation_at;
         $this->$reset_token = $$reset_token;
@@ -125,6 +127,15 @@ public function setPassword($password)
 $this->password = $password;
 return $this;
 }
+public function getConfirmation_at()
+{
+return $this->confirmation_at;
+}
+public function setConfirmation_at($confirmation_at)
+{
+$this->confirmation_at = $confirmation_at;
+return $this;
+}
 /*public function getConfirmation_token()
 {
 return $this->confirmation_token;
@@ -180,8 +191,9 @@ class Agence{
     private $numero;
     private $image;
     private $password;
+    private $confirmation_at;
 
-    public function __construct($username, $email, $adresse, $numero, $image, $password, $id=null) {
+    public function __construct($username, $email, $adresse, $numero, $image, $password, $confirmation_at, $id=null) {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
@@ -189,6 +201,7 @@ class Agence{
         $this->numero = $numero;
         $this->image = $image;
         $this->password = $password;
+        $this->confirmation_at = $confirmation_at;
     }
     public function getId()
     {
@@ -251,6 +264,15 @@ return $this->password;
 public function setPassword($password)
 {
 $this->password = $password;
+return $this;
+}
+public function getConfirmation_at()
+{
+return $this->confirmation_at;
+}
+public function setConfirmation_at($confirmation_at)
+{
+$this->confirmation_at = $confirmation_at;
 return $this;
 }
 }
@@ -318,25 +340,40 @@ return $this;
 
 class notification{
     private $number;
+
+    private $userId;
     private $type;
+
     private $message;
     private $dateReceived;
     private $status;
 
-    public function __construct($type, $message, $dateReceived, $status, $number=null) {
+    public function __construct($type,$userId, $message, $dateReceived, $status, $number=null) {
         $this->number = $number;
         $this->type = $type;
         $this->message = $message;
         $this->dateReceived = $dateReceived;
         $this->status = $status;
+        $this->userId=$userId;
     }
     public function getNumber()
     {
     return $this->number;
     }
+
+    public function getUserId()
+    {
+    return $this->userId;
+    }
     public function setNumber($number)
     {
     $this->number = $number;
+    return $this;
+    }
+
+    public function setUserId($userId)
+    {
+    $this->$userId = $userId;
     return $this;
     }
     public function getType()
@@ -373,6 +410,33 @@ return $this->status;
 public function setStatus($status)
 {
 $this->status = $status;
+return $this;
+}
+}
+class Onligne{
+    private $id;
+    private $time;
+
+    public function __construct($time, $id=null) {
+        $this->id = $id;
+        $this->time = $time;
+    }
+    public function getId()
+    {
+    return $this->id;
+    }
+    public function setId($id)
+    {
+    $this->id = $id;
+    return $this;
+    }
+    public function getTime()
+{
+return $this->time;
+}
+public function setTime($time)
+{
+$this->time = $time;
 return $this;
 }
 }

@@ -25,10 +25,10 @@ if ($user /*&& $token == $user->confirmation_token*/) {
       $_SESSION['flash']['success'] = "Votre compte a bien été validé";
       $_SESSION['auth'] = $user;
 
-    //  header('Location: login.html');
+     header('Location: ../view/login.php');
 } else {
       $_SESSION['flash']['danger'] = "Ce compte n'existe pas";
-     // header('Location: register.html');// on ramène l'utilisateur sur register
+      header('Location: ../view/register.html');// on ramène l'utilisateur sur register
 }
 }
 else
@@ -44,9 +44,9 @@ else
             $_SESSION['flash']['success'] = "Votre compte a bien été validé";
             $_SESSION['auth'] = $agence;
       
-           // header('Location: login.html');
+            header('Location: ../view/login.php');
       } else {
             $_SESSION['flash']['danger'] = "Ce compte n'existe pas";
-           // header('Location: register.html');// on ramène l'utilisateur sur register
+            header('Location: ../view/register.html');// on ramène l'utilisateur sur register
       }
 }

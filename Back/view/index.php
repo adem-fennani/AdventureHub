@@ -1,269 +1,225 @@
 <?php
+session_start();
 
-include_once "../config.php";
+require_once '../controller/UsersC.php';
+require_once '../model/User.php';
+require_once '../config.php';
+require_once '../view/functions.php';
 
-    function getNbUsers(){
-        $db = config::getConnexion();
-        
-        $userQuery = "SELECT count(*) AS nb FROM users";//query to get number of users in the table
-        $agenceQuery = "SELECT count(*) AS nb FROM agence";//query to get number of agence in the table
+$userController = new UserC();
+$agenceController = new AgenceC();
+$onligneController = new OnligneC();
+$notifController = new NotificationC();
 
-        try {
-            $res = $db->query($userQuery);
-            $data = $res->fetch();
-            $nbUsers = $data['nb'];
+$nombreUtilisateurs = $userController->countUsers();
+$nombreAgences = $agenceController->countAgences();
+$agenceStatisticsByCountry = $agenceController->getAgenceStatisticsByCountry();
+$userStatisticsByCountry = $userController->getUserStatisticsByCountry();
+$nonLus = $notifController->countUnreadNotifications();
+$Lus = $notifController->countReadNotifications();
 
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-
-        try {
-            $res = $db->query($agenceQuery);
-            $data = $res->fetch();
-            $nbAgence = $data['nb'];
-
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-
-        $nbUtilisateurs = $nbUsers + $nbAgence;
-
-        return $nbUtilisateurs;
-    }
-
-    function getNbOnlineUsers(){
-        $db = config::getConnexion();
-        
-        $Query = "SELECT count(*) AS nb FROM onlineUsers";//query to get number of students in the table
-
-        try {
-            $res = $db->query($Query);
-            $data = $res->fetch();
-            $nbUsers = $data['nb'];
-            
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-        return $nbUsers;
-    }
-
-    function getNumberOfCourses(){
-        $db = config::getConnexion();
-        
-        $Query = "SELECT count(*) AS nb FROM courses";//query to get number of courses in the table
-
-        try {
-            $res = $db->query($Query);
-            $data = $res->fetch();
-            $nbCourses = $data['nb'];
-            
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-        return $nbCourses;
-    }
-
-    function getNumberUnreadNotifications(){
-        $db = config::getConnexion();
-        
-        $Query = "SELECT count(*) AS nb FROM notification where status='unread'";//query to get number of courses in the table
-
-        try {
-            $res = $db->query($Query);
-            $data = $res->fetch();
-            $nbCourses = $data['nb'];
-            
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-        return $nbCourses;
-    }
-
-    $searchADM = "ADM";
-    session_start();
-    if(!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true || !preg_match("/{$searchADM}/i", $_SESSION['userId'])){    
-        header('location:../../Front/View/login.html');
-    }
-    else{
-        $nbUsers = getNbUsers();
-        $nbOnlineUsers = getNbOnlineUsers();
-        $nbCourses = getNumberOfCourses();
-        $nbUnreadNotifications = getNumberUnreadNotifications();
-    }
 ?>
-
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EduEasy Admin</title>
+  <title>AdventureHub</title>
+  <meta charset="UTF-8">
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="icon" href="image/logo.png" type="image/png">
+  <style>
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: "Raleway", sans-serif
+    }
+  </style>
 
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+<body class="w3-light-grey">
+  <style>
+    body {
+      font-family: "Montserrat", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+    }
+  </style>
+  <!-- Top container -->
+  <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+    <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i
+        class="fa fa-bars"></i>  Menu</button>
+    <span class="w3-bar-item w3-right"><img src="image/logo white.png" alt="" width="40px"></span>
+  </div>
 
-        <!-- =======================================NAV BAR STARTS======================================= -->
-        <?php include "adminSideBar.php" ?>
-        <!-- =======================================NAV BAR ENDS======================================= -->
-
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <center>
-                                <!-- <h3 class="card-title">Student DataTable</h3> -->
-                                <h3>
-                                    <img src="images/favicon.png" alt="EduEasyLogo" style="length: 7vw; width: 7vw">
-                                    DashBoard
-                                </h3>
-                            </center>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-                <a href="showNotifications.php" style="color:black;">
-                    <div class="col-md-3 col-sm-6 col-12 float-sm-right">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">New Notifications</span>
-                                <span class="info-box-number"><?php echo $nbUnreadNotifications; ?></span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                </a>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3><?php echo $nbCourses; ?></h3>
-
-                            <p>Number Of Courses
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a href="MoreInfoCourses.php" class="small-box-footer">More info <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3> <sup style="font-size: 20px"> <?php echo $nbOnlineUsers ?> </sup></h3>
-
-                            <p>Online Users
-
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="MoreInfoOnlineUsers.php" class="small-box-footer">More info <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3><?php echo $nbUsers ?></h3>
-
-                            <p>User Registrations</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-person-add"></i>
-                        </div>
-                        <a href="MoreInfoUserRegistration.php" class="small-box-footer">More info <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>65</h3>
-
-                            <p>Unique Visitors</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!--</div> /.container-fluid -->
-            <!-- /.content -->
-        </div>
-        <footer class="main-footer">
-        </footer>
-        <!-- /.content-wrapper -->
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+  <!-- Sidebar/menu -->
+  <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+    <div class="w3-container w3-row">
+      <div class="w3-col s4">
+        <img src="image/Kyoto.jpg" class="w3-circle w3-margin-right" style="width:46px">
+      </div>
+      <div class="w3-col s8 w3-bar">
+        <span>Bienvenue, <strong>Admin</strong></span><br>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+      </div>
     </div>
-    <!-- ./wrapper -->
+    <hr>
+    <div class="w3-container">
+      <h5>Dashboard</h5>
+    </div>
+    <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a href="http://localhost/gestion_users/Back/controller/profilAdmin.php" class="w3-bar-item w3-button w3-padding"><i class="fa fa-profil fa-fw"></i>  Profil</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Aperçu</a>
+    <a href="http://localhost/gestion_users/Back/view/ReadUsers.php" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Voir les Utilisateurs</a>
+    <a href="http://localhost/gestion_users/Back/view/user_choice.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Contacter un Utilisateur</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Articles</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Actualités</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  Historique</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Paramètres </a><br><br>
+  </div>
+  </nav>
 
-    <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+
+  <!-- Overlay effect when opening sidebar on small screens -->
+  <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
+    title="close side menu" id="myOverlay"></div>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+    <!-- Header -->
+    <header class="w3-container" style="padding-top:22px">
+      <h5><b><i class="fa fa-dashboard"></i> Dashboard</b></h5>
+    </header>
+
+    <!-- Statistiques -->
+    <div class="w3-row-padding w3-margin-bottom">
+      <div class="w3-quarter">
+        <div class="w3-container w3-red w3-padding-16">
+          <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3><?php echo $nombreUtilisateurs; ?></h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Utilisateurs</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-blue w3-padding-16">
+          <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3><?php echo $nombreAgences; ?></h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>Agences</h4>
+        </div>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-container w3-teal w3-padding-16">
+          <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
+          <div class="w3-right">
+            <h3><?php echo $onligneController->countLoggedInUsers(); ?></h3>
+          </div>
+          <div class="w3-clear"></div>
+          <h4>utilisateurs connectés</h4>
+        </div>
+      </div>
+    </div>
+    <div class="w3-container">
+  <h5>Statistiques par pays pour les utilisateurs :</h5>
+  <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+    <?php foreach ($userStatisticsByCountry as $country => $percentage): ?>
+      <tr>
+        <td><?php echo $country; ?></td>
+        <td><?php echo $percentage . '%'; ?></td>
+      </tr>
+    <?php endforeach; ?>
+  </table>
+</div>
+
+<div class="w3-container">
+  <h5>Statistiques par pays pour les agences :</h5>
+  <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+    <?php foreach ($agenceStatisticsByCountry as $country => $percentage): ?>
+      <tr>
+        <td><?php echo $country; ?></td>
+        <td><?php echo $percentage . '%'; ?></td>
+      </tr>
+    <?php endforeach; ?>
+  </table>
+</div>
+
+
+    <hr>
+    <div class="w3-container">
+      <h5> NOTIFICATIONS </h5>
+      <ul class="w3-ul w3-card-4 w3-white">
+        <li class="w3-padding-16">
+          <img src="image/oui.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+          <div class="w3-right">
+            <h3><?php echo $Lus; ?></h3>
+          </div>
+          <span class="w3-xlarge">Messages Lus</span><br>
+          
+        </li>
+        <li class="w3-padding-16">
+          <img src="image/non.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+          <div class="w3-right">
+            <h3><?php echo $nonLus; ?></h3>
+          </div>
+          <span class="w3-xlarge">Messages Non Lus</span><br>
+        </li>
+      </ul>
+    </div>
+    <hr>
+
+
+    <br>
+
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-16 w3-light-grey">
+      <h4>AdventureHub</h4>
+    </footer>
+
+    <!-- End page content -->
+  </div>
+
+  <script>
+    // Get the Sidebar
+    var mySidebar = document.getElementById("mySidebar");
+
+    // Get the DIV with overlay effect
+    var overlayBg = document.getElementById("myOverlay");
+
+    // Toggle between showing and hiding the sidebar, and add overlay effect
+    function w3_open() {
+      if (mySidebar.style.display === 'block') {
+        mySidebar.style.display = 'none';
+        overlayBg.style.display = "none";
+      } else {
+        mySidebar.style.display = 'block';
+        overlayBg.style.display = "block";
+      }
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+      mySidebar.style.display = "none";
+      overlayBg.style.display = "none";
+    }
+  </script>
 
 </body>
 

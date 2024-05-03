@@ -44,15 +44,15 @@ body{
     <h5>Dashboard</h5>
   </div>
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-    <a href="http://localhost/gestion_users/Back/controller/profilAdmin.php" class="w3-bar-item w3-button w3-padding"><i class="fa fa-profil fa-fw"></i>  Profil</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Aperçu</a>
-    <a href="http://localhost/gestion_users/Back/view/ReadUsers.php" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-eye fa-fw"></i>  Voir les Utilisateurs</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Articles</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Actualités</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  Historique</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Paramètres </a><br><br>
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a href="http://localhost/gestion_users/Back/controller/profilAdmin.php" class="w3-bar-item w3-button w3-padding"><i class="fa fa-profil fa-fw"></i>  Profil</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Aperçu</a>
+    <a href="http://localhost/gestion_users/Back/view/ReadUsers.php" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Voir les Utilisateurs</a>
+    <a href="http://localhost/gestion_users/Back/view/user_choice.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Contacter un Utilisateur</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Articles</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Actualités</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  Historique</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Paramètres </a><br><br>
   </div>
 </nav>
 
@@ -76,40 +76,43 @@ body{
       require_once '../controller/UsersC.php';
       $userController = new UserC();
       $users = $userController->getUsers();
+      //var_dump($users);
+      //die;
+      
       if ($users) {
-          echo "<h2>Liste des utilisateurs :</h2>";
-          echo "<table class='w3-table w3-striped'>";
-          echo "<tr><th>Username</th><th>Image</th></tr>";
-          foreach ($users as $user) {
-            echo "<tr>";
-            echo "<td>" . $user->getUsername() . "</td>";
-            echo "<td><img src='image/" . $user->getImage() . "' class='w3-circle w3-margin-right' style='width:46px'></td>";
-            // Bouton "Voir plus" avec un identifiant unique pour chaque utilisateur
-            echo "<td><button onclick='showMoreUserInfo(\"userDetails_" . $user->getId() . "\")'>Voir plus</button></td>";
-            echo "</tr>";
-            
-            // Conteneur pour les détails supplémentaires de l'utilisateur
-            echo "<tr id='userDetails_" . $user->getId() . "' style='display: none;'>";
-            echo "<td colspan='9'>";
-            // Les détails supplémentaires de l'utilisateur seront affichés ici
+            echo "<h2>Liste des utilisateurs :</h2>";
             echo "<table class='w3-table w3-striped'>";
-            echo "<tr><th>ID</th><th>Prénom</th><th>Nom</th><th>Username</th><th>Email</th><th>Date de naissance</th><th>Adresse</th><th>Numéro de téléphone</th><th>Image</th></tr>";
-            echo "<td>" . $user->getId() . "</td>";
-            echo "<td>" . $user->getPrenom() . "</td>";
-            echo "<td>" . $user->getNom() . "</td>";
-            echo "<td>" . $user->getUsername() . "</td>";
-            echo "<td>" . $user->getEmail() . "</td>";
-            echo "<td>" . $user->getDob() . "</td>";
-            echo "<td>" . $user->getAdresse() . "</td>";
-            echo "<td>" . $user->getNumero() . "</td>";
-            echo "<td><img src='image/" . $user->getImage() . "' class='w3-circle w3-margin-right' style='width:46px'></td>";
-            echo "</table>";
-            echo "</td>";
+            echo "<tr>
+            <th>ID</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Date de naissance</th>
+            <th>Adresse</th>
+            <th>Numéro de téléphone</th>
+            <th>Image</th>
+            </tr>";
+          foreach ($users as $user) {
+            echo "<form action ='user_choice.php' method='POST'>";
+            echo "<tr>";
+            echo "<td>" . $user["id"] . "</td>";
+            echo "<td>" . $user["prenom"] . "</td>";
+            echo "<td>" . $user["nom"] . "</td>";
+            echo "<td>" . $user["username"] . "</td>";
+            echo "<td>" . $user["email"] . "</td>";
+            echo "<td>" . $user["dob"] . "</td>";
+            echo "<td>" . $user["adresse"] . "</td>";
+            echo "<td>" . $user["numero"] . "</td>";
+            echo "<td><img src='image/" . $user["image"] . "' class='w3-circle w3-margin-right' style='width:46px'></td>";
+            echo "<td><button type='submit' name='userId' value='".$user["id"]."'>Contacter</button></td>";
+            //$userType = "user";
             echo "</tr>";
+            echo "</form>";
+
         }
+        echo "</table>";
         
-        
-          echo "</table>";
       } else {
           echo "<p>Aucun utilisateur trouvé.</p>";
       }
@@ -123,29 +126,25 @@ body{
       if ($agences) {
         echo "<h2>Liste des Agences :</h2>";
         echo "<table class='w3-table w3-striped'>";
-        echo "<tr><th>Username</th><th>Image</th></tr>";
+        echo "<tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Adresse</th>
+        <th>Numéro de téléphone</th>
+        <th>Image</th>
+        </tr>";
         foreach ($agences as $agence) {
+          echo "<form action ='user_choice.php' method='POST'>";
             echo "<tr>";
-            echo "<td>" . $agence->getUsername() . "</td>";
-            echo "<td><img src='image/" . $agence->getImage() . "' class='w3-circle w3-margin-right' style='width:46px'></td>";
-            // Bouton "Voir plus" avec un identifiant unique pour chaque agence
-            echo "<td><button onclick='showMoreUserInfo(\"agenceDetails_" . $agence->getId() . "\")'>Voir plus</button></td>";
-            echo "</tr>";
-            
-            // Conteneur pour les détails supplémentaires de l'agence
-            echo "<tr id='agenceDetails_" . $agence->getId() . "' style='display: none;'>";
-            echo "<td colspan='6'>";
-            // Les détails supplémentaires de l'agence seront affichés ici
-            echo "<table class='w3-table w3-striped'>";
-            echo "<tr><th>ID</th><th>Username</th><th>Email</th><th>Adresse</th><th>Numéro de téléphone</th><th>Image</th></tr>";
-            echo "<td>" . $agence->getId() . "</td>";
-            echo "<td>" . $agence->getUsername() . "</td>";
-            echo "<td>" . $agence->getEmail() . "</td>";
-            echo "<td>" . $agence->getAdresse() . "</td>";
-            echo "<td>" . $agence->getNumero() . "</td>";
-            echo "<td><img src='image/" . $agence->getImage() . "' class='w3-circle w3-margin-right' style='width:46px'></td>";
-            echo "</table>";
-            echo "</td>";
+            echo "<td>" . $agence["id"] . "</td>";
+            echo "<td>" . $agence["username"] . "</td>";
+            echo "<td>" . $agence["email"] . "</td>";
+            echo "<td>" . $agence["adresse"] . "</td>";
+            echo "<td>" . $agence["numero"] . "</td>";
+            echo "<td><img src='image/" . $agence["image"] . "' class='w3-circle w3-margin-right' style='width:46px'></td>";
+            //echo "<td><button onclick='showContactInfo(\"agenceDetails_" . $agence["id"] . "\")'>Contacter</button></td>";
+            echo "<td><button type='submit' name='userId' value='". $agence["id"] ."'>Contacter</button></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -188,16 +187,15 @@ function w3_close() {
   overlayBg.style.display = "none";
 }
 
-function showMoreUserInfo(userId) {
-    // Récupérer l'élément contenant les détails supplémentaires de l'utilisateur
-    var userDetails = document.getElementById(userId);
-    // Si l'élément est actuellement caché, le montrer ; sinon, le cacher
-    if (userDetails.style.display === 'none') {
-        userDetails.style.display = 'table-row';
-    } else {
-        userDetails.style.display = 'none';
-    }
+/*function showContactInfo() {
+  //var selectedOption = document.getElementById("userType").value;
+  $userType = "user";
+if ($userType === "user") {
+    window.location.href = "user_choice.html?user=" + $userType;
+} /*else if (selectedOption === "agence") {
+    window.location.href = "Agences.html?userType=" + encodeURIComponent(selectedOption);
 }
+}*/
 </script>
 
 </body>

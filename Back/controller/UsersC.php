@@ -3,40 +3,7 @@
 require_once "../config.php";
 require_once "../model/User.php";
 
-/*function notifyAdministrator($type,$userName,$userId,$userType){
-    $db = config::getConnexion();
-    $date = date('y-m-d-H-i-s');
-    
-    if($type=='registration')
-        $message = "New User Registration. ";
-    else if($type=='delatedAccount')
-        $message = "User Account Delated. ";
-    
-    $message.=" ".$userType.", ".$userName." with User Id: ".$userId;
-    if($type=='registration')
-        $message .= " has registered to EduEasy.";
-    else if($type=='delatedAccount')
-        $message .= " has deleted his EduEasy Account.";
-        
-        try {
-            $query = $db->prepare(
-                'INSERT INTO notification (number,type,message,dateReceived) 
-                    VALUES (:number,:type,:message,:dateReceived) '
-            );
-            $query->execute([
-                'number' => 0,
-                'type' => $type,
-                'message' => $message,
-                'dateReceived' => $date
-            ]);
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-}*/
-
 class UserC{
-
-
     function addUser($newUser){
         $db = config::getConnexion();
 
@@ -67,7 +34,6 @@ class UserC{
             echo "Erreur lors de l'ajout de l'utilisateur : " . $e->getMessage();
         }
     }
-
     function updateUserPrenom($newPrenom,$userId){
 
         $db = config::getConnexion();
@@ -116,7 +82,6 @@ class UserC{
             $e->getMessage();
         }
     }
-
     function updateUserEmail($newEmail,$userId){
         
         $db = config::getConnexion();
@@ -197,7 +162,6 @@ class UserC{
             $e->getMessage();
         }
     }
-
     function updateUserPassword($newPassword,$userId){
         $db = config::getConnexion();
         try{
@@ -228,30 +192,52 @@ class UserC{
     }
     function getUsers() {
         $db = config::getConnexion();
-        $users = [];
+        //$users = [];
         try {
             $query = $db->prepare('SELECT * FROM users');
             $query->execute();
-            while ($row = $query->fetch()) {
-                $user = new User(
-                    $row['prenom'],
-                    $row['nom'],
-                    $row['username'],
-                    $row['email'],
-                    $row['dob'],
-                    $row['adresse'],
-                    $row['numero'],
-                    $row['image'],
-                    $row['password'],
-                    $row['id']
-                );
-                $users[] = $user;
-            }
+            $result=$query->fetchAll();
+            return $result;
         } catch (PDOException $e) {
             echo "Erreur lors de la récupération des utilisateurs : " . $e->getMessage();
         }
-        return $users;
+        //return $users;
     }
+    public function countUsers() {
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare('SELECT COUNT(*) FROM users');
+            $query->execute();
+            $result = $query->fetchColumn();
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors du comptage des utilisateurs : " . $e->getMessage();
+        }
+        return 0;
+    }
+    function countUsersByCountry() {
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare('SELECT adresse, COUNT(*) as count FROM users GROUP BY adresse');
+            $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors du comptage des utilisateurs par pays : " . $e->getMessage();
+        }
+        return [];
+    }
+    function getUserStatisticsByCountry() {
+        $totalUsers = $this->countUsers();
+        $usersByCountry = $this->countUsersByCountry();
+        $statistics = [];
+        foreach ($usersByCountry as $country) {
+            $percentage = ($country['count'] / $totalUsers) * 100;
+            $statistics[$country['adresse']] = $percentage;
+        }
+        return $statistics;
+    }
+    
 }
 class AgenceC{
     function addAgence($newAgence){
@@ -390,27 +376,49 @@ class AgenceC{
         try {
             $query = $db->prepare('SELECT * FROM agence');
             $query->execute();
-            while ($row = $query->fetch()) {
-                $user = new Agence(
-                    $row['username'],
-                    $row['email'],
-                    $row['adresse'],
-                    $row['numero'],
-                    $row['image'],
-                    $row['password'],
-                    $row['id']
-                );
-                $users[] = $user;
-            }
+            $result=$query->fetchAll();
+            return $result;
         } catch (PDOException $e) {
             echo "Erreur lors de la récupération des agences : " . $e->getMessage();
         }
         return $users;
     }
+    function countAgences() {
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare('SELECT COUNT(*) FROM agence');
+            $query->execute();
+            $result = $query->fetchColumn();
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors du comptage des agences : " . $e->getMessage();
+        }
+        return 0;
+    }
+    function countAgencesByCountry() {
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare('SELECT adresse, COUNT(*) as count FROM agence GROUP BY adresse');
+            $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors du comptage des agences par pays : " . $e->getMessage();
+        }
+        return [];
+    }
+    function getAgenceStatisticsByCountry() {
+        $totalAgences = $this->countAgences();
+        $agencesByCountry = $this->countAgencesByCountry();
+        $statistics = [];
+        foreach ($agencesByCountry as $country) {
+            $percentage = ($country['count'] / $totalAgences) * 100;
+            $statistics[$country['adresse']] = $percentage;
+        }
+        return $statistics;
+    }
 }
 class AdminC{
-
-
     function addAdmin($newAdmin){
         $db = config::getConnexion();
 
@@ -508,30 +516,89 @@ class AdminC{
         }
     }
 }
-
 class NotificationC{
-
-
-    function addNotification($newNotif){
+   function addNotification($newNotif){
         $db = config::getConnexion();
 
         try {
             
             $query = $db->prepare(
-                'INSERT INTO notification (type,message,dateReceived,status) 
-                    VALUES (:type,:message,:dateReceived,:status)'
+                'INSERT INTO notification (type,userId,message,dateReceived,status) 
+                    VALUES (:type,:userId,:message,:dateReceived,:status)'
             );
             $query->execute([
-                //'id' => $newAgence->getId(),
                 'type' => $newNotif->getType(),
+                'userId'=> $newNotif->getUserId(),
                 'message' => $newNotif->getMessage(),
                 'dateReceived' => $newNotif->getDateReceived(),
-                'status' => $newNotif->getStatus()
+                'status' => $newNotif->getStatus(),
+
             ]);
         } catch (PDOException $e) {
             echo "Erreur lors de l'ajout de l'utilisateur : " . $e->getMessage();
         }
     }
+    function getMessage($idUser) {
+        $db = config::getConnexion();
+        $users = [];
+        try {
+            $query = $db->prepare('SELECT * FROM notification where userId= :idUser');
+            $query->execute(['idUser'=>$idUser]);
+            $result=$query->fetchAll();
+            return $result;
+            
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des agences : " . $e->getMessage();
+        }
+        return $users;
+    }
+    // Fonction pour compter le nombre de notifications lues
+function countReadNotifications() {
+    try {
+        $pdo = config::getConnexion();
+        $query = "SELECT COUNT(*) FROM notification WHERE status = 'read'";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $count_read = $stmt->fetchColumn();
+        return $count_read;
+    } catch (PDOException $e) {
+        // En cas d'erreur lors de la récupération des statistiques, affichez un message d'erreur ou redirigez vers une page d'erreur
+        echo "Erreur : " . $e->getMessage();
+        return false;
+    }
+}
 
+// Fonction pour compter le nombre de notifications non lues
+function countUnreadNotifications() {
+    try {
+        $pdo = config::getConnexion();
+        $query = "SELECT COUNT(*) FROM notification WHERE status = 'unread'";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $count_unread = $stmt->fetchColumn();
+        return $count_unread;
+    } catch (PDOException $e) {
+        // En cas d'erreur lors de la récupération des statistiques, affichez un message d'erreur ou redirigez vers une page d'erreur
+        echo "Erreur : " . $e->getMessage();
+        return false;
+    }
+}
+}
+class OnligneC{
+
+      function countLoggedInUsers() {
+        // Connexion à la base de données
+        $pdo = config::getConnexion();
+        
+        // Préparer la requête pour compter tous les utilisateurs connectés
+        $query = "SELECT COUNT(*) FROM onligne";
+        $stmt = $pdo->query($query);
+        
+        // Récupérer le nombre d'utilisateurs connectés
+        $loggedInUsersCount = $stmt->fetchColumn();
+        
+        return $loggedInUsersCount;
+    }
+    
 }
 ?>

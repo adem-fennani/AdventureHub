@@ -34,7 +34,7 @@ if (isset($_POST['recipient_type']) && isset($_POST['recipient_id']) && isset($_
             break;
         default:
             $_SESSION['flash']['danger'] = "Type de destinataire invalide.";
-            header("Location: ../view/index.html"); // Rediriger vers le tableau de bord de l'administrateur
+            header("Location: ../view/index.php"); // Rediriger vers le tableau de bord de l'administrateur
             exit();
     }
 
@@ -50,12 +50,12 @@ if (isset($_POST['recipient_type']) && isset($_POST['recipient_id']) && isset($_
 
     if (!$recipient_info) {
         $_SESSION['flash']['danger'] = "Destinataire introuvable.";
-        header("Location: ../view/index.html"); // Rediriger vers le tableau de bord de l'administrateur
+        header("Location: ../view/index.php"); // Rediriger vers le tableau de bord de l'administrateur
         exit();
     }
 
     // Enregistrer la notification dans la base de données
-    $notification = new notification($recipient_type, $message, date('Y-m-d H:i:s'), 'unread');
+    $notification = new notification($recipient_type,$recipient_id, $message, date('Y-m-d H:i:s'), 'unread');
     // Code pour enregistrer la notification dans la base de données
     
     $controlNotif->addNotification($notification);
@@ -64,12 +64,12 @@ if (isset($_POST['recipient_type']) && isset($_POST['recipient_id']) && isset($_
 
 
     $_SESSION['flash']['success'] = "Notification envoyée avec succès.";
-    header("Location: ../view/index.html"); // Rediriger vers le tableau de bord de l'administrateur
+    header("Location: ../view/index.php"); // Rediriger vers le tableau de bord de l'administrateur
     exit();
 } else {
     var_dump("test");
     $_SESSION['flash']['danger'] = "Tous les champs sont obligatoires.";
-    header("Location: ../view/index.html"); // Rediriger vers le tableau de bord de l'administrateur
+    header("Location: ../view/index.php"); // Rediriger vers le tableau de bord de l'administrateur
     exit();
 }
 ?>

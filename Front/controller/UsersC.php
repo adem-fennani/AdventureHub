@@ -3,51 +3,18 @@
 require_once "../config.php";
 require_once "../model/User.php";
 
-/*function notifyAdministrator($type,$userName,$userId,$userType){
-    $db = config::getConnexion();
-    $date = date('y-m-d-H-i-s');
-    
-    if($type=='registration')
-        $message = "New User Registration. ";
-    else if($type=='delatedAccount')
-        $message = "User Account Delated. ";
-    
-    $message.=" ".$userType.", ".$userName." with User Id: ".$userId;
-    if($type=='registration')
-        $message .= " has registered to EduEasy.";
-    else if($type=='delatedAccount')
-        $message .= " has deleted his EduEasy Account.";
-        
-        try {
-            $query = $db->prepare(
-                'INSERT INTO notification (number,type,message,dateReceived) 
-                    VALUES (:number,:type,:message,:dateReceived) '
-            );
-            $query->execute([
-                'number' => 0,
-                'type' => $type,
-                'message' => $message,
-                'dateReceived' => $date
-            ]);
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-}*/
-
 class UserC{
-
-
     function addUser($newUser){
         $db = config::getConnexion();
 
         try {
             
             $query = $db->prepare(
-                'INSERT INTO users (id,prenom,nom,username,email,dob,adresse,numero,image,password) 
-                    VALUES (:id,:prenom,:nom,:username,:email,:dob,:adresse,:numero,:image,:password)'
+                'INSERT INTO users (/*id,*/prenom,nom,username,email,dob,adresse,numero,image,password) 
+                    VALUES (/*:id,*/:prenom,:nom,:username,:email,:dob,:adresse,:numero,:image,:password)'
             );
             $query->execute([
-                'id' => $newUser->getId(),
+                //'id' => $newUser->getId(),
                 'prenom' => $newUser->getPrenom(),
                 'nom' => $newUser->getNom(),
                 'username' => $newUser->getUsername(),
@@ -67,7 +34,6 @@ class UserC{
             echo "Erreur lors de l'ajout de l'utilisateur : " . $e->getMessage();
         }
     }
-
     function updateUserPrenom($newPrenom,$userId){
 
         $db = config::getConnexion();
@@ -116,7 +82,6 @@ class UserC{
             $e->getMessage();
         }
     }
-
     function updateUserEmail($newEmail,$userId){
         
         $db = config::getConnexion();
@@ -197,7 +162,6 @@ class UserC{
             $e->getMessage();
         }
     }
-
     function updateUserPassword($newPassword,$userId){
         $db = config::getConnexion();
         try{
@@ -212,8 +176,6 @@ class UserC{
             $e->getMessage();
         }
     }
-
-
     function deleteUser($userId){
 
         $db = config::getConnexion();
@@ -228,12 +190,21 @@ class UserC{
             $e->getMessage();
         }
     }
+    public function countUsers() {
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare('SELECT COUNT(*) FROM users');
+            $query->execute();
+            $result = $query->fetchColumn();
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors du comptage des utilisateurs : " . $e->getMessage();
+        }
+        return 0;
+    }
 }
 
-
 class AgenceC{
-
-
     function addAgence($newAgence){
         $db = config::getConnexion();
 
@@ -256,7 +227,6 @@ class AgenceC{
             echo "Erreur lors de l'ajout de l'utilisateur : " . $e->getMessage();
         }
     }
-
     function updateAgenceUsername($newName,$agenceId){
 
         $db = config::getConnexion();
@@ -289,7 +259,6 @@ class AgenceC{
             $e->getMessage();
         }
     }
-
     function updateAgenceAdresse($newAdresse,$agenceId){
 
         $db = config::getConnexion();
@@ -306,7 +275,6 @@ class AgenceC{
             $e->getMessage();
         }
     }
-
     function updateAgenceNumero($newNumero,$agenceId){
 
         $db = config::getConnexion();
@@ -323,7 +291,6 @@ class AgenceC{
             $e->getMessage();
         }
     }
-
     function updateAgenceEmail($newEmail,$agenceId){
         
         $db = config::getConnexion();
@@ -340,8 +307,6 @@ class AgenceC{
             $e->getMessage();
         }
     }
-
-
     function updateAgencePassword($newPassword,$agenceId){
         $db = config::getConnexion();
         try{
@@ -356,8 +321,6 @@ class AgenceC{
             $e->getMessage();
         }
     }
-
-
     function deleteAgence($agenceId){
 
         $db = config::getConnexion();
@@ -372,6 +335,110 @@ class AgenceC{
             $e->getMessage();
         }
     }
+    function countAgences() {
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare('SELECT COUNT(*) FROM agence');
+            $query->execute();
+            $result = $query->fetchColumn();
+            return $result;
+        } catch (PDOException $e) {
+            echo "Erreur lors du comptage des agences : " . $e->getMessage();
+        }
+        return 0;
+    }
 }
 
+class NotificationC{
+
+
+    function addNotification($newNotif){
+        $db = config::getConnexion();
+
+        try {
+            
+            $query = $db->prepare(
+                'INSERT INTO notification (type,userId,message,dateReceived,status) 
+                    VALUES (:type,:userId,:message,:dateReceived,:status)'
+            );
+            $query->execute([
+                //'id' => $newAgence->getId(),
+
+               
+                'type' => $newNotif->getType(),
+                'userId'=> $newNotif->getUserId(),
+                'message' => $newNotif->getMessage(),
+                'dateReceived' => $newNotif->getDateReceived(),
+                'status' => $newNotif->getStatus(),
+
+            ]);
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de l'utilisateur : " . $e->getMessage();
+        }
+    }
+
+
+    function getMessage($idUser) {
+        $db = config::getConnexion();
+        $users = [];
+        try {
+            $query = $db->prepare('SELECT * FROM notification where userId= :idUser');
+            $query->execute(['idUser'=>$idUser]);
+            $result=$query->fetchAll();
+            return $result;
+            
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des agences : " . $e->getMessage();
+        }
+        return $users;
+    }
+    // Fonction pour compter le nombre de notifications lues
+function countReadNotifications() {
+    try {
+        $pdo = config::getConnexion();
+        $query = "SELECT COUNT(*) FROM notification WHERE status = 'read'";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $count_read = $stmt->fetchColumn();
+        return $count_read;
+    } catch (PDOException $e) {
+        // En cas d'erreur lors de la récupération des statistiques, affichez un message d'erreur ou redirigez vers une page d'erreur
+        echo "Erreur : " . $e->getMessage();
+        return false;
+    }
+}
+
+// Fonction pour compter le nombre de notifications non lues
+function countUnreadNotifications() {
+    try {
+        $pdo = config::getConnexion();
+        $query = "SELECT COUNT(*) FROM notification WHERE status = 'unread'";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $count_unread = $stmt->fetchColumn();
+        return $count_unread;
+    } catch (PDOException $e) {
+        // En cas d'erreur lors de la récupération des statistiques, affichez un message d'erreur ou redirigez vers une page d'erreur
+        echo "Erreur : " . $e->getMessage();
+        return false;
+    }
+}
+
+}
+class OnligneC{
+      function countLoggedInUsers() {
+        // Connexion à la base de données
+        $pdo = config::getConnexion();
+        
+        // Préparer la requête pour compter tous les utilisateurs connectés
+        $query = "SELECT COUNT(*) FROM onligne";
+        $stmt = $pdo->query($query);
+        
+        // Récupérer le nombre d'utilisateurs connectés
+        $loggedInUsersCount = $stmt->fetchColumn();
+        
+        return $loggedInUsersCount;
+    }
+    
+}
 ?>

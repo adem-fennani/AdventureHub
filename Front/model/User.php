@@ -257,5 +257,106 @@ return $this;
 }
 
 
+class notification{
+    private $number;
 
+    private $userId;
+    private $type;
+
+    private $message;
+    private $dateReceived;
+    private $status;
+
+    public function __construct($type,$userId, $message, $dateReceived, $status, $number=null) {
+        $this->number = $number;
+        $this->type = $type;
+        $this->message = $message;
+        $this->dateReceived = $dateReceived;
+        $this->status = $status;
+        $this->userId=$userId;
+    }
+    public function getNumber()
+    {
+    return $this->number;
+    }
+
+    public function getUserId()
+    {
+    return $this->userId;
+    }
+    public function setNumber($number)
+    {
+    $this->number = $number;
+    return $this;
+    }
+
+    public function setUserId($userId)
+    {
+    $this->$userId = $userId;
+    return $this;
+    }
+    public function getType()
+{
+return $this->type;
+}
+public function setType($type)
+{
+$this->type = $type;
+return $this;
+}
+public function getMessage()
+{
+return $this->message;
+}
+public function setMessage($message)
+{
+$this->message = $message;
+return $this;
+}
+public function getDateReceived()
+{
+return $this->dateReceived;
+}
+public function setDateReceived($dateReceived)
+{
+$this->dateReceived = $dateReceived;
+return $this;
+}
+public function getStatus()
+{
+return $this->status;
+}
+public function setStatus($status)
+{
+$this->status = $status;
+return $this;
+}
+}
+class Onligne{
+    private $id;
+    private $time;
+
+    public function __construct($time, $id=null) {
+        $this->id = $id;
+        $this->time = $time;
+    }
+    public function getId()
+    {
+    return $this->id;
+    }
+    public function setId($id)
+    {
+    $this->id = $id;
+    return $this;
+    }
+    public function getTime()
+{
+return $this->time;
+}
+public function setTime($time)
+{
+$this->time = $time;
+return $this;
+}
+}
 ?>

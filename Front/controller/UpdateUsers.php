@@ -5,7 +5,7 @@ require_once '../model/User.php';
 require_once '../config.php';
 require_once '../controller/loginController.php';
 require_once '../view/functions.php';
-//session_start();
+session_start();
 
 // Vérifier si la clé 'userId' est définie dans $_SESSION
 if (isset($_SESSION["type"])) {

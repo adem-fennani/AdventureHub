@@ -1,7 +1,15 @@
+<?php
+session_start();
+
+require_once '../view/functions.php';
+is_connect();
+include_once "../config.php";
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>News and Tips - Backoffice</title>
+  <title>Acceuil</title>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -12,7 +20,7 @@
   font-optical-sizing: auto;
   font-style: normal;
     }
-
+    
 </style>
 <link rel="icon" href="image/logo.png" type="image/png">
 
@@ -22,13 +30,14 @@
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-    <a href="#home" class="w3-bar-item w3-button"><img src="image/logo.png" alt="AdventureHub logo" width="40px"> Conseils & actualités</a>
+    <a href="#home" class="w3-bar-item w3-button"><img src="image/logo.png" alt="AdventureHub logo" width="40px"> AdventureHub</a>
     <!-- Float links to the right. Hide them on small screens -->
 
     <div class="w3-right w3-hide-small">
-      <a href="#home" class="w3-bar-item w3-button">Acceuil</a>
+      <a href="http://localhost/gestion_users/Front/view/index.php" class="w3-bar-item w3-button">Acceuil</a>
       <a href="#shop" class="w3-bar-item w3-button">Boutique</a>
       <a href="#Agency" class="w3-bar-item w3-button">Agences</a>
+      <a href="http://localhost/gestion_users/Front/view/logout.php" class="w3-bar-item w3-button">Se deconnecter</a>
       <a href="http://localhost/gestion_users/Front/controller/profilController.php" class="w3-bar-item w3-button">profil</a>
     </div>
   </div>
@@ -41,7 +50,6 @@
     <h1 class="w3-xxlarge w3-text-white"><img src="image/logo white.png" alt="logo white" width="80px"> Accueil</h1>
   </div>
 </header>
-
 
 <!-- Footer -->
 <footer class="w3-center w3-black w3-padding-16">

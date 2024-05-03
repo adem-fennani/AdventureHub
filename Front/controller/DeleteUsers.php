@@ -37,7 +37,7 @@ if (isset($_SESSION["type"])) {
         $_SESSION['type'] = "";
         $_SESSION = null;
         session_destroy();
-        header("location:../View/index.html");
+        header("location:../View/index.php");
     }
 
     //else if (preg_match("/{$searchAgence}/i", $userId)) {
@@ -57,7 +57,7 @@ if (isset($_SESSION["type"])) {
         $_SESSION['type'] = "";
         $_SESSION = null;
         session_destroy();
-        header("location:../View/index.html");
+        header("location:../View/index.php");
     }
     //==================== DELETING TEACHER PART ENDS =============================
 } else {

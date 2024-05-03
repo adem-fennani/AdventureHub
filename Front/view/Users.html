@@ -32,16 +32,21 @@
 
     </script>
 
+    <script>
+        function redirectForm() {
+            window.location.href = "login.php?userType=user";
+        }
+    </script>
+
 </head>
 
 <body>
 
-    <!-- Navbar (sit on top) -->
+    <!-- Navbar (sit on top) 
     <div class="w3-top">
         <div class="w3-bar w3-white w3-wide w3-padding w3-card">
             <a href="#home" class="w3-bar-item w3-button"><img src="image/logo.png" alt="AdventureHub logo"
                     width="40px">AdventureHub</a>
-            <!-- Float links to the right. Hide them on small screens -->
 
             <div class="w3-right w3-hide-small">
                 <a href="#home" class="w3-bar-item w3-button">Acceuil</a>
@@ -51,7 +56,7 @@
             </div>
         </div>
     </div>
-
+-->
     <!-- Header -->
     <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
         <img class="w3-image" src="image/bgphoto.jpg" alt="Architecture" width="1500" height="800">
@@ -114,8 +119,20 @@
                             <div class="col-md-6">
                                 <div class="singel-form form-group">
                                     <i class="fa fa-lock fa-lg fa-fw" aria-hidden="true"></i>
-                                    <input type="text" name="adresse" id="adresse" placeholder="adresse"
+                                    <select name="adresse" id="adresse"
                                         style="height: 3.25rem; width: 15rem; border-radius: 5px;">
+                                        <option value=""> Choisissez un pays </option>
+                                        <option value="Algerie">Algerie</option>
+                                        <option value="France">France</option>
+                                        <option value="Libia">Libye</option>
+                                        <option value="Mali">Mali</option>
+                                        <option value="Maroc">Maroc</option>
+                                        <option value="Tunisie">Tunisie</option>
+                                        <option value="Turquie">Turquie</option>
+                                        <option value="United States">United States</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <!-- Ajoutez d'autres pays au besoin -->
+                                    </select>
                                 </div>
                             </div>
                             <span id="error_adresse" style="color: red; font-size: 0.75em;"></span>
@@ -151,12 +168,13 @@
                             <br>
                             <div class="g-recaptcha" data-sitekey="6LcWnJ8dAAAAAMD9J3fK1MNsAaF8AIdqZYmTCjz_"></div>
                             <br>
-                            <input type="submit" value="S'inscrire" id="submitButton" class="main-btn">
+                            <input type="submit" onclick="redirectForm()" value="S'inscrire" id="submitButton"
+                                class="main-btn">
                         </form>
                     </div>
-                    <br>
 
-                    <h6 style="font-size: 1.25em; color: white;">Already have an account? <a href="login.html"
+
+                    <h6 style="font-size: 1.25em; color: white;">Already have an account? <a href="login.php"
                             style="text-decoration: underline;">Login</a></h6>
                 </center>
             </div>
@@ -233,10 +251,8 @@
                 errorMessageNom.innerHTML = "";
 
             // Validation de l'adresse
-            if (userAdresse.value.length === 0)
-                errorMessageAdresse.innerHTML = 'Address is required';
-                else if (!/^[a-zA-Z]+$/.test(adresse.value))
-                errorMessageAdresse.innerHTML = 'adresse should only contain alphabetic characters';
+            if (userAdresse.value === "")
+                errorMessageAdresse.innerHTML = 'Veuillez sélectionner un pays dans la liste';
             else
                 errorMessageAdresse.innerHTML = "";
 
