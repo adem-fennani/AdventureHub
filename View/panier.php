@@ -84,14 +84,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" id="adresse_livraison" name="adresse_livraison">
                 <input type="hidden" name="idLigne" value="<?php echo $ligneDeCommande->getLastInsertId(); ?>">
                 <input type="hidden" name="prixLigne" value="<?php echo $prixLigne; ?>">
-                <button type="submit" class="w3-button w3-light-grey">Commander</button>
+                <button type="submit" class="w3-button w3-light-grey" onclick="return displaySuccessAlert()">Commander</button>
             </form>
         </div>
 
         <div style="text-align: center; margin-top: 50px;">
             <img src="images/cart.png" alt="Shopping Cart Image" width="100" height="80" />
         </div>
-
+        <script src="script/panier.js"></script>
     </body>
 
     </html>
