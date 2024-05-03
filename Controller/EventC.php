@@ -62,7 +62,7 @@ class EventC
                     description = :description, 
                     location = :location,
                     date = :date,
-                    status = :status,
+                    status = :status
 
                 WHERE id= :id'
             );

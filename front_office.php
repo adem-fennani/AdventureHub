@@ -120,7 +120,7 @@ img {vertical-align: middle;}
 
 
 </style>
-<link rel="icon" href="logo.png" type="image/png">
+<link rel="icon" href="img/logo.png" type="image/png">
 
 </head>
 <body>
@@ -350,7 +350,7 @@ img {vertical-align: middle;}
 
     //redirect func
     function redirectForm() {
-      window.location.href="addevent.html";
+      window.location.href="View/addEvent.php";
   
       }
       </script>

@@ -1,44 +1,39 @@
 <?php
 
-include '../Controller/EventC.php';
+include '../Controller/FeedbackC.php';
 
 $error = "";
 
-// create event
-$event = null;
+// create feed
+$feedback = null;
 
 // create an instance of the controller
-$eventC = new EventC();
+$feedbackC = new FeedbackC();
 if (
     isset($_POST["id"]) &&
-    isset($_POST["host"]) &&
-    isset($_POST["nom"]) &&
-    isset($_POST["description"]) &&
-    isset($_POST["location"]) &&
-    isset($_POST["date"]) &&
-    isset($_POST["status"])
+    isset($_POST["ide"]) &&
+    isset($_POST["idu"]) &&
+    isset($_POST["contenu"]) &&
+    isset($_POST["publicationDate"]) 
+
  ) {
     if (
         !empty($_POST["id"]) &&
-        !empty($_POST["host"]) &&
-        !empty($_POST["nom"]) &&
-        !empty($_POST["description"]) &&
-        !empty($_POST["location"]) &&
-        !empty($_POST["date"]) &&
-        !empty($_POST["status"])
+        !empty($_POST["ide"]) &&
+        !empty($_POST["idu"]) &&
+        !empty($_POST["contenu"]) &&
+        !empty($_POST["publicationDate"])
     ) {
-        $event = new Event(
+        $feedback = new Feedback(
             $_POST['id'],
-            $_POST['host'],
-            $_POST['nom'],
-            $_POST['description'],
-            $_POST['location'],
-            new DateTime($_POST['date']),
-            $_POST['status']
-            
+            $_POST['ide'],
+            $_POST['idu'],
+            $_POST['contenu'],
+            new DateTime($_POST['publicationDate'])
+      
         );
-        $eventC->updateEvent($event, $_POST["id"]);
-        header('Location:ListEvents.php');
+        $feedbackC->updateFeedback($feedback, $_POST["id"]);
+        header('Location:ListFeedbacks.php');
     } else
         $error = "Missing information";
 }
@@ -56,7 +51,7 @@ if (
 </head>
 
 <body>
-    <button><a href="ListEvents.php">Back to list</a></button>
+    <button><a href="ListFeedbacks.php">Back to list</a></button>
      <!-- Navbar (sit on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
@@ -86,69 +81,58 @@ if (
 
     <?php
     if (isset($_POST['id'])) {
-        $event = $eventC->showEvent($_POST['id']);
+        $feedback = $feedbackC->showFeedback($_POST['id']);
 
     ?>
 
-        <form action="" method="POST" id="formup">
+        <form action="" method="POST" id="form">
             <table  align="center">
                 <tr>
                     <td>
                         <label for="id">Id :
                         </label>
                     </td>
-                    <td><input type="text" name="id" id="id" value="<?php echo $event['id']; ?>" maxlength="20"></td>
+                    <td><input type="text" name="id" id="id" value="<?php echo $feedback['id']; ?>" maxlength="20"></td>
                     
                 </tr>
                 <tr>
                     <td>
-                        <label for="host">host:
+                        <label for="ide"> id evenement:
                         </label>
                     </td>
-                    <td><input type="text" name="host" id="host" value="<?php echo $event['host']; ?>" maxlength="20"></td>
-                    <td> <span id="erreurHost" style='color:red' ></span></td>
+                    <td><input type="text" name="ide" id="ide" value="<?php echo $feedback['ide']; ?>" maxlength="20"></td>
+                    <td> <span id="erreur id evenement" style='color:red' ></span></td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="nom">nom:
+                        <label for="idu">id utilisateur:
                         </label>
                     </td>
-                    <td><input type="text" name="nom" id="nom" value="<?php echo $event['nom']; ?>" maxlength="20"></td>
+                    <td><input type="text" name="idu" id="idu" value="<?php echo $feedback['idu']; ?>" maxlength="20"></td>
                     <td> <span id="erreurNom" style='color:red' ></span></td>
                 </tr>
                 <tr>
                 <td>
-                    <label for="description">description:
+                    <label for="contenu">contenu:
                     </label>
                 </td>
-                <td><input type="text" name="description" id="description" value="<?php echo $event['description']; ?>" ></td>
+                <td><input type="text" name="contenu" id="contenu" value="<?php echo $feedback['contenu']; ?>" ></td>
             </tr>
+            
             <tr>
                 <td>
-                    <label for="location">location:
+                    <label for="publicationDate">Date de publication :
                     </label>
                 </td>
                 <td>
-                    <input type="text" name="location" id="location" value="<?php echo $event['location']; ?>" maxlength="20">
+                <input type="date" name="publicationDate" id="publicationDate" value="<?php echo date('Y-m-d', strtotime($feedback['publicationDate'])); ?>">
                 </td>
             </tr>
+            
+            
+                
+            
             <tr>
-                <td>
-                    <label for="date">Date :
-                    </label>
-                </td>
-                <td>
-                <input type="date" name="date" id="date" value="<?php echo date('Y-m-d', strtotime($event['date'])); ?>">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="status">status:
-                    </label>
-                </td>
-                <td><input type="text" name="status" id="status" value="<?php echo $event['status']; ?>" maxlength="20"></td>
-            </tr>
-                <tr>
                     <td></td>
                     <td>
                         <input type="submit" value="Update">
@@ -159,6 +143,7 @@ if (
                 </tr>
             </table>
         </form>
+        
     <?php
     }
     ?>
