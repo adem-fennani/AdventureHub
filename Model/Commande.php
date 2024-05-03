@@ -72,4 +72,54 @@ class Commande
         $stmt->bindParam(":adresse_livraison", $adresseLivraison);
         $stmt->execute();
     }
+    // Method to display all commandes from the database
+    public function displayCommandeAdmin()
+    {
+        $query = "SELECT * FROM commande";
+        $stmt = $this->db->query($query);
+        $commandes = $stmt->fetchAll();
+        foreach ($commandes as $commande) {
+            echo "<tr>";
+            echo "<td>" . $commande['id_commande'] . "</td>";
+            echo "<td>" . $commande['id_ligne'] . "</td>";
+            echo "<td>" . $commande['prix_commande'] . "</td>";
+            echo "<td>" . $commande['statut_commande'] . "</td>";
+            echo "<td>" . $commande['adresse_livraison'] . "</td>";
+            echo "<td>
+                    <form method='post' action='../Controller/deleteCommande.php'>
+                        <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
+                        <button type='submit' name='delete_commande'>Delete</button>
+                    </form>
+                  </td>";
+            echo "</tr>";
+        }
+    }
+
+    public function deleteCommande($id_commande)
+    {
+        $query = "DELETE FROM commande WHERE id_commande = :id_commande";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_commande", $id_commande);
+        $stmt->execute();
+    }
+
+    public function updateCommande($id_commande, $new_statut)
+    {
+        // Prepare the update query
+        $query = "UPDATE commande SET statut_commande = :new_statut WHERE id_commande = :id_commande";
+
+        // Prepare the statement
+        $stmt = $this->db->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(':new_statut', $new_statut, PDO::PARAM_STR);
+        $stmt->bindParam(':id_commande', $id_commande, PDO::PARAM_INT);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            return true; // Update successful
+        } else {
+            return false; // Update failed
+        }
+    }
 }
