@@ -85,15 +85,17 @@ class Commande
             echo "<td>" . $commande['prix_commande'] . "</td>";
             echo "<td>" . $commande['statut_commande'] . "</td>";
             echo "<td>" . $commande['adresse_livraison'] . "</td>";
+            echo "<td><button type='submit' name='delete' value='" . $commande['id_commande'] . "'>Delete</button></td>";
             echo "<td>
-                    <form method='post' action='../Controller/deleteCommande.php'>
+                    <form method='POST' action='../Controller/updateCommande.php'>
                         <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
-                        <button type='submit' name='delete_commande'>Delete</button>
+                        <button type='submit' name='update'>Update</button>
                     </form>
                   </td>";
             echo "</tr>";
         }
     }
+
 
     public function deleteCommande($id_commande)
     {
@@ -120,6 +122,33 @@ class Commande
             return true; // Update successful
         } else {
             return false; // Update failed
+        }
+    }
+
+    public function getCommandeStatut($id_commande)
+    {
+        $query = "SELECT statut_commande FROM commande WHERE id_commande = :id_commande";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(['id_commande' => $id_commande]);
+        $result = $stmt->fetch();
+        return $result['statut_commande'];
+    }
+
+    public function updateCommandeStatut($current_statut)
+    {
+        switch ($current_statut) {
+            case 'Non traité':
+                return 'En cours de traitement';
+                break;
+            case 'En cours de traitement':
+                return 'Délivré';
+                break;
+            case 'Délivré':
+                return 'Non traité';
+                break;
+            default:
+                return 'Non traité'; // Default to "Non traité" if the current status is invalid
+                break;
         }
     }
 }
