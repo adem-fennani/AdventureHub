@@ -75,9 +75,40 @@ class Commande
     // Method to display all commandes from the database
     public function displayCommandeAdmin()
     {
+        // Check if a status filter is set
+        $filter = isset($_POST['status_filter']) ? $_POST['status_filter'] : '';
+
+        // Form for selecting status filter
+        echo "<form method='POST' action='#'>";
+        echo "<input type='radio' id='tous' name='status_filter' value='tous' ";
+        if ($filter == 'tous') echo "checked";
+        echo "><label for='tous'>Tous</label>";
+        echo "<input type='radio' id='non_traite' name='status_filter' value='Non traité' ";
+        if ($filter == 'Non traité') echo "checked";
+        echo "><label for='non_traite'>Non traité</label>";
+        echo "<input type='radio' id='en_traitement' name='status_filter' value='En cours de traitement' ";
+        if ($filter == 'En cours de traitement') echo "checked";
+        echo "><label for='en_traitement'>En cours de traitement</label>";
+        echo "<input type='radio' id='delivre' name='status_filter' value='Délivré' ";
+        if ($filter == 'Délivré') echo "checked";
+        echo "><label for='delivre'>Délivré</label>";
+        echo "<button type='submit'>Filter</button>";
+        echo "</form>";
+
+        // Adjust the SQL query based on the selected filter
         $query = "SELECT * FROM commande";
-        $stmt = $this->db->query($query);
+        if (!empty($filter) && $filter != 'tous') {
+            $query .= " WHERE statut_commande = :statut_commande";
+        }
+
+        $stmt = $this->db->prepare($query);
+        if (!empty($filter) && $filter != 'tous') {
+            $stmt->bindParam(":statut_commande", $filter);
+        }
+        $stmt->execute();
         $commandes = $stmt->fetchAll();
+
+        // Display commandes
         foreach ($commandes as $commande) {
             echo "<tr>";
             echo "<td>" . $commande['id_commande'] . "</td>";
@@ -87,14 +118,17 @@ class Commande
             echo "<td>" . $commande['adresse_livraison'] . "</td>";
             echo "<td><button type='submit' name='delete' value='" . $commande['id_commande'] . "'>Delete</button></td>";
             echo "<td>
-                    <form method='POST' action='../Controller/updateCommande.php'>
-                        <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
-                        <button type='submit' name='update'>Update</button>
-                    </form>
-                  </td>";
+                <form method='POST' action='../Controller/updateCommande.php'>
+                    <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
+                    <button type='submit' name='update'>Update</button>
+                </form>
+              </td>";
             echo "</tr>";
         }
     }
+
+
+
 
 
     public function deleteCommande($id_commande)

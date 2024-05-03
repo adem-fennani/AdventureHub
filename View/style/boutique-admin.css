@@ -13,3 +13,28 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+.radio-toolbar input[type="radio"] {
+  display: none;
+}
+
+.radio-toolbar label {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+}
+
+.radio-toolbar label:hover {
+  background-color: #ddd;
+}
+
+.radio-toolbar input[type="radio"]:checked + label {
+  background-color: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+

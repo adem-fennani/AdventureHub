@@ -24,6 +24,7 @@ $commandeModel = new Commande($pdo);
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style/boutique-admin.css" />
   <link rel="icon" href="images/logo.png" type="image/png" />
+
 </head>
 
 <body class="w3-light-grey">
