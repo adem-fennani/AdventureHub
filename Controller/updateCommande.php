@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $new_statut = $commande->updateCommandeStatut($current_statut);
 
         // Update the commande in the database
-        $commande->updateCommande($id_commande, $new_statut);
+        $commande->updateCommandeAdmin($id_commande, $new_statut);
 
         // Redirect back to the page
         header("Location: ../View/boutique-admin.php");

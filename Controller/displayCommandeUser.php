@@ -9,7 +9,7 @@ $pdo = config::getConnexion();
 $commandeModel = new Commande($pdo);
 
 // Display commandes for the user
-$commandeModel->displayUser();
+$commandeModel->displayCommandeUser();
 
 ?>
 

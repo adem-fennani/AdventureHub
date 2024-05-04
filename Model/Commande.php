@@ -117,7 +117,7 @@ class Commande
             echo "<td>" . $commande['statut_commande'] . "</td>";
             echo "<td>" . $commande['adresse_livraison'] . "</td>";
             echo "<td>
-            <form method='POST' action='../Controller/deleteCommande.php'>
+            <form method='POST' action='../Controller/deleteCommandeAdmin.php'>
                 <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
                 <button type='submit' name='delete_commande'>Delete</button>
             </form>
@@ -132,7 +132,7 @@ class Commande
         }
     }
 
-    public function displayUser()
+    public function displayCommandeUser()
     {
         // Adjust the SQL query to fetch only commandes with "statut_commande" equals to "Non traité"
         $query = "SELECT * FROM commande WHERE statut_commande = 'Non traité'";
@@ -149,19 +149,24 @@ class Commande
             echo "<thead>";
             echo "<tr class='w3-blue'>";
             echo "<th>ID</th>";
-            echo "<th>Ligne</th>";
             echo "<th>Prix</th>";
             echo "<th>Statut</th>";
             echo "<th>Adresse de livraison</th>";
+            echo "<th></th>";
             echo "</tr>";
             echo "</thead>";
             echo "<tbody>";
             echo "<tr>";
             echo "<td>" . $commande['id_commande'] . "</td>";
-            echo "<td>" . $commande['id_ligne'] . "</td>";
-            echo "<td>" . $commande['prix_commande'] . "</td>";
+            echo "<td>" . $commande['prix_commande'] . ".000 DT</td>";
             echo "<td>" . $commande['statut_commande'] . "</td>";
             echo "<td>" . $commande['adresse_livraison'] . "</td>";
+            echo "<td>
+            <form method='POST' action='../Controller/deleteCommandeUser.php'>
+                <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
+                <button type='submit' name='delete_commande'>Delete</button>
+            </form>
+            </td>";
             echo "</tr>";
             echo "</tbody>";
             echo "</table>";
@@ -181,7 +186,7 @@ class Commande
         $stmt->execute();
     }
 
-    public function updateCommande($id_commande, $new_statut)
+    public function updateCommandeAdmin($id_commande, $new_statut)
     {
         // Prepare the update query
         $query = "UPDATE commande SET statut_commande = :new_statut WHERE id_commande = :id_commande";
