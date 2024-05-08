@@ -80,18 +80,12 @@ class Commande
 
         // Form for selecting status filter
         echo "<form method='POST' action='#'>";
-        echo "<input type='radio' id='tous' name='status_filter' value='tous' ";
-        if ($filter == 'tous') echo "checked";
-        echo "><label for='tous'>Tous</label>";
-        echo "<input type='radio' id='non_traite' name='status_filter' value='Non traité' ";
-        if ($filter == 'Non traité') echo "checked";
-        echo "><label for='non_traite'>Non traité</label>";
-        echo "<input type='radio' id='en_traitement' name='status_filter' value='En cours de traitement' ";
-        if ($filter == 'En cours de traitement') echo "checked";
-        echo "><label for='en_traitement'>En cours de traitement</label>";
-        echo "<input type='radio' id='delivre' name='status_filter' value='Délivré' ";
-        if ($filter == 'Délivré') echo "checked";
-        echo "><label for='delivre'>Délivré</label>";
+        echo "<select name='status_filter'>";
+        echo "<option value='tous' " . ($filter == 'tous' ? 'selected' : '') . ">Tous</option>";
+        echo "<option value='Non traité' " . ($filter == 'Non traité' ? 'selected' : '') . ">Non traité</option>";
+        echo "<option value='En cours de traitement' " . ($filter == 'En cours de traitement' ? 'selected' : '') . ">En cours de traitement</option>";
+        echo "<option value='Délivré' " . ($filter == 'Délivré' ? 'selected' : '') . ">Délivré</option>";
+        echo "</select>";
         echo "<button type='submit'>Filter</button>";
         echo "</form>";
 
@@ -110,27 +104,30 @@ class Commande
 
         // Display commandes
         foreach ($commandes as $commande) {
-            echo "<tr>";
-            echo "<td>" . $commande['id_commande'] . "</td>";
-            echo "<td>" . $commande['id_ligne'] . "</td>";
-            echo "<td>" . $commande['prix_commande'] . "</td>";
-            echo "<td>" . $commande['statut_commande'] . "</td>";
-            echo "<td>" . $commande['adresse_livraison'] . "</td>";
-            echo "<td>
-            <form method='POST' action='../Controller/deleteCommandeAdmin.php'>
-                <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
-                <button type='submit' name='delete_commande'>Delete</button>
-            </form>
-          </td>";
-            echo "<td>
-            <form method='POST' action='../Controller/updateCommande.php'>
-                <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
-                <button type='submit' name='update'>Update</button>
-            </form>
-          </td>";
-            echo "</tr>";
+?>
+            <tr>
+                <td><?php echo $commande['id_commande']; ?></td>
+                <td><?php echo $commande['id_ligne']; ?></td>
+                <td><?php echo $commande['prix_commande']; ?>.000</td>
+                <td><?php echo $commande['statut_commande']; ?></td>
+                <td><?php echo $commande['adresse_livraison']; ?></td>
+                <td>
+                    <form method='POST' action='../Controller/CommandeC.php'>
+                        <input type='hidden' name='id_commande' value='<?php echo $commande['id_commande']; ?>'>
+                        <button type='submit' name='delete_commande_admin'>Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <form method='POST' action='../Controller/CommandeC.php'>
+                        <input type='hidden' name='id_commande' value='<?php echo $commande['id_commande']; ?>'>
+                        <button type='submit' name='update'>Update</button>
+                    </form>
+                </td>
+            </tr>
+<?php
         }
     }
+
 
     public function displayCommandeUser()
     {
@@ -164,7 +161,7 @@ class Commande
             echo "<td>
             <form method='POST' action='../Controller/deleteCommandeUser.php'>
                 <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
-                <button type='submit' name='delete_commande'>Delete</button>
+                <button type='submit' name='delete_commande_user'>Delete</button>
             </form>
             </td>";
             echo "</tr>";
