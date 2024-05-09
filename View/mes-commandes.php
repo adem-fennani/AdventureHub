@@ -15,7 +15,7 @@
     <!-- Navbar (sit on top) -->
     <div class="w3-top">
         <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-            <a href="#home" class="w3-bar-item w3-button"><img src="images/logo.png" alt="AdventureHub logo" width="40px" />
+            <a href="front-office.html" class="w3-bar-item w3-button"><img src="images/logo.png" alt="AdventureHub logo" width="40px" />
                 AdventureHub</a>
             <!-- Float links to the right. Hide them on small screens -->
 

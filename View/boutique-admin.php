@@ -103,76 +103,109 @@ $commandeModel = new Commande($pdo);
     <hr />
     <div class="w3-container">
       <h5>Statistiques générales</h5>
-      <p>Nouveaux commandes</p>
-      <div class="w3-grey">
-        <div class="w3-container w3-center w3-padding w3-green" style="width: 100%">
-          + ?
-        </div>
-      </div>
-
       <p>Commandes non traités</p>
       <div class="w3-grey">
-        <div class="w3-container w3-center w3-padding w3-orange" style="width: 100%">
-          ?
+        <div class="w3-container w3-center w3-padding" style="width: 100%; 
+        <?php
+        // Count the number of commandes with "Non traité" statut_commande
+        $query = "SELECT COUNT(*) as count FROM commande WHERE statut_commande = 'Non traité'";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        // Set background color based on the count
+        if ($count <= 4) {
+          echo "background-color: #8bc34a;";
+        } elseif ($count >= 5 && $count <= 9) {
+          echo "background-color: orange;";
+        } else {
+          echo "background-color: red;";
+        }
+        ?>">
+          <?php echo $count; ?>
         </div>
       </div>
-    </div>
-    <hr />
 
-    <div class="w3-container">
-      <h5>Produits</h5>
-      <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-        <tr>
-          <td>Sac à dos</td>
-          <td>49.000 DT</td>
-        </tr>
-        <tr>
-          <td>Chapeau</td>
-          <td>19.000 DT</td>
-        </tr>
-        <tr>
-          <td>Parapluie</td>
-          <td>15.000 DT</td>
-        </tr>
-        <tr>
-          <td>Trousse de secours</td>
-          <td>7.000 DT</td>
-        </tr>
-      </table>
+      <p>Répartition des commandes</p>
+      <div class="w3-container">
+        <?php
+        // Get the count of each status
+        $delivreCount = $commandeModel->getStatutCount("Délivré");
+        $enTraitementCount = $commandeModel->getStatutCount("En cours de traitement");
+        $nonTraiteCount = $commandeModel->getStatutCount("Non traité");
+
+        // Calculate percentages
+        $totalCount = $delivreCount + $enTraitementCount + $nonTraiteCount;
+        $delivrePercent = ($delivreCount / $totalCount) * 100;
+        $enTraitementPercent = ($enTraitementCount / $totalCount) * 100;
+        $nonTraitePercent = ($nonTraiteCount / $totalCount) * 100;
+        ?>
+        <div class="w3-container" style="background-color: rgba(0, 0, 255, 0.5); width: <?php echo $delivrePercent; ?>%">
+          <p>Délivré (<?php echo round($delivrePercent, 2); ?>%)</p>
+        </div>
+        <div class="w3-container" style="background-color: rgba(0, 255, 255, 0.5); width: <?php echo $enTraitementPercent; ?>%">
+          <p>En cours de traitement (<?php echo round($enTraitementPercent, 2); ?>%)</p>
+        </div>
+        <div class="w3-container" style="background-color: rgba(255, 255, 0, 0.5); width: <?php echo $nonTraitePercent; ?>%">
+          <p>Non traité (<?php echo round($nonTraitePercent, 2); ?>%)</p>
+        </div>
+      </div>
+
+
+
+      <div class="w3-container">
+        <h5>Produits</h5>
+        <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+          <tr>
+            <td>Sac à dos</td>
+            <td>49.000 DT</td>
+          </tr>
+          <tr>
+            <td>Chapeau</td>
+            <td>19.000 DT</td>
+          </tr>
+          <tr>
+            <td>Parapluie</td>
+            <td>15.000 DT</td>
+          </tr>
+          <tr>
+            <td>Trousse de secours</td>
+            <td>7.000 DT</td>
+          </tr>
+        </table>
+        <br />
+        <button class="w3-button w3-dark-grey">
+          Plus de produits<i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
+      <hr />
+      <div class="w3-container">
+        <h5>Fournisseurs récents</h5>
+        <ul class="w3-ul w3-card-4 w3-white">
+          <li class="w3-padding-16">
+            <img src="images/mike.jpg" class="w3-left w3-circle w3-margin-right" style="width: 35px" />
+            <span class="w3-xlarge">Mike</span><br />
+          </li>
+          <li class="w3-padding-16">
+            <img src="images/jill.jpg" class="w3-left w3-circle w3-margin-right" style="width: 35px" />
+            <span class="w3-xlarge">Jill</span><br />
+          </li>
+          <li class="w3-padding-16">
+            <img src="images/jane.jpg" class="w3-left w3-circle w3-margin-right" style="width: 35px" />
+            <span class="w3-xlarge">Jane</span><br />
+          </li>
+        </ul>
+      </div>
+      <hr />
+
       <br />
-      <button class="w3-button w3-dark-grey">
-        Plus de produits<i class="fa fa-arrow-right"></i>
-      </button>
+
+      <!-- Footer -->
+      <footer class="w3-container w3-padding-16 w3-light-grey">
+        <h4>AdventureHub</h4>
+      </footer>
+
+      <!-- End page content -->
     </div>
-    <hr />
-    <div class="w3-container">
-      <h5>Fournisseurs récents</h5>
-      <ul class="w3-ul w3-card-4 w3-white">
-        <li class="w3-padding-16">
-          <img src="images/mike.jpg" class="w3-left w3-circle w3-margin-right" style="width: 35px" />
-          <span class="w3-xlarge">Mike</span><br />
-        </li>
-        <li class="w3-padding-16">
-          <img src="images/jill.jpg" class="w3-left w3-circle w3-margin-right" style="width: 35px" />
-          <span class="w3-xlarge">Jill</span><br />
-        </li>
-        <li class="w3-padding-16">
-          <img src="images/jane.jpg" class="w3-left w3-circle w3-margin-right" style="width: 35px" />
-          <span class="w3-xlarge">Jane</span><br />
-        </li>
-      </ul>
-    </div>
-    <hr />
-
-    <br />
-
-    <!-- Footer -->
-    <footer class="w3-container w3-padding-16 w3-light-grey">
-      <h4>AdventureHub</h4>
-    </footer>
-
-    <!-- End page content -->
-  </div>
 </body>
 
 </html>

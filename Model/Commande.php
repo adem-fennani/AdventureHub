@@ -229,4 +229,25 @@ class Commande
                 break;
         }
     }
+
+    public function getStatutCount($statut)
+    {
+        // Prepare the SQL query
+        $query = "SELECT COUNT(*) AS count FROM commande WHERE statut_commande = :statut";
+
+        // Prepare the statement
+        $stmt = $this->db->prepare($query);
+
+        // Bind the parameter
+        $stmt->bindParam(":statut", $statut);
+
+        // Execute the statement
+        $stmt->execute();
+
+        // Fetch the result
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Return the count
+        return $result['count'];
+    }
 }
