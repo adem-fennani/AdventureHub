@@ -10,8 +10,8 @@ class Reclamation
     public function __construct($id = null, $n, $p, $em, $d)
     {
         $this->id = $id;
-        $this->lastName = $n;
-        $this->firstName = $p;
+        $this->firstName = $n;
+        $this->lastName = $p;
         $this->contenu = $em;
         $this->Date_rec = $d;
     }

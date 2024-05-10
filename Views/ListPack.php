@@ -1,39 +1,12 @@
 <?php
-include '../Controller/ReclamationC.php';
-$reclamationC = new ReclamationC();
-
-// Fetch the list of complaints
-$result = $reclamationC->ListReclamation();
-
-if ($result) {
-    // Convert the result to an array of associative arrays
-    $list = $result->fetchAll(PDO::FETCH_ASSOC);
-
-    // Get the sorting option from the form
-    $sortOption = isset($_GET['sortOption']) ? $_GET['sortOption'] : 'Date_rec_DESC';
-
-    // Sort the data based on the selected option
-    switch ($sortOption) {
-        case 'Date_rec_ASC':
-            usort($list, function($a, $b) {
-                return strtotime($a['Date_rec']) - strtotime($b['Date_rec']);
-            });
-            break;
-        case 'Date_rec_DESC':
-            usort($list, function($a, $b) {
-                return strtotime($b['Date_rec']) - strtotime($a['Date_rec']);
-            });
-            break;
-    }
-} else {
-    // Handle the case where the query fails or returns null
-    $list = array(); // Initialize an empty array
-}
+include '../Controller/PackC.php';
+$packC = new PackC();
+$list = $packC->listPack();
 ?>
-
+<!DOCTYPE html>
 <html>
-
-<head><title>News and Tips - Backoffice</title>
+<head>
+  <title>News and Tips - Backoffice</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -145,49 +118,37 @@ if ($result) {
 
 <!-- List of complaints -->
 <div class="w3-container">
-  <h1 class="w3-border-bottom w3-border-light-grey w3-padding-16">List of Complaint</h1>
+  <h1 class="w3-border-bottom w3-border-light-grey w3-padding-16">List of Packs</h1>
   <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">
     <button class="w3-button w3-black w3-section" type="submit">
-      <a href="addReclamation.php" class="fa fa-paper-plane" style="text-decoration: none;">Add Complaint</a>
+      <a href="addPack.php" class="fa fa-paper-plane" style="text-decoration: none;">Add Pack</a>
     </button>
   </h2>
-  <!-- Sorting form -->
-  <form id="sortForm" action="" method="GET">
-            <label for="sortOption">Trier par :</label>
-            <select name="sortOption" id="sortOption">
-                <option value="Date_rec_ASC">Date (plus ancienne d'abord)</option>
-                <option value="Date_rec_DESC">Date (plus récente d'abord)</option>
-                <!-- Add other sorting options as needed -->
-            </select>
-            <input type="submit" value="Appliquer">
-        </form>
-    
-
   <table class="w3-table-all">
     <tr>
-      <th>Id Reclamation</th>
-      <th>firstName</th>
-      <th>lastName</th>
-      <th>contenu</th>
-      <th>Date reclamation</th>
+      <th>Id Pack</th>
+      <th>Description</th>
+      <th>Date Depart</th>
+      <th>Date Arrivee</th>
+      <th>Hotel Name</th>
       <th>Update</th>
       <th>Delete</th>
     </tr>
-    <?php foreach ($list as $reclamation) { ?>
+    <?php foreach ($list as $pack) { ?>
       <tr>
-        <td><?= $reclamation['id']; ?></td>
-        <td><?= $reclamation['firstName']; ?></td>
-        <td><?= $reclamation['lastName']; ?></td>
-        <td><?= $reclamation['contenu']; ?></td>
-        <td><?= $reclamation['Date_rec']; ?></td>
+        <td><?= $pack['id']; ?></td>
+        <td><?= $pack['description']; ?></td>
+        <td><?= $pack['date_dep']; ?></td>
+        <td><?= $pack['date_arri']; ?></td>
+        <td><?= $pack['hotel_name']; ?></td>
         <td align="center">
-          <form method="POST" action="updateReclamation.php">
+          <form method="POST" action="updatePack.php">
             <input type="submit" class="w3-button w3-blue" name="update" value="Update">
-            <input type="hidden" value="<?= $reclamation['id']; ?>" name="id">
+            <input type="hidden" value="<?= $pack['id']; ?>" name="id">
           </form>
         </td>
         <td>
-          <a href="deleteReclamation.php?id=<?= $reclamation['id']; ?>" class="w3-button w3-red">Delete</a>
+          <a href="deletePack.php?id=<?= $pack['id']; ?>" class="w3-button w3-red">Delete</a>
         </td>
       </tr>
     <?php } ?>

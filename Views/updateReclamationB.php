@@ -31,7 +31,7 @@ if (
             new DateTime($_POST['Date_rec'])
         );
         $reclamationC->updateReclamation($reclamation, $_POST["id"]);
-        header('Location:ListReclamation.php');
+        header('Location:backoffice.php');
     } else
         $error = "Missing information";
 }

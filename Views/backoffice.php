@@ -2,6 +2,13 @@
 include '../Controller/ReclamationC.php';
 $reclamationC = new ReclamationC();
 $list = $reclamationC->ListReclamation();
+/*$statistics = $reclamationC->calculateStatistics();
+
+// Extract statistics values
+$totalReclamations = $statistics['totalReclamations'];
+$totalViews = $statistics['totalViews'];
+$totalComments = $statistics['totalComments'];
+$totalContributors = $statistics['totalContributors'];*/
 ?>
 
 
@@ -168,7 +175,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       </div>
     </div>
   </div>
-  <hr>
+  
+  
+ 
 
 
 
@@ -182,7 +191,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
             <th>lastName</th>
             <th>contenu</th>
             <th>Date_rec</th>
+            <th>Update</th>
             <th>Delete</th>
+            <th>export<th>
         </tr>
         <?php
         foreach ($list as $reclamation) {
@@ -193,9 +204,18 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
                 <td><?= $reclamation['lastName']; ?></td>
                 <td><?= $reclamation['contenu']; ?></td>
                 <td><?= $reclamation['Date_rec']; ?></td>
+                <td align="center">
+          <form method="POST" action="updateReclamationB.php">
+            <input type="submit" class="w3-button w3-blue" name="update" value="Update">
+            <input type="hidden" value="<?= $reclamation['id']; ?>" name="id">
+          </form>
+        </td>
                 
                 <td>
                     <a href="DelBoff.php?id=<?php echo $reclamation['id']; ?>"   class="w3-button w3-dark-grey">Delete</a>
+                </td>
+                <td>
+                    <a href="../Controller/export.php?id=<? echo $reclamation['id']; ?>"   class="w3-button w3-dark-grey">export into csv</a>
                 </td>
             </tr>
         <?php
@@ -247,6 +267,53 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </table><br>
   </div>
   <hr>
+  <!--hi--
+  <div class="w3-row-padding w3-margin-bottom">
+  <div class="w3-half">
+    <div class="w3-container w3-green w3-padding-16">
+      <div class="w3-left"><i class="fa fa-check-square w3-xxxlarge"></i></div>
+      <div class="w3-right">
+        <h3><?php echo $totalReclamations; ?></h3>
+      </div>
+      <div class="w3-clear"></div>
+      <h4>Total Reclamations</h4>
+    </div>
+  </div>
+  <div class="w3-half">
+    <div class="w3-container w3-orange w3-padding-16">
+      <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
+      <div class="w3-right">
+        <h3><?php echo $totalViews; ?></h3>
+      </div>
+      <div class="w3-clear"></div>
+      <h4>Total Views</h4>
+    </div>
+  </div>
+</div>
+
+<div class="w3-row-padding">
+  <div class="w3-half">
+    <div class="w3-container w3-blue w3-padding-16">
+      <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
+      <div class="w3-right">
+        <h3><?php echo $totalComments; ?></h3>
+      </div>
+      <div class="w3-clear"></div>
+      <h4>Total Comments</h4>
+    </div>
+  </div>
+  <div class="w3-half">
+    <div class="w3-container w3-red w3-padding-16">
+      <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+      <div class="w3-right">
+        <h3><?php echo $totalContributors; ?></h3>
+      </div>
+      <div class="w3-clear"></div>
+      <h4>Total Contributors</h4>
+    </div>
+  </div>
+</div>
+      -->
   <div class="w3-container">
     <h5> Contributeurs récents </h5>
     <ul class="w3-ul w3-card-4 w3-white">

@@ -4,29 +4,6 @@ include '../Model/Reclamation.php';
 
 class ReclamationC
 {
-    function listFeedbacksSortedByOption($sortOption)
-    {
-    $sql = "SELECT * FROM reclamation";
-
-    switch ($sortOption) {
-        case 'publicationDate_DESC':
-            $sql .= " ORDER BY publicationDate DESC"; // Tri par date décroissante
-            break;
-        case 'publicationDate_ASC':
-            $sql .= " ORDER BY publicationDate ASC"; // Tri par date croissante
-            break;
-        // Ajoutez d'autres cas pour les autres options de tri si nécessaire
-    }
-
-    $db = config::getConnexion();
-    try {
-        $liste = $db->query($sql);
-        return $liste;
-    } catch (Exception $f) {
-        die('Error:' . $f->getMessage());
-    }
-    }
-
     public function ListReclamation()
     {
         $sql = "SELECT * FROM reclamation";
@@ -73,28 +50,95 @@ class ReclamationC
     }
 
     function updateReclamation($reclamation, $id)
+{
+    try {
+        $db = config::getConnexion();
+        $query = $db->prepare(
+            'UPDATE reclamation SET 
+                firstName = :firstName, 
+                lastName = :lastName, 
+                contenu = :contenu, 
+                Date_rec = :Date_rec
+            WHERE id= :id'
+        );
+        $query->execute([
+            'id' => $id,
+            'firstName' => $reclamation->getFirstName(),
+            'lastName' => $reclamation->getLastName(),
+            'contenu' => $reclamation->getContenu(),
+            'Date_rec' => $reclamation->getDate_rec()->format('Y/m/d')
+        ]);
+        echo $query->rowCount() . " records UPDATED successfully <br>";
+    } catch (PDOException $e) {
+        echo'Error' . $e->getMessage();
+    }
+}
+
+    function showReclamation($id)
     {
+        $sql = "SELECT * from Reclamation where id = $id";
+        $db = config::getConnexion();
         try {
-            $db = config::getConnexion();
-            $query = $db->prepare(
-                'UPDATE reclamation SET 
-                    firstName = :firstName, 
-                    lastName = :lastName, 
-                    contenu = :contenu, 
-                    Date_rec = :Date_rec,
-                WHERE id= :id'
-            );
-            $query->execute([
-                'id' => $id,
-                'firstName' => $reclamation->getFirstName(),
-                'lastName' => $reclamation->getLastName(),
-                'contenu' => $reclamation->getContenu(),
-                'Date_rec' => $reclamation->getDate_rec()->format('Y/m/d')
-            ]);
-            echo $query->rowCount() . " records UPDATED successfully <br>";
-        } catch (PDOException $e) {
-            $e->getMessage();
+            $query = $db->prepare($sql);
+            $query->execute();
+
+            $reclamation = $query->fetch();
+            return $reclamation;
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
         }
     }
+    function exportReclamationToCSV()
+    {
+        // Fetch reclamation data
+        $reclamations = $this->listReclamation()->fetchAll(PDO::FETCH_ASSOC);
 
-}
+        // Define CSV file path
+        $csvFilePath = 'reclamations.csv';
+
+        // Open file for writing
+        $file = fopen($csvFilePath, 'w');
+
+        // Write CSV headers
+        fputcsv($file, array_keys($reclamations[0]));
+
+        // Write reclamation data to CSV
+        foreach ($reclamations as $reclamation) {
+            fputcsv($file, $reclamation);
+        }
+
+        // Close the file
+        fclose($file);
+
+        // Return CSV file path
+        return $csvFilePath;
+    }
+    
+   /* public function calculateStatistics() {
+        // Retrieve reclamations from the database
+        $stmt = $this->ListReclamation();
+        $reclamations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Initialize statistics array
+        $statistics = array(
+            'totalReclamations' => count($reclamations),
+            'totalViews' => 0,
+            'totalComments' => 0,
+            'totalContributors' => 0
+        );
+    
+        // Calculate total views, comments, and contributors
+        foreach ($reclamations as $reclamation) {
+            $statistics['totalViews'] += $reclamation['views'];
+            $statistics['totalComments'] += $reclamation['comments'];
+            $statistics['totalContributors'] += $reclamation['contributors'];
+        }
+    
+        return $statistics;*/
+    }
+    
+    
+    
+
+
+

@@ -189,7 +189,17 @@
 
 <script>
   function goToPage2() {
-    window.location.href = "complaint.php";
+    window.location.href = "addReclamation.php";
+  }
+</script>
+<!-- complaint button-->
+<button class="w3-button w3-light-grey w3-block" type="submit" onclick="goToPage3()">click here to add a Pack
+    <i class="fa fa-paper-plane"></i>
+</button>
+
+<script>
+  function goToPage3() {
+    window.location.href = "addPack.php";
   }
 </script>
 
