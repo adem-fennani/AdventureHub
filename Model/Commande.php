@@ -159,7 +159,7 @@ class Commande
             echo "<td>" . $commande['statut_commande'] . "</td>";
             echo "<td>" . $commande['adresse_livraison'] . "</td>";
             echo "<td>
-            <form method='POST' action='../Controller/deleteCommandeUser.php'>
+            <form method='POST' action='../Controller/CommandeC.php'>
                 <input type='hidden' name='id_commande' value='" . $commande['id_commande'] . "'>
                 <button type='submit' name='delete_commande_user'>Delete</button>
             </form>

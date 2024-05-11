@@ -26,6 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Add the line to the database
     $ligneDeCommande->addLine($idProduit, $quantity, $prixLigne);
+    // Initialize variables
+    $adresseLivraison = $adresseLivraisonErr = "";
 ?>
 
     <!DOCTYPE html>
@@ -58,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <h2 class='w3-center'>Panier</h2>
+
         <div class='w3-container'>
             <table class='w3-table-all'>
                 <thead>
@@ -79,14 +82,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <!-- Text input for adresse_livraison -->
         <div class="w3-container" style="margin-top: 20px;">
-            <form action="../Controller/CommandeC.php" method="post">
+            <form id="commandeForm" action="../Controller/CommandeC.php" method="post" onsubmit="return validateForm()">
                 <label for="adresse_livraison" style="display: block;">Adresse de livraison:</label>
-                <input type="text" id="adresse_livraison" name="adresse_livraison">
+                <input type="text" id="adresse_livraison" name="adresse_livraison" value="<?php echo $adresseLivraison; ?>">
+                <span id="adresse_livraison_error" style="color: red;"></span>
                 <input type="hidden" name="idLigne" value="<?php echo $ligneDeCommande->getLastInsertId(); ?>">
                 <input type="hidden" name="prixLigne" value="<?php echo $prixLigne; ?>">
-                <button type="submit" class="w3-button w3-light-grey" onclick="return displaySuccessAlert()">Commander</button>
+                <button type="submit" class="w3-button w3-light-grey">Commander</button>
             </form>
         </div>
+
 
         <div style="text-align: center; margin-top: 50px;">
             <img src="images/cart.png" alt="Shopping Cart Image" width="100" height="80" />
