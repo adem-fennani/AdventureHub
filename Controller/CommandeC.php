@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $commande->addCommande($idLigne, $prixCommande, $statutCommande, $adresseLivraison);
 
         // Redirect to a confirmation page or back to the boutique-user.html page
-        header("Location: ../View/boutique-user.html");
+        header("Location: ../View/boutique-user.php");
         exit();
     }
 }

@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </a>
                 <!-- Float links to the right. Hide them on small screens -->
                 <div class="w3-right w3-hide-small">
-                    <a href="boutique-user.html" class="w3-bar-item w3-button">Retour</a>
+                    <a href="boutique-user.php" class="w3-bar-item w3-button">Retour</a>
                 </div>
             </div>
         </div>
