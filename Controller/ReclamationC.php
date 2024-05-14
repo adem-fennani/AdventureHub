@@ -1,6 +1,6 @@
 <?php
-include '../config.php';
-include '../Model/Reclamation.php';
+include_once '../config.php';
+include_once '../Model/Reclamation.php';
 
 class ReclamationC
 {

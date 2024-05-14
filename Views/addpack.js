@@ -40,15 +40,15 @@ form.addEventListener("submit", function (event) {
 );
 
 function checkid_reclamation() {
-  console.log("enter id_reclamation");
 
-  const error_id_reclamation = document.getElementById("error_id_reclamation");
+  const iu = id_reclamation.value;
+  const numericPattern = /^[0-9]+$/;
+  const errorIdUser = document.getElementById("error_id_reclamation");
 
-  // Basic check for non-numeric values (assuming non-numeric values would be NaN)
-  if (isNaN(id_reclamation)) {
-    error_id_reclamation.innerHTML = "Enter a valid ID (numbers only)";
+  if (!iu.match(numericPattern)) {
+    errorIdUser.innerHTML = "Enter a valid ID (numbers only)";
   } else {
-    error_id_reclamation.innerHTML = "<span style='color:green'> Correct </span>";
+    errorIdUser.innerHTML = "<span style='color:green'> Correct </span>";
   }
 }
 

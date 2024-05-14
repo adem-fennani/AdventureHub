@@ -1,6 +1,6 @@
 <?php
 // Include necessary files and classes
-include '../Controller/ReclamationC.php';
+include_once '../Controller/ReclamationC.php';
 
 // Create an instance of the ReclamationC class
 $reclamationC = new ReclamationC();

@@ -1,6 +1,6 @@
 <?php
-include '../Controller/PackC.php';
-include '../Controller/ReclamationC.php';
+include_once '../Controller/PackC.php';
+include_once '../Controller/ReclamationC.php';
 $reclamationC = new ReclamationC();
 $reclamationC->deleteReclamation($_GET["id"]);
 header('Location:backoffice.php');

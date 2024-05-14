@@ -1,6 +1,6 @@
 <?php
 
-include_once '../Controller/PackC.php';
+include '../Controller/PackC.php';
 
 $error = "";
 
@@ -34,7 +34,7 @@ if (
             ($_POST['hotel_name']),
         );
         $packC->updatePack($pack, $_POST["id"]);
-        header('Location:ListPack.php');
+        header('Location:backoffice.php');
     } else
         $error = "Missing information";
 }
@@ -47,9 +47,7 @@ if (
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Pack</title>
     <style>
-               /* Existing CSS */
-
-               body {
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
@@ -73,9 +71,7 @@ if (
         }
 
         input[type="text"],
-        input[type="date"],
-        select {
-            /* Add style for select element */
+        input[type="date"] {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -122,32 +118,8 @@ if (
 
                 <input type="hidden" name="id" value="<?php echo $pack['id']; ?>">
                 <label for="id_reclamation">id_reclamation:</label>
-                <!--<input type="number" name="id_reclamation" id="id_reclamation">-->
-                <!-- Inside the select element, remove the static options and use PHP to populate dynamic options -->
-                <select name="id_reclamation" id="id_reclamation">
-                    <?php
-                    // Establish database connection
-                    $db = config::getConnexion();
-
-                    // SQL query to select IDs from the reclamation table
-                    $sql = "SELECT id FROM reclamation";
-
-                    // Execute the query
-                    $liste = $db->query($sql);
-
-                    // Check if the query executed successfully
-                    if ($liste) {
-                        // Iterate over the result set and generate options
-                        while ($row = $liste->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['id'] . '</option>';
-                        }
-                    } else {
-                        // Handle the case where the query fails
-                        echo '<option value="">No IDs available</option>';
-                    }
-                    ?>
-                </select>
-
+                <br>
+                <input type="number" name="id_reclamation" id="id_reclamation" value="<?php echo $pack['id_reclamation']; ?>">
                 <span class="error" id="error_id_reclamation"></span>
                 <br>
                 <label for="description">Description:</label>

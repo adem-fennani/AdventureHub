@@ -1,6 +1,6 @@
 <?php
 
-include '../Controller/ReclamationC.php';
+include_once '../Controller/ReclamationC.php';
 
 $error = "";
 

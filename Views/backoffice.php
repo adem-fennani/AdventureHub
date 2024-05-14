@@ -1,7 +1,10 @@
 <?php
-include '../Controller/ReclamationC.php';
+include_once '../Controller/ReclamationC.php';
 $reclamationC = new ReclamationC();
 $list = $reclamationC->ListReclamation();
+include_once '../Controller/PackC.php';
+$packC = new PackC();
+$liste = $packC->listPack();
 /*$statistics = $reclamationC->calculateStatistics();
 
 // Extract statistics values
@@ -186,6 +189,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
     <tr>
             <th>id </th>
+            <th>id_user</th>
             <th>firstName</th>
             <th>lastName</th>
             <th>contenu</th>
@@ -199,6 +203,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         ?>
             <tr>
                 <td><?= $reclamation['id']; ?></td>
+                <td><?= $reclamation['id_user']; ?></td>
                 <td><?= $reclamation['firstName']; ?></td>
                 <td><?= $reclamation['lastName']; ?></td>
                 <td><?= $reclamation['contenu']; ?></td>
@@ -232,39 +237,54 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         
   </div>
 
+    </table><br>
+  </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <div class="w3-container">
+  <h5>Liste des packs</h5>
+    <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+    <tr>
+            <th>id </th>
+            <th>id_reclamation</th>
+            <th>description</th>
+            <th>date_dep</th>
+            <th>date_arri</th>
+            <th>hotel_name</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        <?php
+        foreach ($liste as $pack) {
+        ?>
+            <tr>
+                <td><?= $pack['id']; ?></td>
+                <td><?= $pack['id_reclamation']; ?></td>
+                <td><?= $pack['description']; ?></td>
+                <td><?= $pack['date_dep']; ?></td>
+                <td><?= $pack['date_arri']; ?></td>
+                <td><?= $pack['hotel_name']; ?></td>
+                <td align="center">
+          <form method="POST" action="updatePackB.php">
+            <input type="submit" class="w3-button w3-blue" name="update" value="Update">
+            <input type="hidden" value="<?= $pack['id']; ?>" name="id">
+          </form>
+        </td>
+                
+                <td>
+                    <a href="DelBoff.php?id=<?php echo $pack['id']; ?>"   class="w3-button w3-dark-grey">Delete</a>
+                </td>
+                
+            </tr>
+        <?php
+        }
+        ?>
+        
+        
+  </div>
 
     </table><br>
   </div>
+
   <hr>
 <!-- hide
   <div class="w3-row-padding w3-margin-bottom">

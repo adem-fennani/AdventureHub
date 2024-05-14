@@ -1,6 +1,6 @@
 <?php
 
-include '../Controller/PackC.php';
+include_once '../Controller/PackC.php';
 
 $error = "";
 
@@ -126,7 +126,7 @@ if (
                 <label for="id_reclamation">id_reclamation:</label>
                 <!--<input type="number" name="id_reclamation" id="id_reclamation">-->
                 <!-- Inside the select element, remove the static options and use PHP to populate dynamic options -->
-                <select name="reclamationId" id="reclamationId">
+                <select name="id_reclamation" id="id_reclamation">
                     <?php
                     // Establish database connection
                     $db = config::getConnexion();
@@ -173,7 +173,7 @@ if (
                 <input type="reset" value="Reset">
             </form>
         </div>
-        <!--<script src="addpack.js">-->
+        <script src="addpack.js">
 
         </script>
 
