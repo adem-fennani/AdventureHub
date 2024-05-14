@@ -26,16 +26,16 @@ if (isset($_POST['userType']) && $_POST['userType'] === 'user') {
         if ($user != null && password_verify($_POST['password'], $user['password'])) {
 
             // Obtenez l'ID de l'utilisateur à partir de la session ou de toute autre source
-            $idUtilisateur = $_SESSION["userId"]; // exemple d'accès à l'ID de l'utilisateur depuis la session
+            //$idUtilisateur = $_SESSION["userId"]; // exemple d'accès à l'ID de l'utilisateur depuis la session
 
             // Préparez votre requête SQL pour insérer l'ID de l'utilisateur dans la table `onligne`
-            $query = $pdo->prepare('INSERT INTO onligne (id, time) VALUES (:id, NOW())');
+            //$query = $pdo->prepare('INSERT INTO onligne (id, time) VALUES (:id, NOW())');
 
             // Liez la valeur de l'ID de l'utilisateur à la requête préparée
-            $query->bindParam(':id', $idUtilisateur);
+            //$query->bindParam(':id', $idUtilisateur);
 
             // Exécutez la requête
-            $query->execute();
+            //$query->execute();
 
             $_SESSION['flash']['success'] = "Connexion effectuée avec succès";
             $_SESSION['auth'] = $user;

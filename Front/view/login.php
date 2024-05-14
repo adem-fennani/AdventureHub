@@ -13,6 +13,8 @@ include_once "../config.php";
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
     <style>
         body {
             font-family: "Montserrat", sans-serif;
@@ -45,20 +47,16 @@ include_once "../config.php";
         <div class="w3-bar w3-white w3-wide w3-padding w3-card">
             <a href="#home" class="w3-bar-item w3-button"><img src="image/logo.png" alt="AdventureHub logo"
                     width="40px">AdventureHub</a>
-            <!-- Float links to the right. Hide them on small screens -->
-
-            <div class="w3-right w3-hide-small">
-                <a href="#home" class="w3-bar-item w3-button">Acceuil</a>
-                <a href="#shop" class="w3-bar-item w3-button">Boutique</a>
-                <a href="#Agency" class="w3-bar-item w3-button">Agences</a>
-                <a href="#profil" class="w3-bar-item w3-button">Profil</a>
-            </div>
         </div>
     </div>
     <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
-        <img class="w3-image" src="image/bgphoto.jpg" alt="Architecture" width="1500" height="800">
+    <div class="slick-carousel">
+            <div><img src="image/bgphoto.jpg" alt="Image 1" width="1500" height="800"></div>
+            <div><img src="image/1.jpg" alt="Image 2" width="1500" height="800"></div>
+            <div><img src="image/2.jpg" alt="Image 3" width="1500" height="800"></div>
+            <div><img src="image/8.jpg" alt="Image 4" width="1500" height="800"></div>
+        </div>
         <div class="w3-display-middle w3-margin-top w3-center">
-
             <div class="pt-105 pb-110 bg_cover" class="row">
                 <center>
                     <h2>Se Connecter</h2>
@@ -123,14 +121,23 @@ include_once "../config.php";
                     </form>
                 </center>
             </div>
-
-            <h1 class="w3-xxlarge w3-text-white"><img src="image/logo white.png" alt="logo white" width="80px">
-                AdventureHub</h1>
         </div>
     </header>
     <footer class="w3-center w3-black w3-padding-16">
         <h1 class="w3-xxlarge w3-text-white"><img src="image/logo white.png" alt="logo white" width="80px"> AdventureHub
         </h1>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>  
+    <script>
+        $(document).ready(function(){
+            $('.slick-carousel').slick({
+                autoplay: true, // Défilement automatique
+                autoplaySpeed: 2000, // Vitesse de défilement en millisecondes
+                arrows: false, // Masquer les flèches de navigation
+                dots: true // Afficher les indicateurs de pagination
+            });
+        });
+    </script>
 </body>
 

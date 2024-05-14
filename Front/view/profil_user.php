@@ -31,10 +31,19 @@ die;*/
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
         body {
             font-family: "Montserrat", sans-serif;
             font-optical-sizing: auto;
             font-style: normal;
+            background-image: url('image/12.jpg');
+            background-size: cover;
+  background-position: center;
         }
 
         .right-element {
@@ -117,7 +126,7 @@ die;*/
         </div>
     </div>
     </div>
-
+   
 
     <center>
         <h2>My Profile</h2>

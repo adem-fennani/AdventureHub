@@ -84,10 +84,10 @@ $Lus = $notifController->countReadNotifications();
     <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Aperçu</a>
     <a href="http://localhost/gestion_users/Back/view/ReadUsers.php" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Voir les Utilisateurs</a>
     <a href="http://localhost/gestion_users/Back/view/user_choice.html" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Contacter un Utilisateur</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Articles</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Actualités</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  Historique</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Paramètres </a><br><br>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Post</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Boutiques</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  Commandes</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Produits </a><br><br>
   </div>
   </nav>
 
