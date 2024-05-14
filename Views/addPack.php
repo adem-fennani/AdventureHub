@@ -10,12 +10,14 @@ $pack = null;
 // create an instance of the controller
 $packC = new PackC();
 if (
+    isset($_POST["id_reclamation"]) &&
     isset($_POST["description"]) &&
     isset($_POST["date_dep"]) &&
     isset($_POST["date_arri"]) &&
     isset($_POST["hotel_name"])
 ) {
     if (
+        !empty($_POST['id_reclamation']) &&
         !empty($_POST['description']) &&
         !empty($_POST['date_dep']) &&
         !empty($_POST['date_arri']) &&
@@ -23,6 +25,7 @@ if (
     ) {
         $pack = new Pack(
             null,
+            $_POST['id_reclamation'],
             $_POST['description'],
             new DateTime($_POST['date_dep']),
             new DateTime($_POST['date_arri']),
@@ -43,9 +46,11 @@ if (
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Add Pack - Frontoffice</title>
     <style>
+        /* Existing CSS */
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -70,7 +75,9 @@ if (
         }
 
         input[type="text"],
-        input[type="date"] {
+        input[type="date"],
+        select {
+            /* Add style for select element */
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -103,42 +110,72 @@ if (
             font-size: 14px;
         }
     </style>
-     <link rel="icon" href="logo.png" type="image/png">
+    <link rel="icon" href="logo.png" type="image/png">
 </head>
 
 <body>
     <!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-    <a href="#home" class="w3-bar-item w3-button"><img src="logo.png" alt="AdventureHub logo" width="40px"> </a>
-  </div>
-    <div class="container">
-        <h1>Add Pack</h1>
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+            <a href="#home" class="w3-bar-item w3-button"><img src="logo.png" alt="AdventureHub logo" width="40px"> </a>
+        </div>
+        <div class="container">
+            <h1>Add Pack</h1>
 
-        <form action="" method="POST" id="form" name="form">
-            <label for="description">Description:</label>
-            <input type="text" name="description" id="description">
-            <span class="error" id="error_description"></span>
+            <form action="" method="POST" id="form" name="form">
+                <label for="id_reclamation">id_reclamation:</label>
+                <!--<input type="number" name="id_reclamation" id="id_reclamation">-->
+                <!-- Inside the select element, remove the static options and use PHP to populate dynamic options -->
+                <select name="reclamationId" id="reclamationId">
+                    <?php
+                    // Establish database connection
+                    $db = config::getConnexion();
 
-            <label for="date_dep">Date de départ:</label>
-            <input type="date" name="date_dep" id="date_dep">
-            <span class="error" id="error_date_dep"></span>
+                    // SQL query to select IDs from the reclamation table
+                    $sql = "SELECT id FROM reclamation";
 
-            <label for="date_arri">Date d'arrivée:</label>
-            <input type="date" name="date_arri" id="date_arri">
-            <span class="error" id="error_date_arri"></span>
+                    // Execute the query
+                    $liste = $db->query($sql);
 
-            <label for="hotel_name">Hotel Name:</label>
-            <input type="text" name="hotel_name" id="hotel_name" maxlength="20">
-            <span class="error" id="error_hotel_name"></span>
+                    // Check if the query executed successfully
+                    if ($liste) {
+                        // Iterate over the result set and generate options
+                        while ($row = $liste->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['id'] . '</option>';
+                        }
+                    } else {
+                        // Handle the case where the query fails
+                        echo '<option value="">No IDs available</option>';
+                    }
+                    ?>
+                </select>
 
-            <input type="submit" value="Save">
-            <input type="reset" value="Reset">
-        </form>
-    </div>
-    <script src="addpack.js">
-        
-    </script>
+
+                <span class="error" id="error_id_reclamation"></span>
+
+                <label for="description">Description:</label>
+                <input type="text" name="description" id="description">
+                <span class="error" id="error_description"></span>
+
+                <label for="date_dep">Date de départ:</label>
+                <input type="date" name="date_dep" id="date_dep">
+                <span class="error" id="error_date_dep"></span>
+
+                <label for="date_arri">Date d'arrivée:</label>
+                <input type="date" name="date_arri" id="date_arri">
+                <span class="error" id="error_date_arri"></span>
+
+                <label for="hotel_name">Hotel Name:</label>
+                <input type="text" name="hotel_name" id="hotel_name" maxlength="20">
+                <span class="error" id="error_hotel_name"></span>
+
+                <input type="submit" value="Save">
+                <input type="reset" value="Reset">
+            </form>
+        </div>
+        <!--<script src="addpack.js">-->
+
+        </script>
 
 </body>
 

@@ -1,6 +1,7 @@
 
 
 const form = document.getElementById("form");
+const id_user = document.getElementById("id_user");
 const firstName = document.getElementById("firstName");
 const lastName = document.getElementById("lastName");
 const contenu = document.getElementById("contenu");
@@ -12,6 +13,7 @@ console.log("found everything");
 form.addEventListener("submit", function (event) {
   console.log("enter form input control");
   event.preventDefault();
+  checkid_user();
   checkfirstName();
   checklastName();
   checkcontenu();
@@ -22,6 +24,7 @@ form.addEventListener("submit", function (event) {
   console.log ( document.getElementById("error_firstName").innerHTML);
 
   if (
+    document.getElementById("error_id_user").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_firstName").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_lastName").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_contenu").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
@@ -36,6 +39,20 @@ form.addEventListener("submit", function (event) {
 
 
 );
+
+
+function checkid_user() {
+
+  const iu = id_user.value;
+  const numericPattern = /^[0-9]+$/;
+  const errorIdUser = document.getElementById("error_id_user");
+
+  if (!iu.match(numericPattern)) {
+    errorIdUser.innerHTML = "Enter a valid ID (numbers only)";
+  } else {
+    errorIdUser.innerHTML = "<span style='color:green'> Correct </span>";
+  }
+}
 
 
 

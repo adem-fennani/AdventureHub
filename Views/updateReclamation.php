@@ -11,6 +11,7 @@ $reclamation = null;
 $reclamationC = new ReclamationC();
 if (
     isset($_POST["id"]) &&
+    isset($_POST["id_user"]) &&
     isset($_POST["firstName"]) &&
     isset($_POST["lastName"]) &&
     isset($_POST["contenu"]) &&
@@ -18,6 +19,7 @@ if (
 ) {
     if (
         !empty($_POST["id"]) &&
+        !empty($_POST["id_user"]) &&
         !empty($_POST['firstName']) &&
         !empty($_POST["lastName"]) &&
         !empty($_POST["contenu"]) &&
@@ -25,6 +27,7 @@ if (
     ) {
         $reclamation = new Reclamation(
             $_POST['id'],
+            $_POST['id_user'],
             $_POST['firstName'],
             $_POST['lastName'],
             $_POST['contenu'],
@@ -114,6 +117,9 @@ if (
             ?>
 
                 <input type="hidden" name="id" value="<?php echo $reclamation['id']; ?>">
+                <label for="id_user">id_user:</label>
+                <input type="number" name="id_user" id="id_user"value="<?php echo $reclamation['id_user']; ?>">
+                <span class="error" id="error_id_user"></span>
 
                 <label for="firstName">firstName:</label>
                 <input type="text" name="firstName" id="firstName" value="<?php echo $reclamation['firstName']; ?>">
@@ -142,7 +148,10 @@ if (
     <script>
         
 
+
+
 const form = document.getElementById("form");
+const id_user = document.getElementById("id_user");
 const firstName = document.getElementById("firstName");
 const lastName = document.getElementById("lastName");
 const contenu = document.getElementById("contenu");
@@ -154,6 +163,7 @@ console.log("found everything");
 form.addEventListener("submit", function (event) {
   console.log("enter form input control");
   event.preventDefault();
+  checkid_user();
   checkfirstName();
   checklastName();
   checkcontenu();
@@ -164,6 +174,7 @@ form.addEventListener("submit", function (event) {
   console.log ( document.getElementById("error_firstName").innerHTML);
 
   if (
+    document.getElementById("error_id_user").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_firstName").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_lastName").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_contenu").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
@@ -178,6 +189,20 @@ form.addEventListener("submit", function (event) {
 
 
 );
+
+function checkid_user() {
+  console.log("enter id_user");
+
+  const error_id_user = document.getElementById("error_id_user");
+
+  // Basic check for non-numeric values (assuming non-numeric values would be NaN)
+  if (isNaN(id_user)) {
+    error_id_user.innerHTML = "Enter a valid ID (numbers only)";
+  } else {
+    error_id_user.innerHTML = "<span style='color:green'> Correct </span>";
+  }
+}
+
 
 
 

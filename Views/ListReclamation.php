@@ -166,6 +166,7 @@ if ($result) {
   <table class="w3-table-all">
     <tr>
       <th>Id Reclamation</th>
+      <th>Id User</th>
       <th>firstName</th>
       <th>lastName</th>
       <th>contenu</th>
@@ -176,6 +177,7 @@ if ($result) {
     <?php foreach ($list as $reclamation) { ?>
       <tr>
         <td><?= $reclamation['id']; ?></td>
+        <td><?= $reclamation['id_user']; ?></td>
         <td><?= $reclamation['firstName']; ?></td>
         <td><?= $reclamation['lastName']; ?></td>
         <td><?= $reclamation['contenu']; ?></td>

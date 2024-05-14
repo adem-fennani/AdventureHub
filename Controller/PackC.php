@@ -33,7 +33,7 @@ class PackC
     function addPack($pack)
     {
         $sql = "INSERT INTO pack  
-        VALUES (NULL, :fn,:ln, :em,:dob)";
+        VALUES (NULL,:r, :fn,:ln, :em,:dob)";
         $db = config::getConnexion();
         try {
             print_r($pack->getdate_dep()->format('Y-m-d'));
@@ -42,6 +42,7 @@ class PackC
             $query = $db->prepare($sql);
             $query->execute([
                 'fn' => $pack->getdescription(),
+                'r' => $pack->getid_reclamation(),
                 'ln' => $pack->getdate_dep()->format('Y/m/d'),
                 'em' => $pack->getdate_arri()->format('Y/m/d'),
                 'dob' => $pack->gethotel_name(),
@@ -57,6 +58,7 @@ class PackC
         $db = config::getConnexion();
         $query = $db->prepare(
             'UPDATE pack SET 
+                id_reclamation = :id_reclamation,
                 description = :description, 
                 date_dep = :date_dep, 
                 date_arri = :date_arri, 
@@ -65,6 +67,7 @@ class PackC
         );
         $query->execute([
             'id' => $id,
+            'id_reclamation' => $pack->getid_reclamation(),
             'description' => $pack->getdescription(),
             'date_dep' => $pack->getdate_dep()->format('Y/m/d'),
             'date_arri' => $pack->getdate_arri()->format('Y/m/d'),

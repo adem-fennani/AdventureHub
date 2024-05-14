@@ -6,9 +6,8 @@ $list = $reclamationC->ListReclamation();
 
 // Extract statistics values
 $totalReclamations = $statistics['totalReclamations'];
-$totalViews = $statistics['totalViews'];
-$totalComments = $statistics['totalComments'];
-$totalContributors = $statistics['totalContributors'];*/
+$totalViews = $statistics['totalViews'];*/
+
 ?>
 
 
@@ -267,7 +266,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </table><br>
   </div>
   <hr>
-  <!--hi--
+<!-- hide
   <div class="w3-row-padding w3-margin-bottom">
   <div class="w3-half">
     <div class="w3-container w3-green w3-padding-16">
@@ -287,29 +286,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       </div>
       <div class="w3-clear"></div>
       <h4>Total Views</h4>
-    </div>
-  </div>
-</div>
-
-<div class="w3-row-padding">
-  <div class="w3-half">
-    <div class="w3-container w3-blue w3-padding-16">
-      <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
-      <div class="w3-right">
-        <h3><?php echo $totalComments; ?></h3>
-      </div>
-      <div class="w3-clear"></div>
-      <h4>Total Comments</h4>
-    </div>
-  </div>
-  <div class="w3-half">
-    <div class="w3-container w3-red w3-padding-16">
-      <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-      <div class="w3-right">
-        <h3><?php echo $totalContributors; ?></h3>
-      </div>
-      <div class="w3-clear"></div>
-      <h4>Total Contributors</h4>
     </div>
   </div>
 </div>

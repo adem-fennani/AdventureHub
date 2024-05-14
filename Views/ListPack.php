@@ -127,6 +127,7 @@ $list = $packC->listPack();
   <table class="w3-table-all">
     <tr>
       <th>Id Pack</th>
+      <th>Id Reclamation </th>
       <th>Description</th>
       <th>Date Depart</th>
       <th>Date Arrivee</th>
@@ -137,6 +138,7 @@ $list = $packC->listPack();
     <?php foreach ($list as $pack) { ?>
       <tr>
         <td><?= $pack['id']; ?></td>
+        <td><?= $pack['id_reclamation']; ?></td>
         <td><?= $pack['description']; ?></td>
         <td><?= $pack['date_dep']; ?></td>
         <td><?= $pack['date_arri']; ?></td>

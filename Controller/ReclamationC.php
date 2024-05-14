@@ -16,6 +16,18 @@ class ReclamationC
         }
     }
 
+    public function ListIdReclamation()
+    {
+        $sql = "SELECT id FROM reclamation";
+        $db = config::getConnexion();
+        try {
+            $liste = $db->query($sql);
+            return $liste;
+        } catch (Exception $e) {
+            die('Error:' . $e->getMessage());
+        }
+    }
+
     function deleteReclamation($id)
     {
         $sql = "DELETE FROM reclamation WHERE id = :id";
@@ -33,12 +45,13 @@ class ReclamationC
     function addReclamation($reclamation)
     {
         $sql = "INSERT INTO reclamation  
-        VALUES (NULL, :fn,:ln, :em,:dob)";
+        VALUES (NULL,:u, :fn,:ln, :em,:dob)";
         $db = config::getConnexion();
         try {
             print_r($reclamation->getDate_rec()->format('Y-m-d'));
             $query = $db->prepare($sql);
             $query->execute([
+                'u' => $reclamation->getid_user(),
                 'fn' => $reclamation->getFirstName(),
                 'ln' => $reclamation->getLastName(),
                 'em' => $reclamation->getContenu(),
@@ -55,6 +68,7 @@ class ReclamationC
         $db = config::getConnexion();
         $query = $db->prepare(
             'UPDATE reclamation SET 
+                id_user = :id_user,
                 firstName = :firstName, 
                 lastName = :lastName, 
                 contenu = :contenu, 
@@ -63,6 +77,7 @@ class ReclamationC
         );
         $query->execute([
             'id' => $id,
+            'id_user' => $reclamation->getid_user(),
             'firstName' => $reclamation->getFirstName(),
             'lastName' => $reclamation->getLastName(),
             'contenu' => $reclamation->getContenu(),
@@ -123,21 +138,18 @@ class ReclamationC
         $statistics = array(
             'totalReclamations' => count($reclamations),
             'totalViews' => 0,
-            'totalComments' => 0,
-            'totalContributors' => 0
         );
     
         // Calculate total views, comments, and contributors
         foreach ($reclamations as $reclamation) {
             $statistics['totalViews'] += $reclamation['views'];
-            $statistics['totalComments'] += $reclamation['comments'];
-            $statistics['totalContributors'] += $reclamation['contributors'];
+            
         }
     
-        return $statistics;*/
-    }
+        return $statistics;
+    }*/
     
-    
+}    
     
 
 

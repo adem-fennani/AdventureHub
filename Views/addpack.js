@@ -1,6 +1,7 @@
 
 
 const form = document.getElementById("form");
+const id_reclamation = document.getElementById("id_reclamation");
 const description = document.getElementById("description");
 const date_dep = document.getElementById("date_dep");
 const date_arri = document.getElementById("date_arri");
@@ -12,6 +13,7 @@ console.log("found everything");
 form.addEventListener("submit", function (event) {
   console.log("enter form input control");
   event.preventDefault();
+  checkid_reclamation();
   checkdescription();
   checkdate_dep();
   checkdate_arri();
@@ -20,8 +22,8 @@ form.addEventListener("submit", function (event) {
   console.log ( "the actual value is ");
 
   console.log ( document.getElementById("error_description").innerHTML);
-
   if (
+    document.getElementById("error_id_reclamation").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_description").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_date_dep").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
     document.getElementById("error_date_arri").innerHTML === "<span style=\"color:green\"> Correct </span>" &&
@@ -36,6 +38,20 @@ form.addEventListener("submit", function (event) {
 
 
 );
+
+function checkid_reclamation() {
+  console.log("enter id_reclamation");
+
+  const error_id_reclamation = document.getElementById("error_id_reclamation");
+
+  // Basic check for non-numeric values (assuming non-numeric values would be NaN)
+  if (isNaN(id_reclamation)) {
+    error_id_reclamation.innerHTML = "Enter a valid ID (numbers only)";
+  } else {
+    error_id_reclamation.innerHTML = "<span style='color:green'> Correct </span>";
+  }
+}
+
 
 
 

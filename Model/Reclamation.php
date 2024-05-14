@@ -2,14 +2,16 @@
 class Reclamation
 {
     private $id = null;
+    private $id_user = null;
     private $firstName = null;
     private $lastName= null;
     private $contenu = null;
     private $Date_rec = null;
 
-    public function __construct($id = null, $n, $p, $em, $d)
+    public function __construct($id = null,$u, $n, $p, $em, $d)
     {
         $this->id = $id;
+        $this->id_user=$u;
         $this->firstName = $n;
         $this->lastName = $p;
         $this->contenu = $em;
@@ -28,6 +30,20 @@ class Reclamation
     {
         $this->id = $id;
     }
+    /**
+     * Get the value of id_user
+     */
+    public function getid_user()
+    {
+        return $this->id_user;
+    }
+    /** Set id */
+    public function setId_user($id_user)
+    {
+        $this->id_user = $id_user;
+    }
+    
+    
 
     /**
      * Get the value of firstName
