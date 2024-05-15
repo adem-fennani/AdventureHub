@@ -235,6 +235,28 @@
       </div>
       <hr />
 
+      <div class="w3-container w3-padding-32" id="contact">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Gestion Catégories</h3>
+        <p>Ajoutez une nouvelle catégorie en utilisant le formulaire ci-dessous :</p>
+        <form action="../Controller/CategorieC.php" method="post">
+          <div class="w3-row-padding">
+            <div class="w3-half">
+              <input class="w3-input w3-border" type="text" placeholder="Nom de la Catégorie" required name="nom">
+            </div>
+            <div class="w3-half">
+              <input class="w3-input w3-border" type="text" placeholder="Description de la Catégorie" required name="description">
+            </div>
+          </div>
+          <button class="w3-button w3-black w3-section" type="submit">
+            <i class="fa fa-plus"></i> Ajouter Catégorie
+          </button>
+        </form>
+        <form action="../Controller/CategorieC.php" method="post"> <!-- Change the action attribute to point to the controller file -->
+          <button type="submit" name="afficherCategories">Afficher catégories</button> <!-- Change the button to submit the form -->
+        </form>      
+      </div>
+      
+
       <div class="w3-container">
         <h5>Pays</h5>
         <table
