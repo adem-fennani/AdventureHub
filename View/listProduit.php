@@ -81,18 +81,21 @@ $list = $produitC->listProduits();
             <?php foreach ($list as $produit) {
                 $img = basename($produit['image_produit']);
                 $img = 'img/' . $img;
-
             ?>
-
-
                 <div class="col-md-4">
                     <div class="card product-card">
-
-                        <img src="<?= $produit['image_produit']?>" class="card-img-top" alt=<?= $produit['titre_produit']; ?>>
+                        <img src="<?= $produit['image_produit'] ?>" class="card-img-top" alt=<?= $produit['titre_produit']; ?>>
                         <div class="card-body">
                             <h5 class="card-title"><?= $produit['titre_produit']; ?></h5>
                             <p class="card-text"><strong>Prix unitaire:</strong> <?= $produit['prix_unitaire']; ?>.000 DT</p>
                             <p class="card-text"><strong>Quantité:</strong> <?= $produit['quantite_produit']; ?></p>
+                            <!-- Use a form to submit the product ID to updateProduit.php -->
+                            <form method="POST" action="updateProduit.php">
+                                <input type="hidden" value="<?= $produit['id_produit']; ?>" name="id">
+                                <input type="submit" class="btn btn-primary" name="update" value="Update">
+                            </form>
+                            <!-- Alternatively, you can use a link with the ID as a parameter -->
+                            <!-- <a href="updateProduit.php?id=<?= $produit['id_produit']; ?>" class="btn btn-primary">Update</a> -->
                             <a href="deleteProduit.php?id=<?= $produit['id_produit']; ?>" class="btn btn-danger">Supprimer</a>
                         </div>
                     </div>
@@ -100,6 +103,7 @@ $list = $produitC->listProduits();
             <?php } ?>
         </div>
     </div>
+
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

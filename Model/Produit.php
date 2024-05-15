@@ -162,49 +162,9 @@ class Produit
         }
     }
 
-    public function updateProduit($produit, $id)
-    {
-        try {
-            $db = config::getConnexion();
+    
 
-            $query = $db->prepare(
-                'UPDATE produit SET
-                    prix = :prix, 
-                    titre = :titre, 
-                    quantite = :quantite, 
-                    description = :description, 
-                    image = :image
-                WHERE id = :id'
-            );
-
-            $query->bindParam(':id', $id);
-            $query->bindParam(':prix', $produit->getPrixProduit());
-            $query->bindParam(':titre', $produit->getTitreProduit());
-            $query->bindParam(':quantite', $produit->getQuantiteProduit());
-            $query->bindParam(':description', $produit->getDescriptionProduit());
-            $query->bindParam(':image', $produit->getImageProduit());
-
-            $query->execute();
-
-            echo $query->rowCount() . " records UPDATED successfully <br>";
-        } catch (PDOException $e) {
-            echo 'Error: ' . $e->getMessage();
-        }
-    }
-
-    public function showProduit($id)
-    {
-        $sql = "SELECT * from produit where id = $id";
-        $db = config::getConnexion();
-        try {
-            $query = $db->prepare($sql);
-            $query->execute();
-            $produit = $query->fetch();
-            return $produit;
-        } catch (Exception $e) {
-            die('Error: ' . $e->getMessage());
-        }
-    }
+    
     public function searchProduits($titre)
     {
         $sql = "SELECT * FROM produit WHERE titre LIKE :titre";
@@ -219,4 +179,57 @@ class Produit
             die('Error: ' . $e->getMessage());
         }
     }
+}
+
+
+
+class ProduitC{
+
+
+    public function showProduit($id)
+    {
+        $sql = "SELECT * from produit where id_produit = $id";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+            $produit = $query->fetch();
+            return $produit;
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+
+
+
+    public function updateProduit($produit, $id)
+    {
+        try {
+            $db = config::getConnexion();
+
+            $query = $db->prepare(
+                'UPDATE produit SET
+                    prix_unitaire = :prix, 
+                    titre_produit = :titre, 
+                    quantite_produit = :quantite, 
+                    description_produit = :description, 
+                    image_produit = :image
+                WHERE id_produit = :id'
+            );
+
+            $query->bindParam(':id', $id);
+            $query->bindParam(':prix', $produit->getPrixUnitaire());
+            $query->bindParam(':titre', $produit->getTitreProduit());
+            $query->bindParam(':quantite', $produit->getQuantiteProduit());
+            $query->bindParam(':description', $produit->getDescriptionProduit());
+            $query->bindParam(':image', $produit->getImageProduit());
+
+            $query->execute();
+
+            echo $query->rowCount() . " records UPDATED successfully <br>";
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+
 }
