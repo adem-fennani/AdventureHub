@@ -1,6 +1,6 @@
 <?php
-include '../config.php';
-include '../Model/feedback.php';
+@include '../config.php';
+@include '../Model/feedback.php';
 
 class FeedbackC
 {
@@ -116,19 +116,39 @@ class FeedbackC
 
     //recherche
     function getFeedbackById($id)
-    {
-        $sql = "SELECT * FROM feedback WHERE id = :id";
-        $db = config::getConnexion();
-        try {
-            $query = $db->prepare($sql);
-            $query->bindParam(':id', $id);
-            $query->execute();
+{
+    $sql = "SELECT id, idevent, iduser, contenu, datedepublication FROM feedback WHERE id = :id";
+    $db = config::getConnexion();
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([':id' => $id]); // Pass the parameter directly to execute
+        $feedback = $query->fetch();
+        return $feedback;
+    } catch (Exception $e) {
+        die('Error: ' . $e->getMessage());
+    }
+}
 
-            $feedback = $query->fetch();
-            return $feedback;
-        } catch (Exception $e) {
-            die('Error: ' . $e->getMessage());
+    public function getAllEventIDs() {
+        try {
+            $db = config::getConnexion();
+            // Prepare SQL statement to fetch event IDs
+            $stmt = $db->prepare("SELECT ide FROM event"); // Updated table name to 'event'
+            
+            // Execute the statement
+            $stmt->execute();
+    
+            // Fetch all event IDs as an associative array
+            $event_ids = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            return $event_ids;
+        } catch(PDOException $e) {
+            // Handle any errors
+            echo "Error: " . $e->getMessage();
+            return []; // Return an empty array in case of error
         }
     }
+    
+
 
 }

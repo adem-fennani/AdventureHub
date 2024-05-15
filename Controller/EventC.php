@@ -16,12 +16,12 @@ class EventC
         }
     }
 
-    function deleteEvent($id)
+    function deleteEvent($ide)
     {
-        $sql = "DELETE FROM event WHERE id = :id";
+        $sql = "DELETE FROM event WHERE ide = :ide";
         $db = config::getConnexion();
         $req = $db->prepare($sql);
-        $req->bindValue(':id', $id);
+        $req->bindValue(':ide', $ide);
 
         try {
             $req->execute();
@@ -51,7 +51,7 @@ class EventC
         }
     }
 
-    function updateEvent($event, $id)
+    function updateEvent($event, $ide)
     {
         try {
             $db = config::getConnexion();
@@ -64,10 +64,10 @@ class EventC
                     date = :date,
                     status = :status
 
-                WHERE id= :id'
+                WHERE ide= :ide'
             );
             $query->execute([
-                'id' => $id,
+                'ide' => $ide,
                 'nom' => $event->getNom(),
                 'host' => $event->getHost(),
                 'description' => $event->getDescription(),
@@ -82,9 +82,9 @@ class EventC
         }
     }
 
-    function showEvent($id)
+    function showEvent($ide)
     {
-        $sql = "SELECT * from event where id = $id";
+        $sql = "SELECT * from event where ide = $ide";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -96,4 +96,38 @@ class EventC
             die('Error: ' . $e->getMessage());
         }
     }
+
+    public function getEventById($eventId) {
+        $sql = "SELECT * FROM event WHERE ide = :id";
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->execute(array(':id' => $eventId));
+            
+            // Fetch event details
+            $event = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Return the event details
+            return $event;
+        } catch (PDOException $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+
+    public function getEventStatusCount()
+    {
+        $sql = "SELECT status, COUNT(*) as count FROM event GROUP BY status";
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->query($sql);
+            $statuses = [];
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $statuses[$row['status']] = $row['count'];
+            }
+            return $statuses;
+        } catch (PDOException $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
+    
 }

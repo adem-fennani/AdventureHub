@@ -1,7 +1,7 @@
 <?php
 class Event
 {
-    private ?int $id = null;
+    private ?int $ide = null;
     private ?string $nom = null;
     private ?string $host= null;
     private ?string $description= null;
@@ -9,9 +9,9 @@ class Event
     private ?DateTime $date = null;
     private ?string $status= null;
 
-    public function __construct($id = null, $n, $h, $des, $l, $d, $s)
+    public function __construct($ide = null, $n, $h, $des, $l, $d, $s)
     {
-        $this->id = $id;
+        $this->ide = $ide;
         $this->nom = $n;
         $this->host = $h;
         $this->description = $des;
@@ -25,7 +25,7 @@ class Event
      */
     public function getid()
     {
-        return $this->id;
+        return $this->ide;
     }
 
     /**
