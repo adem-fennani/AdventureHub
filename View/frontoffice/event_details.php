@@ -172,6 +172,7 @@ if ($article) {
         <table  align="center" width="80%">
             
             <?php
+            //affiche feed
             foreach ($list as $feedback) {
             ?>
             <tr>
